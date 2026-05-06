@@ -23,9 +23,9 @@ export default function LoginPage() {
               <Image
                 src="/imagens/logo.png"
                 alt="NEUROFARMA"
-                width={220}
-                height={74}
-                className="h-20 w-auto object-contain"
+                width={320}
+                height={108}
+                className="h-28 w-auto object-contain"
                 priority
               />
             </Link>

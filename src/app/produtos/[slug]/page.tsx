@@ -97,18 +97,19 @@ export default function ProdutoPage({ params }: Props) {
             <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
               <h3 className="font-display text-base font-semibold mb-2">Tem interesse?</h3>
               <p className="text-sm text-primary-100 mb-4">
-                Cadastre-se para solicitar este produto diretamente pela plataforma.
+                Entre em contato ou crie sua conta para solicitar este produto.
               </p>
               <div className="space-y-2">
-                <Link href="/dashboard/novo-pedido">
+                <a href={`https://wa.me/5574981064385?text=Olá! Tenho interesse no produto ${produto.nome}.`}
+                  target="_blank" rel="noopener noreferrer">
                   <Button className="w-full bg-white text-primary-700 hover:bg-primary-50 border-0" size="sm">
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Fazer pedido
+                    Solicitar via WhatsApp
                   </Button>
-                </Link>
+                </a>
                 <Link href="/cadastro">
                   <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10" size="sm">
-                    Criar cadastro
+                    Criar conta
                   </Button>
                 </Link>
               </div>

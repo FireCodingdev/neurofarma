@@ -47,9 +47,9 @@ export function Footer() {
               <Image
                 src="/imagens/logo.png"
                 alt="NEUROFARMA"
-                width={150}
-                height={50}
-                className="h-10 w-auto object-contain brightness-0 invert"
+                width={240}
+                height={80}
+                className="h-16 w-auto object-contain brightness-0 invert"
               />
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-xs text-neutral-400">

@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { ArrowRight, Heart, Users, Microscope } from 'lucide-react';
+import { ArrowRight, FlaskConical, BookOpen, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { SITE_CONFIG } from '@/lib/constants';
 
 export function JoinCta() {
   return (
@@ -13,29 +14,33 @@ export function JoinCta() {
         </h2>
         <p className="text-lg text-neutral-600 mb-10 max-w-xl mx-auto leading-relaxed">
           A Neurofarma existe para democratizar o acesso a tratamentos inovadores.
-          Se você acredita que a ciência pode mudar vidas, cadastre-se e acompanhe
-          de perto o que estamos construindo.
+          Crie sua conta, explore nossos produtos e entre em contato para saber como ter acesso.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
           <Link href="/cadastro">
             <Button size="lg" className="group w-full sm:w-auto">
-              Criar meu cadastro
+              Criar minha conta
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
-          <Link href="/produtos">
-            <Button variant="outline" size="lg" className="w-full sm:w-auto">
-              Ver nossos produtos
+          <a
+            href={`https://wa.me/5574981064385?text=Olá! Quero saber mais sobre os produtos da Neurofarma.`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2">
+              <MessageCircle className="w-5 h-5" />
+              Falar no WhatsApp
             </Button>
-          </Link>
+          </a>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-10 border-t border-neutral-200">
           {[
-            { Icon: Users, label: 'Acesso à plataforma', sub: 'Acompanhe pedidos e histórico' },
-            { Icon: Microscope, label: 'Conteúdo científico', sub: 'Estudos e atualizações exclusivas' },
-            { Icon: Heart, label: 'Impacto real', sub: 'Cada cadastro apoia a pesquisa' },
+            { Icon: FlaskConical, label: 'Produtos exclusivos', sub: 'Formulações de laboratório certificado' },
+            { Icon: BookOpen, label: 'Conteúdo científico', sub: 'Pesquisas e informações sobre cada produto' },
+            { Icon: MessageCircle, label: 'Atendimento direto', sub: `Contato via ${SITE_CONFIG.telefone}` },
           ].map(({ Icon, label, sub }) => (
             <div key={label} className="flex flex-col items-center gap-2">
               <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
