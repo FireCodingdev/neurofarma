@@ -47,7 +47,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col bg-[#0d2218]">
+        {/* Fixed background: dropper image right-aligned with dark-green gradient fade */}
+        <div className="fixed inset-0 -z-10 pointer-events-none" aria-hidden="true">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/imagens/imgfundo.png')",
+              backgroundPosition: 'right center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'auto 100vh',
+              backgroundAttachment: 'fixed',
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(to right, #0d2218 0%, #0d2218 30%, rgba(13,34,24,0.85) 50%, rgba(13,34,24,0.2) 75%, transparent 100%)',
+            }}
+          />
+        </div>
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
