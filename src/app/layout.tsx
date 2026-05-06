@@ -65,11 +65,20 @@ export default function RootLayout({
               backgroundAttachment: 'fixed',
             }}
           />
+          {/* Horizontal fade: image emerges from the green */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(to right, #0d2218 0%, #0d2218 10%, rgba(13,34,24,0.95) 20%, rgba(13,34,24,0.8) 32%, rgba(13,34,24,0.55) 45%, rgba(13,34,24,0.25) 60%, rgba(13,34,24,0.05) 75%, transparent 90%)',
+                'linear-gradient(to right, #0d2218 0%, #0d2218 38%, rgba(13,34,24,0.92) 50%, rgba(13,34,24,0.65) 60%, rgba(13,34,24,0.28) 72%, rgba(13,34,24,0.06) 84%, transparent 95%)',
+            }}
+          />
+          {/* Top & bottom vignette for depth */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(to bottom, rgba(13,34,24,0.45) 0%, transparent 18%, transparent 80%, rgba(13,34,24,0.55) 100%)',
             }}
           />
         </div>

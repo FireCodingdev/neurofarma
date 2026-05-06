@@ -62,22 +62,22 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="relative flex justify-end items-center h-20">
 
-          {/* Logo — maior que o header, ligeiramente deslocada para baixo */}
-          <Link href="/" className="flex items-center flex-shrink-0">
+          {/* Logo — absolutamente centralizada no cabeçalho */}
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center">
             <Image
               src="/imagens/logo.png"
               alt="NEUROFARMA"
-              width={160}
-              height={48}
-              className="h-9 lg:h-12 w-auto object-contain"
+              width={200}
+              height={64}
+              className="h-14 w-auto object-contain"
               priority
             />
           </Link>
 
-          {/* Desktop nav links */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Desktop: nav links + auth agrupados à direita */}
+          <div className="hidden lg:flex items-center gap-6">
             <Link href="/"
               className="text-neutral-700 hover:text-primary-600 font-medium transition-colors">
               Início
@@ -122,13 +122,13 @@ export function Navbar() {
                 </div>
               )}
             </div>
-          </div>
 
-          {/* Desktop right side */}
-          <div className="hidden lg:flex items-center gap-3">
+            {/* Divisória entre nav e auth */}
+            <span className="text-neutral-300 select-none text-lg font-light">|</span>
+
+            {/* Auth / user section */}
             {user ? (
               <>
-                {/* Admin CRM button */}
                 {isAdmin && (
                   <Link href="/admin">
                     <Button variant="secondary" size="sm" className="gap-2">
@@ -138,7 +138,6 @@ export function Navbar() {
                   </Link>
                 )}
 
-                {/* Client user menu */}
                 {!isAdmin && (
                   <div className="relative" ref={userMenuRef}>
                     <button
@@ -152,7 +151,6 @@ export function Navbar() {
                           : 'border-neutral-200 hover:border-primary-400 bg-white hover:bg-primary-50'
                       )}
                     >
-                      {/* Avatar */}
                       <div className="w-7 h-7 rounded-lg bg-primary-600 flex items-center justify-center">
                         <span className="text-white text-xs font-bold">{initials}</span>
                       </div>
@@ -164,7 +162,6 @@ export function Navbar() {
 
                     {userMenuOpen && (
                       <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-2xl border border-neutral-200 shadow-lg py-2 animate-fade-in">
-                        {/* User info */}
                         <div className="px-4 py-3 border-b border-neutral-100">
                           <p className="text-xs text-neutral-500">Logado como</p>
                           <p className="text-sm font-semibold text-neutral-900 truncate">{user.email}</p>
@@ -197,7 +194,6 @@ export function Navbar() {
                   </div>
                 )}
 
-                {/* Admin logout */}
                 {isAdmin && (
                   <button onClick={handleLogout}
                     className="flex items-center gap-1.5 text-sm font-medium text-neutral-600 hover:text-red-600 transition-colors px-3 py-2">
