@@ -16,7 +16,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
 /** Rotas que exigem sessão ativa */
-const PROTECTED_ROUTES = ['/dashboard'];
+const PROTECTED_ROUTES = ['/dashboard', '/admin'];
 
 /** Rotas só para usuários não-autenticados */
 const AUTH_ROUTES = ['/login', '/cadastro'];

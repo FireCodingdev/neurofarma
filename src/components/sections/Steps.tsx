@@ -1,75 +1,77 @@
 import Link from 'next/link';
-import { UserPlus, ShieldCheck, Sparkles } from 'lucide-react';
+import { Leaf, FlaskConical, BadgeCheck, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
-/**
- * Passo a passo de adesão ao programa.
- * Layout em 3 colunas conectadas por uma linha guia (apenas desktop).
- */
 export function Steps() {
-  const passos = [
+  const etapas = [
     {
       numero: '01',
-      Icon: UserPlus,
-      titulo: 'Cadastro',
+      Icon: Leaf,
+      titulo: 'Cultivo e Extração',
       descricao:
-        'Preencha o formulário com seus dados profissionais e suas informações de contato. Leva menos de 5 minutos.',
+        'A biomassa vegetal é cultivada em ambiente controlado e certificado. A extração dos canabinoides segue protocolos validados para garantir pureza e reprodutibilidade.',
     },
     {
       numero: '02',
-      Icon: ShieldCheck,
-      titulo: 'Validação',
+      Icon: FlaskConical,
+      titulo: 'Desenvolvimento',
       descricao:
-        'Nossa equipe verifica seu registro profissional junto aos conselhos. O retorno acontece em até 48 horas úteis.',
+        'Os extratos são formulados por farmacêuticos especialistas, ajustando concentrações, excipientes e forma farmacêutica para cada indicação clínica.',
     },
     {
       numero: '03',
-      Icon: Sparkles,
-      titulo: 'Aproveite os Benefícios',
+      Icon: BadgeCheck,
+      titulo: 'Controle de Qualidade',
       descricao:
-        'Acesse todos os recursos do programa: encontros clínicos, conteúdos exclusivos e visibilidade na rede.',
+        'Cada lote passa por análises cromatográficas, microbiológicas e testes de estabilidade. Laudos são emitidos antes de qualquer liberação.',
+    },
+    {
+      numero: '04',
+      Icon: Truck,
+      titulo: 'Acesso ao Paciente',
+      descricao:
+        'Com cadastro ativo na plataforma, o paciente tem acesso direto aos produtos disponíveis e ao acompanhamento de seu pedido em tempo real.',
     },
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-primary-50/50 to-white">
+    <section className="py-20 lg:py-28 bg-gradient-to-b from-neutral-950 to-neutral-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 mb-4">
-            Como começar em{' '}
-            <span className="text-primary-600">3 passos</span>
+          <span className="text-sm font-semibold text-primary-400 uppercase tracking-widest">Processo</span>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-3 mb-4">
+            Do laboratório{' '}
+            <span className="text-primary-400">ao paciente</span>
           </h2>
-          <p className="text-lg text-neutral-600">
-            Um processo simples e rápido para você começar a fazer parte da nossa rede.
+          <p className="text-lg text-neutral-400">
+            Cada etapa é documentada, rastreável e auditável — porque transparência
+            não é diferencial, é obrigação.
           </p>
         </div>
 
-        {/* Steps with connector line */}
         <div className="relative">
-          {/* Connector line (desktop only) */}
-          <div className="hidden md:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary-300 to-transparent -z-0" />
+          {/* Connector line desktop */}
+          <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary-600/40 to-transparent" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative z-10">
-            {passos.map((passo) => {
-              const Icon = passo.Icon;
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+            {etapas.map((etapa) => {
+              const Icon = etapa.Icon;
               return (
-                <div key={passo.numero} className="text-center">
-                  {/* Number circle */}
+                <div key={etapa.numero} className="text-center">
                   <div className="relative inline-flex items-center justify-center w-24 h-24 mx-auto mb-6">
-                    <div className="absolute inset-0 bg-primary-200 rounded-full animate-pulse opacity-50" />
-                    <div className="relative w-24 h-24 bg-white border-4 border-primary-500 rounded-full flex items-center justify-center shadow-lg">
-                      <Icon className="w-10 h-10 text-primary-600" />
+                    <div className="absolute inset-0 bg-primary-500/20 rounded-full" />
+                    <div className="relative w-24 h-24 bg-neutral-800 border-2 border-primary-500/50 rounded-full flex items-center justify-center">
+                      <Icon className="w-10 h-10 text-primary-400" />
                     </div>
-                    <span className="absolute -top-2 -right-2 w-9 h-9 bg-primary-600 text-white text-sm font-bold rounded-full flex items-center justify-center font-display shadow-md">
-                      {passo.numero}
+                    <span className="absolute -top-2 -right-2 w-8 h-8 bg-primary-500 text-white text-xs font-bold rounded-full flex items-center justify-center font-display shadow-lg">
+                      {etapa.numero}
                     </span>
                   </div>
-
-                  <h3 className="font-display text-2xl font-semibold text-neutral-900 mb-3">
-                    {passo.titulo}
+                  <h3 className="font-display text-xl font-semibold text-white mb-3">
+                    {etapa.titulo}
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed max-w-sm mx-auto">
-                    {passo.descricao}
+                  <p className="text-neutral-400 leading-relaxed text-sm max-w-xs mx-auto">
+                    {etapa.descricao}
                   </p>
                 </div>
               );
@@ -77,11 +79,10 @@ export function Steps() {
           </div>
         </div>
 
-        {/* CTA */}
         <div className="text-center mt-16">
           <Link href="/cadastro">
-            <Button size="lg">
-              Começar agora
+            <Button size="lg" className="bg-primary-500 hover:bg-primary-400 text-white border-0">
+              Quero ter acesso
             </Button>
           </Link>
         </div>

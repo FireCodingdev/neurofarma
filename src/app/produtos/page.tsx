@@ -1,80 +1,75 @@
 import { Metadata } from 'next';
-import { Package, ShoppingBag, Truck } from 'lucide-react';
+import Link from 'next/link';
+import { FlaskConical, ArrowRight } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { PRODUTOS_MOCK } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'Produtos',
-  description: 'Conheça os produtos disponíveis para profissionais e pacientes.',
+  title: 'Produtos · Neurofarma',
+  description: 'Formulações farmacêuticas à base de Cannabis medicinal desenvolvidas pela Neurofarma.',
 };
 
-/**
- * Página /produtos (placeholder estruturado).
- * Pronta para receber dados reais de produtos vindos do Supabase
- * ou de uma API de e-commerce.
- */
 export default function ProdutosPage() {
-  const categorias = [
-    {
-      Icon: Package,
-      titulo: 'Produtos Clínicos',
-      descricao:
-        'Insumos, materiais e produtos para uso em consultório e clínicas.',
-      qtd: '+120 itens',
-    },
-    {
-      Icon: ShoppingBag,
-      titulo: 'Para Pacientes',
-      descricao:
-        'Produtos prescritos com retirada na rede credenciada ou entrega domiciliar.',
-      qtd: '+80 itens',
-    },
-    {
-      Icon: Truck,
-      titulo: 'Logística',
-      descricao:
-        'Serviço de entrega rastreada e armazenamento em condições ideais.',
-      qtd: 'Brasil todo',
-    },
-  ];
+  const produtos = PRODUTOS_MOCK.filter((p) => p.ativo).sort((a, b) => a.ordem - b.ordem);
 
   return (
-    <div className="min-h-screen bg-white py-16 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h1 className="font-display text-4xl lg:text-5xl font-bold text-neutral-900 mb-4">
-            Nossos <span className="text-primary-600 italic">Produtos</span>
+    <div className="min-h-screen bg-neutral-50">
+      <div className="bg-gradient-to-br from-neutral-950 to-neutral-900 py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="text-sm font-semibold text-primary-400 uppercase tracking-widest">Formulações</span>
+          <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mt-3 mb-4">
+            Nossos Produtos
           </h1>
-          <p className="text-lg text-neutral-600">
-            Tudo que você precisa para um cuidado completo, com a qualidade que sua prática merece.
+          <p className="text-neutral-400 text-lg max-w-xl mx-auto">
+            Formulações farmacêuticas de Cannabis medicinal desenvolvidas com rigor científico
+            e fabricadas em laboratório certificado.
           </p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {categorias.map((cat) => {
-            const Icon = cat.Icon;
-            return (
-              <Card key={cat.titulo} hoverable>
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-                  <Icon className="w-6 h-6 text-primary-700" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {produtos.map((produto) => (
+            <Card key={produto.id} hoverable className="flex flex-col">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <FlaskConical className="w-7 h-7 text-primary-600" />
                 </div>
-                <h3 className="font-display text-xl font-semibold text-neutral-900 mb-2">
-                  {cat.titulo}
-                </h3>
-                <p className="text-neutral-600 mb-4">{cat.descricao}</p>
-                <span className="text-sm text-primary-700 font-medium">
-                  {cat.qtd}
-                </span>
-              </Card>
-            );
-          })}
-        </div>
+                <div>
+                  <span className="text-xs font-semibold text-primary-600 uppercase tracking-wider">{produto.categoria}</span>
+                  <h2 className="font-display text-xl font-bold text-neutral-900">{produto.nome}</h2>
+                </div>
+              </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-neutral-600 mb-4">
-            Esta página está em construção. Catálogo completo em breve.
-          </p>
-          <Button variant="outline">Receber novidades</Button>
+              <p className="text-neutral-600 text-sm leading-relaxed mb-5 flex-1">
+                {produto.descricaoCurta}
+              </p>
+
+              <div className="mb-5">
+                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Indicações</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {produto.indicacoes.slice(0, 3).map((ind) => (
+                    <span key={ind} className="px-2.5 py-1 bg-primary-50 text-primary-700 text-xs rounded-full font-medium">
+                      {ind}
+                    </span>
+                  ))}
+                  {produto.indicacoes.length > 3 && (
+                    <span className="px-2.5 py-1 bg-neutral-100 text-neutral-500 text-xs rounded-full">
+                      +{produto.indicacoes.length - 3}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <Link href={`/produtos/${produto.slug}`}>
+                <Button variant="outline" className="w-full group">
+                  Ver ficha completa
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </Card>
+          ))}
         </div>
       </div>
     </div>

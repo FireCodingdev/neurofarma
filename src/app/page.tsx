@@ -1,18 +1,17 @@
 import { Hero } from '@/components/sections/Hero';
 import { Benefits } from '@/components/sections/Benefits';
+import { Science } from '@/components/sections/Science';
 import { Steps } from '@/components/sections/Steps';
+import { JoinCta } from '@/components/sections/JoinCta';
 
-/**
- * Home page (landing principal).
- * Composição de Hero + Benefits + Steps.
- * Cada seção é um componente isolado em src/components/sections/.
- */
 export default function HomePage() {
   return (
     <>
       <Hero />
       <Benefits />
+      <Science />
       <Steps />
+      <JoinCta />
     </>
   );
 }

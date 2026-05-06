@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(Get-ChildItem -Force)",
-      "Bash(Select-Object Name, PSIsContainer)"
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(npm run *)",
+      "Bash(Remove-Item -Path \"c:\\\\Users\\\\Usuário\\\\Downloads\\\\neurofarma\\\\src\\\\app\\\\planos\" -Recurse -Force)",
+      "Bash(Remove-Item -Path \"c:\\\\Users\\\\Usuário\\\\Downloads\\\\neurofarma\\\\src\\\\app\\\\medicos\" -Recurse -Force)",
+      "Bash(Remove-Item -Path \"c:\\\\Users\\\\Usuário\\\\Downloads\\\\neurofarma\\\\src\\\\app\\\\servicos\" -Recurse -Force)"
     ]
   }
 }
