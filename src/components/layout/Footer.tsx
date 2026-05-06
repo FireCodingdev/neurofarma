@@ -1,10 +1,12 @@
 import Link from 'next/link';
-import { Leaf, Mail, Phone, MapPin, Instagram, Linkedin, Youtube } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Phone, MapPin, Instagram, Youtube } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
 
 /**
  * Footer institucional com links agrupados por categoria,
  * informações de contato e redes sociais.
+ * Logo real em /public/imagens/logo.png — substitui o placeholder <Leaf>.
  */
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -54,13 +56,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
           {/* Brand column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="bg-primary-600 text-white p-2 rounded-lg">
-                <Leaf className="w-5 h-5" />
-              </div>
-              <span className="font-display text-xl font-semibold text-white">
-                Portal Saúde
-              </span>
+            <Link href="/" className="inline-flex items-center mb-4">
+              <Image
+                src="/imagens/logo.png"
+                alt="NEUROFARMA"
+                width={150}
+                height={50}
+                className="h-10 w-auto object-contain brightness-0 invert"
+              />
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-xs">
               {SITE_CONFIG.description}
@@ -120,14 +123,22 @@ export function Footer() {
             >
               <Instagram className="w-4 h-4" />
             </a>
+            {/* Twitter / X */}
             <a
-              href={SITE_CONFIG.redesSociais.linkedin}
+              href={SITE_CONFIG.redesSociais.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="LinkedIn"
+              aria-label="X (Twitter)"
               className="w-9 h-9 rounded-full bg-neutral-800 hover:bg-primary-600 flex items-center justify-center transition-colors"
             >
-              <Linkedin className="w-4 h-4" />
+              {/* Ícone X inline — lucide-react não tem o X do Twitter */}
+              <svg
+                className="w-4 h-4 fill-current"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
             </a>
             <a
               href={SITE_CONFIG.redesSociais.youtube}

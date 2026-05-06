@@ -20,16 +20,16 @@ export const ESPECIALIDADES = [
 ] as const;
 
 export const SITE_CONFIG = {
-  name: 'Portal Saúde',
+  name: 'NEUROFARMA',
   description: 'Programa de profissionais de saúde - Cuidado, conhecimento e comunidade.',
-  url: 'https://portal-saude.vercel.app',
-  email: 'contato@portalsaude.com.br',
-  telefone: '(11) 4000-0000',
-  endereco: 'São Paulo, SP - Brasil',
+  url: 'https://neurofarma.vercel.app',
+  email: 'neurofarma1@hotmail.com',
+  telefone: '(74) 98106-4385',
+  endereco: 'Bahia, BA - Brasil',
   redesSociais: {
-    instagram: 'https://instagram.com/portalsaude',
-    linkedin: 'https://linkedin.com/company/portalsaude',
-    youtube: 'https://youtube.com/@portalsaude',
+    instagram: 'https://instagram.com/neurofarma',
+    twitter: 'https://x.com/NeuroFarma1',
+    youtube: 'https://youtube.com/@neurofarma',
   },
 };
 

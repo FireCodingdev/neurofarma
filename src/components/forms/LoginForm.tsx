@@ -4,18 +4,25 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { loginSchema, type LoginFormData } from '@/lib/validations';
+import { supabase } from '@/lib/supabase';
 
 /**
- * Formulário de login do profissional.
- * Em produção, integre com Supabase Auth (signInWithPassword).
+ * Formulário de login com Supabase Auth.
+ *
+ * Fluxo:
+ *  1. Valida e-mail + senha com Zod
+ *  2. Chama supabase.auth.signInWithPassword
+ *  3. Redireciona para /dashboard em caso de sucesso
+ *  4. Exibe erro inline em caso de credenciais inválidas
  */
 export function LoginForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const {
     register,
@@ -27,24 +34,47 @@ export function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true);
+    setAuthError(null);
 
-    try {
-      // Simulação. Em produção, troque por Supabase:
-      // const { error } = await supabase.auth.signInWithPassword(data)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    const { error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.senha,
+    });
 
-      console.log('Login simulado:', data);
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Erro no login:', error);
-      alert('Credenciais inválidas. Tente novamente.');
-    } finally {
+    if (error) {
+      // Mensagens amigáveis em português
+      if (
+        error.message.includes('Invalid login') ||
+        error.message.includes('invalid_credentials')
+      ) {
+        setAuthError('E-mail ou senha incorretos. Verifique e tente novamente.');
+      } else if (error.message.includes('Email not confirmed')) {
+        setAuthError('Confirme seu e-mail antes de acessar a plataforma.');
+      } else {
+        setAuthError('Erro ao entrar. Tente novamente em instantes.');
+      }
       setIsSubmitting(false);
+      return;
     }
+
+    // Sessão criada — redireciona. O middleware protegerá /dashboard.
+    router.push('/dashboard');
+    router.refresh(); // atualiza Server Components com a nova sessão
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+      {/* Erro de autenticação */}
+      {authError && (
+        <div
+          role="alert"
+          className="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"
+        >
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <span>{authError}</span>
+        </div>
+      )}
+
       <Input
         label="E-mail"
         type="email"

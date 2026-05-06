@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Leaf } from 'lucide-react';
+import Image from 'next/image';
 import { LoginForm } from '@/components/forms/LoginForm';
 
 export const metadata: Metadata = {
@@ -19,13 +19,15 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl border border-neutral-200 shadow-soft p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <Link href="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="bg-primary-600 text-white p-2 rounded-lg">
-                <Leaf className="w-5 h-5" />
-              </div>
-              <span className="font-display text-xl font-semibold text-neutral-900">
-                Portal Saúde
-              </span>
+            <Link href="/" className="inline-flex items-center mb-6">
+              <Image
+                src="/imagens/logo.png"
+                alt="NEUROFARMA"
+                width={160}
+                height={54}
+                className="h-12 w-auto object-contain"
+                priority
+              />
             </Link>
             <h1 className="font-display text-3xl font-bold text-neutral-900 mb-2">
               Bem-vindo(a) de volta

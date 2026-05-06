@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
@@ -12,13 +12,16 @@ import { ESPECIALIDADES } from '@/lib/constants';
 
 /**
  * Formulário de cadastro de profissional de saúde.
- * - Validação client-side com Zod via react-hook-form
- * - Estado de loading e mensagem de sucesso
- * - Em produção, deve POSTar para /api/cadastro que escreve no Supabase
+ *
+ * Fluxo real:
+ *  1. Valida os dados client-side com Zod
+ *  2. POST /api/cadastro (server-side valida novamente + grava no Supabase)
+ *  3. Exibe tela de sucesso → profissional receberá e-mail para definir senha
  */
 export function CadastroForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -37,29 +40,35 @@ export function CadastroForm() {
     },
   });
 
-  /**
-   * Handler de submissão do form.
-   * Aqui você fará o POST para sua API (ex.: Supabase).
-   */
   const onSubmit = async (data: CadastroFormData) => {
     setIsSubmitting(true);
+    setServerError(null);
 
     try {
-      // Simulação de chamada de API. Em produção, substitua por:
-      // await fetch('/api/cadastro', { method: 'POST', body: JSON.stringify(data) })
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const res = await fetch('/api/cadastro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-      console.log('Dados enviados:', data);
+      const json = await res.json();
+
+      if (!res.ok) {
+        // Erro tratado (e-mail duplicado, dados inválidos etc.)
+        setServerError(json.error ?? 'Erro ao enviar cadastro. Tente novamente.');
+        return;
+      }
+
       setIsSuccess(true);
       reset();
-    } catch (error) {
-      console.error('Erro no cadastro:', error);
-      alert('Ocorreu um erro. Tente novamente.');
+    } catch {
+      setServerError('Falha de conexão. Verifique sua internet e tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // ── Tela de sucesso ──────────────────────────────────────────
   if (isSuccess) {
     return (
       <div className="bg-white rounded-2xl border border-primary-200 p-8 text-center shadow-soft">
@@ -69,9 +78,12 @@ export function CadastroForm() {
         <h3 className="font-display text-2xl font-semibold text-neutral-900 mb-2">
           Cadastro recebido!
         </h3>
-        <p className="text-neutral-600 mb-6">
-          Sua solicitação foi registrada. Em até 48h úteis nossa equipe entrará em contato pelo
-          e-mail informado para finalizar a validação do seu registro.
+        <p className="text-neutral-600 mb-2">
+          Sua solicitação foi registrada com sucesso.
+        </p>
+        <p className="text-sm text-neutral-500 mb-6">
+          Você receberá um <strong>e-mail</strong> para criar sua senha e acessar
+          a plataforma assim que sua conta for aprovada (até 48h úteis).
         </p>
         <Button onClick={() => setIsSuccess(false)} variant="outline">
           Fazer novo cadastro
@@ -80,8 +92,20 @@ export function CadastroForm() {
     );
   }
 
+  // ── Formulário ───────────────────────────────────────────────
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+      {/* Erro do servidor */}
+      {serverError && (
+        <div
+          role="alert"
+          className="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"
+        >
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <span>{serverError}</span>
+        </div>
+      )}
+
       <Input
         label="Nome completo"
         placeholder="Como aparece no seu registro profissional"
@@ -114,9 +138,9 @@ export function CadastroForm() {
           error={errors.email?.message}
         />
         <Input
-          label="Telefone"
+          label="Telefone / WhatsApp"
           type="tel"
-          placeholder="(11) 99999-9999"
+          placeholder="(74) 98106-4385"
           {...register('telefone')}
           error={errors.telefone?.message}
         />

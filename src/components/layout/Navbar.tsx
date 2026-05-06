@@ -1,14 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
-import { Menu, X, Leaf } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 /**
  * Navbar institucional com menu responsivo (hambúrguer no mobile).
- * Itens: Início, Produtos, Serviços, Planos + CTAs Entrar e Começar tratamento.
+ * Logo real em /public/imagens/logo.png — substitui o placeholder <Leaf>.
  */
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,14 +26,16 @@ export function Navbar() {
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 lg:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-primary-600 text-white p-2 rounded-lg group-hover:bg-primary-700 transition-colors">
-              <Leaf className="w-5 h-5" />
-            </div>
-            <span className="font-display text-xl lg:text-2xl font-semibold text-neutral-900">
-              Portal Saúde
-            </span>
+          {/* Logo real */}
+          <Link href="/" className="flex items-center group">
+            <Image
+              src="/imagens/logo.png"
+              alt="NEUROFARMA"
+              width={150}
+              height={50}
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
