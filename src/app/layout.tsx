@@ -27,6 +27,11 @@ export const metadata: Metadata = {
   description: SITE_CONFIG.description,
   keywords: ['saúde', 'profissionais', 'médicos', 'prescritores', 'cannabis medicinal', 'tratamento'],
   authors: [{ name: SITE_CONFIG.name }],
+  icons: {
+    icon: '/imagens/navicon.png',
+    shortcut: '/imagens/navicon.png',
+    apple: '/imagens/navicon.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
