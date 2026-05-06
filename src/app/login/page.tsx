@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Suspense } from 'react';
 import { LoginForm } from '@/components/forms/LoginForm';
 
 export const metadata: Metadata = {
@@ -37,7 +38,9 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <LoginForm />
+          <Suspense fallback={<div className="h-48" />}>
+            <LoginForm />
+          </Suspense>
 
           <p className="text-center text-sm text-neutral-600 mt-8">
             Ainda não tem cadastro?{' '}
