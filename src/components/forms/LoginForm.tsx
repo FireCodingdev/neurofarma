@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -16,11 +16,16 @@ import { supabase } from '@/lib/supabase';
  * Fluxo:
  *  1. Valida e-mail + senha com Zod
  *  2. Chama supabase.auth.signInWithPassword
- *  3. Redireciona para /dashboard em caso de sucesso
+ *  3. Lê app_metadata.role do usuário e redireciona:
+ *       - admin   → /admin   (CRM)
+ *       - default → /conta/pedidos (área do profissional)
+ *     Se houver `?next=` na URL (ex.: middleware redirecionou pra cá),
+ *     respeita o destino original.
  *  4. Exibe erro inline em caso de credenciais inválidas
  */
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
@@ -36,7 +41,7 @@ export function LoginForm() {
     setIsSubmitting(true);
     setAuthError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: authData, error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.senha,
     });
@@ -57,8 +62,22 @@ export function LoginForm() {
       return;
     }
 
-    // Sessão criada — redireciona. O middleware protegerá /dashboard.
-    router.push('/dashboard');
+    // Decide o destino:
+    // 1. Se veio de uma rota protegida (?next=), respeita o destino original.
+    // 2. Senão, bifurca pela role: admin → /admin, demais → /conta/pedidos.
+    const nextParam = searchParams.get('next');
+    const role = authData.user?.app_metadata?.role;
+
+    let destino: string;
+    if (nextParam && nextParam.startsWith('/')) {
+      destino = nextParam;
+    } else if (role === 'admin') {
+      destino = '/admin';
+    } else {
+      destino = '/conta/pedidos';
+    }
+
+    router.push(destino);
     router.refresh(); // atualiza Server Components com a nova sessão
   };
 

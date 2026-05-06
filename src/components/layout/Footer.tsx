@@ -22,8 +22,8 @@ export function Footer() {
       links: [
         { href: '/cadastro', label: 'Criar conta' },
         { href: '/login', label: 'Entrar' },
-        { href: '/dashboard', label: 'Minha área' },
-        { href: '/dashboard/pedidos', label: 'Meus pedidos' },
+        { href: '/conta/configuracoes', label: 'Minha área' },
+        { href: '/conta/pedidos', label: 'Meus pedidos' },
       ],
     },
     {
