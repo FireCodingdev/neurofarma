@@ -62,16 +62,16 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 lg:h-24">
+        <div className="flex justify-between items-center h-16">
 
           {/* Logo — maior que o header, ligeiramente deslocada para baixo */}
-          <Link href="/" className="flex items-center flex-shrink-0 translate-y-2 lg:translate-y-3">
+          <Link href="/" className="flex items-center flex-shrink-0">
             <Image
               src="/imagens/logo.png"
               alt="NEUROFARMA"
-              width={420}
-              height={142}
-              className="h-28 lg:h-40 w-auto object-contain"
+              width={160}
+              height={48}
+              className="h-9 lg:h-12 w-auto object-contain"
               priority
             />
           </Link>

@@ -69,7 +69,7 @@ export default function RootLayout({
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(to right, #0d2218 0%, #0d2218 20%, rgba(13,34,24,0.75) 40%, rgba(13,34,24,0.1) 65%, transparent 100%)',
+                'linear-gradient(to right, #0d2218 0%, #0d2218 10%, rgba(13,34,24,0.95) 20%, rgba(13,34,24,0.8) 32%, rgba(13,34,24,0.55) 45%, rgba(13,34,24,0.25) 60%, rgba(13,34,24,0.05) 75%, transparent 90%)',
             }}
           />
         </div>
