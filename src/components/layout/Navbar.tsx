@@ -64,14 +64,14 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 lg:h-24">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center flex-shrink-0">
+          {/* Logo — maior que o header, ligeiramente deslocada para baixo */}
+          <Link href="/" className="flex items-center flex-shrink-0 translate-y-2 lg:translate-y-3">
             <Image
               src="/imagens/logo.png"
               alt="NEUROFARMA"
-              width={320}
-              height={108}
-              className="h-24 w-auto object-contain"
+              width={420}
+              height={142}
+              className="h-28 lg:h-40 w-auto object-contain"
               priority
             />
           </Link>

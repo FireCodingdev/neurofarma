@@ -27,7 +27,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const isAdmin = session.user.app_metadata?.role === 'admin';
 
   if (!isAdmin) {
-    redirect('/dashboard');
+    redirect('/');
   }
 
   return (
