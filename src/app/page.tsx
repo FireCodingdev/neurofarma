@@ -5,9 +5,11 @@ import { Steps } from '@/components/sections/Steps';
 import { JoinCta } from '@/components/sections/JoinCta';
 import { getHomeContent } from '@/lib/home-content-server';
 
-// Sempre busca conteúdo fresco — admin altera e o site reflete na próxima
-// requisição. Para reduzir carga, pode-se trocar por revalidate = 30/60.
+// force-dynamic + revalidate = 0: nunca serve versão cacheada.
+// O par é necessário no Next.js 14 — force-dynamic sozinho não é suficiente
+// para inibir o cache de fetch de clientes singleton (ex: supabase-js).
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HomePage() {
   const content = await getHomeContent();
