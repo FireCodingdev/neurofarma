@@ -28,6 +28,7 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
     apresentacao: p?.apresentacao ?? '',
     ativo: p?.ativo ?? true,
     ordem: p?.ordem ?? 0,
+    imagens: p?.imagens ?? [],
   });
 
   const [form, setForm] = useState(() => buildForm(produto));
@@ -60,6 +61,7 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
     const payload = {
       ...form,
       indicacoes: form.indicacoes.split('\n').filter(Boolean),
+      imagens: Array.isArray(form.imagens) ? form.imagens : (form.imagens as string).split('\n').filter(Boolean),
     };
 
     try {
@@ -202,6 +204,37 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
             onChange={(e) => set('ordem', Number(e.target.value))}
             placeholder="0"
           />
+          {/* Galeria de imagens */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">
+              Fotos do produto <span className="text-neutral-400 font-normal">(URLs, uma por linha)</span>
+            </label>
+            <textarea
+              value={(form.imagens as string[]).join('\n')}
+              onChange={(e) => set('imagens', e.target.value.split('\n').filter(Boolean) as any)}
+              rows={4}
+              placeholder={"https://exemplo.com/foto1.jpg\nhttps://exemplo.com/foto2.jpg"}
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
+            />
+            {/* Preview das imagens */}
+            {(form.imagens as string[]).filter(Boolean).length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {(form.imagens as string[]).filter(Boolean).map((url, i) => (
+                  <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                    <img
+                      src={url}
+                      alt={`foto ${i + 1}`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).parentElement!.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <label className="flex items-center gap-3 cursor-pointer">
             <div
               onClick={() => set('ativo', !form.ativo)}

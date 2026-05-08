@@ -42,6 +42,7 @@ export interface ProdutoDB {
   apresentacao: string;
   ativo: boolean;
   ordem: number;
+  imagens?: string[];           // URLs das fotos do produto
   created_at?: string;
   updated_at?: string;
 }

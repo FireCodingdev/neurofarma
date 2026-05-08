@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { FlaskConical, Leaf, Microscope } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { DEFAULT_HOME_CONTENT, type BenefitsContent } from '@/lib/home-content';
@@ -29,9 +30,19 @@ export function Benefits({ content = DEFAULT_HOME_CONTENT.benefits }: BenefitsPr
             const Icon = PILAR_ICONS[idx] ?? FlaskConical;
             return (
               <Card key={idx} hoverable className="group">
-                <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary-600 transition-colors">
-                  <Icon className="w-7 h-7 text-primary-700 group-hover:text-white transition-colors" />
-                </div>
+                {pilar.imagem_url ? (
+                  <div className="w-14 h-14 rounded-2xl overflow-hidden mb-5 flex-shrink-0">
+                    <img
+                      src={pilar.imagem_url}
+                      alt={pilar.titulo}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary-600 transition-colors">
+                    <Icon className="w-7 h-7 text-primary-700 group-hover:text-white transition-colors" />
+                  </div>
+                )}
                 <h3 className="font-display text-xl font-semibold text-neutral-900 mb-3">
                   {pilar.titulo}
                 </h3>

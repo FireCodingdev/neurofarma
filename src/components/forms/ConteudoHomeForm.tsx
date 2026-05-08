@@ -310,6 +310,24 @@ export function ConteudoHomeForm({ initialContent }: ConteudoHomeFormProps) {
                 Pilar {idx + 1}
               </h3>
               <div className="space-y-3">
+                {/* Preview da imagem */}
+                {p.imagem_url && (
+                  <div className="flex items-center gap-3 p-2 bg-neutral-100 rounded-xl">
+                    <img
+                      src={p.imagem_url}
+                      alt="preview"
+                      className="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-neutral-200"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                    <span className="text-xs text-neutral-500 break-all">{p.imagem_url}</span>
+                  </div>
+                )}
+                <Input
+                  label="URL da imagem do pilar (opcional — substitui o ícone)"
+                  value={p.imagem_url ?? ''}
+                  onChange={(e) => updatePilar(idx, { imagem_url: e.target.value })}
+                  placeholder="https://exemplo.com/imagem.jpg"
+                />
                 <Input
                   label="Título do pilar"
                   value={p.titulo}

@@ -32,6 +32,7 @@ export type BenefitsPilar = {
   titulo: string;
   descricao: string;
   detalhes: string[];           // sempre 3
+  imagem_url?: string;          // URL opcional — substitui ícone quando preenchida
 };
 
 export type BenefitsContent = {
@@ -117,6 +118,7 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
       'Não somos uma farmácia. Somos um laboratório de pesquisa que transforma conhecimento científico em tratamentos reais para pacientes reais.',
     pilares: [
       {
+        imagem_url: '',
         titulo: 'Pesquisa de Ponta',
         descricao:
           'Nossa equipe de pesquisadores trabalha na extração, isolamento e caracterização de canabinoides como CBD, THC e terpenos a partir de biomassa vegetal controlada.',
@@ -127,6 +129,7 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
         ],
       },
       {
+        imagem_url: '',
         titulo: 'Formulações Personalizadas',
         descricao:
           'Cada produto é desenvolvido com foco em indicações clínicas específicas — epilepsia refratária, dor crônica, ansiedade, transtornos neurológicos e mais.',
@@ -137,6 +140,7 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
         ],
       },
       {
+        imagem_url: '',
         titulo: 'Rigor e Transparência',
         descricao:
           'Todos os nossos processos seguem as Boas Práticas de Fabricação (BPF) e são auditáveis, desde a origem da matéria-prima até a entrega ao paciente.',

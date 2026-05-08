@@ -1,11 +1,10 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FlaskConical, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { FlaskConical, CheckCircle2, ArrowLeft, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { supabaseAdmin } from '@/lib/supabase-server';
-import { ProdutoAcao } from '@/components/sections/ProdutoAcao';
 import type { ProdutoDB } from '@/types';
 
 export const dynamic = 'force-dynamic';
@@ -90,6 +89,32 @@ export default async function ProdutoPage({ params }: Props) {
               <p className="text-neutral-600 leading-relaxed">{produto.descricao}</p>
             </Card>
 
+            {/* Galeria de imagens do produto */}
+            {produto.imagens && produto.imagens.filter(Boolean).length > 0 && (
+              <Card className="p-0 overflow-hidden">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-0.5">
+                  {produto.imagens.filter(Boolean).map((url, i) => (
+                    <a
+                      key={i}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block overflow-hidden bg-neutral-100 ${
+                        i === 0 && produto.imagens!.length >= 3 ? 'col-span-2 row-span-2' : ''
+                      }`}
+                      style={{ aspectRatio: i === 0 && produto.imagens!.length >= 3 ? '16/9' : '1/1' }}
+                    >
+                      <img
+                        src={url}
+                        alt={`${produto.nome} - foto ${i + 1}`}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    </a>
+                  ))}
+                </div>
+              </Card>
+            )}
+
             <Card>
               <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Composição</h2>
               <p className="text-neutral-600 text-sm leading-relaxed font-mono bg-neutral-50 rounded-xl p-4 border border-neutral-100">
@@ -116,19 +141,25 @@ export default async function ProdutoPage({ params }: Props) {
               </ul>
             </Card>
 
-            {/* Card de ação - usa componente client para detectar sessão */}
             <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
               <h3 className="font-display text-base font-semibold mb-2">Tem interesse?</h3>
               <p className="text-sm text-primary-100 mb-4">
-                Entre em contato ou faça seu pedido diretamente pela plataforma.
+                Entre em contato ou crie sua conta para solicitar este produto.
               </p>
-              <ProdutoAcao
-                produto={{
-                  id: produto.id,
-                  nome: produto.nome,
-                  categoria: produto.categoria,
-                }}
-              />
+              <div className="space-y-2">
+                <a href={`https://wa.me/5574981064385?text=Olá! Tenho interesse no produto ${produto.nome}.`}
+                  target="_blank" rel="noopener noreferrer">
+                  <Button className="w-full bg-white text-primary-700 hover:bg-primary-50 border-0" size="sm">
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Solicitar via WhatsApp
+                  </Button>
+                </a>
+                <Link href="/cadastro">
+                  <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10" size="sm">
+                    Criar conta
+                  </Button>
+                </Link>
+              </div>
             </Card>
 
             <div className="text-xs text-neutral-500 leading-relaxed px-1">
