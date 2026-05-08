@@ -74,8 +74,16 @@ export default async function ProdutoPage({ params }: Props) {
         <div className="grid lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-start gap-5">
-              <div className="w-20 h-20 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                <FlaskConical className="w-10 h-10 text-primary-600" />
+              <div className="w-20 h-20 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {produto.imagens && produto.imagens.filter(Boolean).length > 0 ? (
+                  <img
+                    src={produto.imagens.filter(Boolean)[0]}
+                    alt={produto.nome}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <FlaskConical className="w-10 h-10 text-primary-600" />
+                )}
               </div>
               <div>
                 <span className="text-sm font-semibold text-primary-600 uppercase tracking-wider">{produto.categoria}</span>
@@ -86,7 +94,7 @@ export default async function ProdutoPage({ params }: Props) {
 
             <Card>
               <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Sobre o produto</h2>
-              <p className="text-neutral-600 leading-relaxed">{produto.descricao}</p>
+              <p className="text-neutral-600 leading-relaxed whitespace-pre-wrap">{produto.descricao}</p>
             </Card>
 
             {/* Galeria de imagens do produto */}
@@ -168,8 +176,16 @@ export default async function ProdutoPage({ params }: Props) {
               {outros.map((p) => (
                 <Link key={p.id} href={`/produtos/${p.slug}`}>
                   <Card hoverable className="flex items-start gap-3 p-4">
-                    <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <FlaskConical className="w-5 h-5 text-primary-600" />
+                    <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {p.imagens && p.imagens.filter(Boolean).length > 0 ? (
+                        <img
+                          src={p.imagens.filter(Boolean)[0]}
+                          alt={p.nome}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <FlaskConical className="w-5 h-5 text-primary-600" />
+                      )}
                     </div>
                     <div>
                       <p className="font-semibold text-neutral-900 text-sm">{p.nome}</p>
