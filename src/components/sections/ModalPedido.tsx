@@ -1,7 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { X, ShoppingCart, CheckCircle2, Loader2, Package } from 'lucide-react';
+import {
+  X, ShoppingCart, CheckCircle2, Loader2, Package,
+  QrCode, CreditCard, Landmark, Banknote,
+} from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 interface ModalPedidoProps {
@@ -15,10 +18,10 @@ interface ModalPedidoProps {
 }
 
 const METODOS_PAGAMENTO = [
-  { value: 'PIX', label: 'PIX', desc: 'Aprovação imediata', icon: '⚡' },
-  { value: 'Cartão de Crédito', label: 'Cartão de Crédito', desc: 'Em até 12x', icon: '💳' },
-  { value: 'Cartão de Débito', label: 'Cartão de Débito', desc: 'Débito à vista', icon: '🏦' },
-  { value: 'Boleto', label: 'Boleto', desc: 'Vencimento em 3 dias', icon: '📄' },
+  { value: 'PIX',               label: 'PIX',               desc: 'Aprovação imediata',                Icon: QrCode     },
+  { value: 'Cartão de Crédito', label: 'Cartão de Crédito', desc: 'Em até 12x',                       Icon: CreditCard },
+  { value: 'Cartão de Débito',  label: 'Cartão de Débito',  desc: 'Débito à vista',                    Icon: Landmark   },
+  { value: 'Espécie',           label: 'Espécie',           desc: 'Disponível para entregas na região', Icon: Banknote   },
 ];
 
 export function ModalPedido({ produto, onClose, onSuccess }: ModalPedidoProps) {
@@ -65,14 +68,13 @@ export function ModalPedido({ produto, onClose, onSuccess }: ModalPedidoProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
+
         {/* Header */}
         <div className="bg-gradient-to-r from-primary-700 to-primary-600 px-6 py-5">
           <div className="flex items-start justify-between">
@@ -106,6 +108,7 @@ export function ModalPedido({ produto, onClose, onSuccess }: ModalPedidoProps) {
           </div>
         ) : (
           <div className="px-6 py-6 space-y-6">
+
             {/* Quantidade */}
             <div>
               <label className="block text-sm font-semibold text-neutral-700 mb-3">
@@ -137,23 +140,32 @@ export function ModalPedido({ produto, onClose, onSuccess }: ModalPedidoProps) {
                 Método de pagamento
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {METODOS_PAGAMENTO.map((m) => (
-                  <button
-                    key={m.value}
-                    onClick={() => setMetodoPagamento(m.value)}
-                    className={`flex flex-col items-start p-3 rounded-xl border-2 text-left transition-all ${
-                      metodoPagamento === m.value
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-neutral-200 hover:border-neutral-300 bg-white'
-                    }`}
-                  >
-                    <span className="text-lg mb-1">{m.icon}</span>
-                    <span className={`text-sm font-semibold ${metodoPagamento === m.value ? 'text-primary-700' : 'text-neutral-800'}`}>
-                      {m.label}
-                    </span>
-                    <span className="text-xs text-neutral-400">{m.desc}</span>
-                  </button>
-                ))}
+                {METODOS_PAGAMENTO.map(({ value, label, desc, Icon }) => {
+                  const selected = metodoPagamento === value;
+                  return (
+                    <button
+                      key={value}
+                      onClick={() => setMetodoPagamento(value)}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-left transition-all ${
+                        selected
+                          ? 'border-primary-500 bg-primary-50'
+                          : 'border-neutral-200 hover:border-neutral-300 bg-white'
+                      }`}
+                    >
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                        selected ? 'bg-primary-100' : 'bg-neutral-100'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${selected ? 'text-primary-600' : 'text-neutral-500'}`} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-semibold leading-tight ${selected ? 'text-primary-700' : 'text-neutral-800'}`}>
+                          {label}
+                        </p>
+                        <p className="text-xs text-neutral-400 leading-tight mt-0.5">{desc}</p>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
