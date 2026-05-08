@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
@@ -17,21 +17,30 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
   const router = useRouter();
   const isEdit = !!produto;
 
-  const [form, setForm] = useState({
-    nome: produto?.nome ?? '',
-    slug: produto?.slug ?? '',
-    categoria: produto?.categoria ?? CATEGORIAS_PRODUTO[0],
-    descricaoCurta: produto?.descricao_curta ?? '',
-    descricao: produto?.descricao ?? '',
-    composicao: produto?.composicao ?? '',
-    indicacoes: produto?.indicacoes?.join('\n') ?? '',
-    apresentacao: produto?.apresentacao ?? '',
-    ativo: produto?.ativo ?? true,
-    ordem: produto?.ordem ?? 0,
+  const buildForm = (p?: ProdutoDB) => ({
+    nome: p?.nome ?? '',
+    slug: p?.slug ?? '',
+    categoria: p?.categoria ?? CATEGORIAS_PRODUTO[0],
+    descricaoCurta: p?.descricao_curta ?? '',
+    descricao: p?.descricao ?? '',
+    composicao: p?.composicao ?? '',
+    indicacoes: p?.indicacoes?.join('\n') ?? '',
+    apresentacao: p?.apresentacao ?? '',
+    ativo: p?.ativo ?? true,
+    ordem: p?.ordem ?? 0,
   });
 
+  const [form, setForm] = useState(() => buildForm(produto));
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [erro, setErro] = useState('');
+
+  // Reinicializa o form sempre que navegar para um produto diferente (client-side navigation)
+  useEffect(() => {
+    setForm(buildForm(produto));
+    setStatus('idle');
+    setErro('');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [produto?.id]);
 
   const set = (field: string, value: string | boolean | number) =>
     setForm((prev) => ({ ...prev, [field]: value }));
