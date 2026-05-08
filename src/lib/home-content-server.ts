@@ -5,24 +5,6 @@ import {
   type HomeContent,
 } from '@/lib/home-content';
 
-/**
- * Busca o conteúdo editável da home do Supabase.
- *
- * Estratégia:
- * 1. Tenta ler a linha `key = 'home'` da tabela `site_content`.
- * 2. Se a tabela não existir, ou a linha não existir, ou der qualquer
- *    erro de leitura → cai para os defaults silenciosamente. O site
- *    NUNCA pode quebrar por causa do CMS.
- * 3. Faz deep-merge com os defaults para tolerar registros antigos
- *    quando novos campos forem adicionados ao schema.
- *
- * Schema esperado da tabela:
- *   create table site_content (
- *     key  text primary key,
- *     data jsonb not null,
- *     updated_at timestamptz default now()
- *   );
- */
 export async function getHomeContent(): Promise<HomeContent> {
   try {
     const { data, error } = await supabaseAdmin
@@ -31,13 +13,24 @@ export async function getHomeContent(): Promise<HomeContent> {
       .eq('key', 'home')
       .maybeSingle();
 
-    if (error || !data?.data) {
+    // Log para diagnóstico — visível nos logs da Vercel (Functions tab)
+    console.log('[getHomeContent] error:', error);
+    console.log('[getHomeContent] data:', JSON.stringify(data));
+
+    if (error) {
+      console.error('[getHomeContent] Supabase error, usando defaults:', error.message);
+      return DEFAULT_HOME_CONTENT;
+    }
+
+    // data pode ser null (linha não encontrada) ou { data: {} } (vazio)
+    if (!data || !data.data || Object.keys(data.data).length === 0) {
+      console.log('[getHomeContent] Sem conteúdo salvo, usando defaults');
       return DEFAULT_HOME_CONTENT;
     }
 
     return mergeWithDefaults(data.data);
-  } catch {
-    // Tabela não existe, env var faltando, etc — fail safe.
+  } catch (err) {
+    console.error('[getHomeContent] Exceção:', err);
     return DEFAULT_HOME_CONTENT;
   }
 }
