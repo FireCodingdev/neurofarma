@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { supabaseAdmin } from '@/lib/supabase-server';
 
-const STATUS_VALIDOS = ['Em preparo', 'Enviado', 'Entregue', 'Cancelado'] as const;
+const STATUS_VALIDOS = ['Recebido', 'Em preparo', 'Saiu para entrega', 'Entregue', 'Cancelado'] as const;
 
 async function ensureAdmin() {
   const cookieStore = cookies();

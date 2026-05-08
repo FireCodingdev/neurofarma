@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FlaskConical, CheckCircle2, ArrowLeft, ShoppingCart } from 'lucide-react';
+import { FlaskConical, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { supabaseAdmin } from '@/lib/supabase-server';
+import { ProdutoAcao } from '@/components/sections/ProdutoAcao';
 import type { ProdutoDB } from '@/types';
 
 export const dynamic = 'force-dynamic';
@@ -115,25 +116,19 @@ export default async function ProdutoPage({ params }: Props) {
               </ul>
             </Card>
 
+            {/* Card de ação - usa componente client para detectar sessão */}
             <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
               <h3 className="font-display text-base font-semibold mb-2">Tem interesse?</h3>
               <p className="text-sm text-primary-100 mb-4">
-                Entre em contato ou crie sua conta para solicitar este produto.
+                Entre em contato ou faça seu pedido diretamente pela plataforma.
               </p>
-              <div className="space-y-2">
-                <a href={`https://wa.me/5574981064385?text=Olá! Tenho interesse no produto ${produto.nome}.`}
-                  target="_blank" rel="noopener noreferrer">
-                  <Button className="w-full bg-white text-primary-700 hover:bg-primary-50 border-0" size="sm">
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Solicitar via WhatsApp
-                  </Button>
-                </a>
-                <Link href="/cadastro">
-                  <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10" size="sm">
-                    Criar conta
-                  </Button>
-                </Link>
-              </div>
+              <ProdutoAcao
+                produto={{
+                  id: produto.id,
+                  nome: produto.nome,
+                  categoria: produto.categoria,
+                }}
+              />
             </Card>
 
             <div className="text-xs text-neutral-500 leading-relaxed px-1">
