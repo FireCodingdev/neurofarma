@@ -1,9 +1,10 @@
-import { InputHTMLAttributes, forwardRef } from 'react';
+import { InputHTMLAttributes, ReactNode, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  rightElement?: ReactNode;
 }
 
 /**
@@ -11,7 +12,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * Compatível com react-hook-form via forwardRef.
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, id, ...props }, ref) => {
+  ({ className, label, error, id, rightElement, ...props }, ref) => {
     const inputId = id || props.name;
 
     return (
@@ -24,21 +25,29 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <input
-          ref={ref}
-          id={inputId}
-          className={cn(
-            'w-full px-4 py-2.5 rounded-lg border bg-white text-neutral-900',
-            'placeholder:text-neutral-400',
-            'transition-colors duration-200',
-            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-            error
-              ? 'border-red-400 focus:ring-red-400'
-              : 'border-neutral-300 hover:border-neutral-400',
-            className
+        <div className="relative">
+          <input
+            ref={ref}
+            id={inputId}
+            className={cn(
+              'w-full px-4 py-2.5 rounded-lg border bg-white text-neutral-900',
+              'placeholder:text-neutral-400',
+              'transition-colors duration-200',
+              'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+              error
+                ? 'border-red-400 focus:ring-red-400'
+                : 'border-neutral-300 hover:border-neutral-400',
+              rightElement ? 'pr-11' : '',
+              className
+            )}
+            {...props}
+          />
+          {rightElement && (
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              {rightElement}
+            </div>
           )}
-          {...props}
-        />
+        </div>
         {error && (
           <p className="mt-1.5 text-sm text-red-600" role="alert">
             {error}

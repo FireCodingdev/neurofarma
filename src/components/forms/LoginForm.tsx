@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { loginSchema, type LoginFormData } from '@/lib/validations';
@@ -28,6 +28,7 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -105,11 +106,21 @@ export function LoginForm() {
 
       <Input
         label="Senha"
-        type="password"
+        type={showPassword ? 'text' : 'password'}
         placeholder="••••••••"
         autoComplete="current-password"
         {...register('senha')}
         error={errors.senha?.message}
+        rightElement={
+          <button
+            type="button"
+            onClick={() => setShowPassword((v) => !v)}
+            className="text-neutral-400 hover:text-neutral-600 transition-colors focus:outline-none"
+            aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+          >
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+        }
       />
 
       <div className="flex justify-end">
