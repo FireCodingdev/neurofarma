@@ -1,188 +1,269 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { FlaskConical, CheckCircle2, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
-import { supabaseAdmin } from '@/lib/supabase-server';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { CATEGORIAS_PRODUTO } from '@/lib/constants';
 import type { ProdutoDB } from '@/types';
-import { ProdutoAcao } from '@/components/sections/ProdutoAcao';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-interface Props {
-  params: { slug: string };
+interface ProdutoFormProps {
+  produto?: ProdutoDB;
 }
 
-async function getProduto(slug: string): Promise<ProdutoDB | null> {
-  try {
-    const { data, error } = await supabaseAdmin
-      .from('produtos')
-      .select('*')
-      .eq('slug', slug)
-      .eq('ativo', true)
-      .single();
-    if (error) return null;
-    return data;
-  } catch {
-    return null;
-  }
-}
+export function ProdutoForm({ produto }: ProdutoFormProps) {
+  const router = useRouter();
+  const isEdit = !!produto;
 
-async function getOutrosProdutos(excludeSlug: string): Promise<ProdutoDB[]> {
-  try {
-    const { data, error } = await supabaseAdmin
-      .from('produtos')
-      .select('*')
-      .eq('ativo', true)
-      .neq('slug', excludeSlug)
-      .order('ordem', { ascending: true })
-      .limit(3);
-    if (error) return [];
-    return data ?? [];
-  } catch {
-    return [];
-  }
-}
+  const buildForm = (p?: ProdutoDB) => ({
+    nome: p?.nome ?? '',
+    slug: p?.slug ?? '',
+    categoria: p?.categoria ?? CATEGORIAS_PRODUTO[0],
+    descricaoCurta: p?.descricao_curta ?? '',
+    descricao: p?.descricao ?? '',
+    composicao: p?.composicao ?? '',
+    indicacoes: p?.indicacoes?.join('\n') ?? '',
+    apresentacao: p?.apresentacao ?? '',
+    ativo: p?.ativo ?? true,
+    ordem: p?.ordem ?? 0,
+  });
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const produto = await getProduto(params.slug);
-  if (!produto) return { title: 'Produto não encontrado' };
-  return {
-    title: `${produto.nome} · Neurofarma`,
-    description: produto.descricao_curta,
+  const [form, setForm] = useState(() => buildForm(produto));
+  const [imagens, setImagens] = useState<string[]>(produto?.imagens ?? []);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [erro, setErro] = useState('');
+
+  // Reinicializa o form sempre que navegar para um produto diferente (client-side navigation)
+  useEffect(() => {
+    setForm(buildForm(produto));
+    setImagens(produto?.imagens ?? []);
+    setStatus('idle');
+    setErro('');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [produto?.id]);
+
+  const set = (field: string, value: string | boolean | number) =>
+    setForm((prev) => ({ ...prev, [field]: value }));
+
+  const handleNome = (v: string) => {
+    set('nome', v);
+    if (!isEdit) {
+      set('slug', v.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+    }
   };
-}
 
-export default async function ProdutoPage({ params }: Props) {
-  const produto = await getProduto(params.slug);
-  if (!produto) notFound();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErro('');
 
-  const outros = await getOutrosProdutos(params.slug);
+    const payload = {
+      ...form,
+      indicacoes: form.indicacoes.split('\n').filter(Boolean),
+      imagens: imagens.filter(Boolean),
+    };
+
+    try {
+      const url = isEdit
+        ? `/api/admin/produtos/${produto!.id}`
+        : '/api/admin/produtos';
+      const method = isEdit ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setErro(json.error ?? 'Erro desconhecido.');
+        setStatus('error');
+        return;
+      }
+
+      setStatus('success');
+      setTimeout(() => {
+        router.push('/admin/produtos');
+        router.refresh();
+      }, 1200);
+    } catch {
+      setErro('Falha de rede. Verifique sua conexão.');
+      setStatus('error');
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <div className="bg-white border-b border-neutral-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <Link href="/produtos" className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-primary-600 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Todos os produtos
-          </Link>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {status === 'error' && (
+        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-800">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-red-500" />
+          <span>{erro}</span>
         </div>
-      </div>
+      )}
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-start gap-5">
-              <div className="w-20 h-20 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                <FlaskConical className="w-10 h-10 text-primary-600" />
-              </div>
-              <div>
-                <span className="text-sm font-semibold text-primary-600 uppercase tracking-wider">{produto.categoria}</span>
-                <h1 className="font-display text-3xl lg:text-4xl font-bold text-neutral-900">{produto.nome}</h1>
-                <p className="text-neutral-600 mt-1">{produto.descricao_curta}</p>
-              </div>
-            </div>
-
-            <Card>
-              <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Sobre o produto</h2>
-              <p className="text-neutral-600 leading-relaxed">{produto.descricao}</p>
-            </Card>
-
-            {/* Galeria de imagens do produto */}
-            {produto.imagens && produto.imagens.filter(Boolean).length > 0 && (
-              <Card className="p-0 overflow-hidden">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-0.5">
-                  {produto.imagens.filter(Boolean).map((url, i) => (
-                    <a
-                      key={i}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`block overflow-hidden bg-neutral-100 ${
-                        i === 0 && produto.imagens!.length >= 3 ? 'col-span-2 row-span-2' : ''
-                      }`}
-                      style={{ aspectRatio: i === 0 && produto.imagens!.length >= 3 ? '16/9' : '1/1' }}
-                    >
-                      <img
-                        src={url}
-                        alt={`${produto.nome} - foto ${i + 1}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </a>
-                  ))}
-                </div>
-              </Card>
-            )}
-
-            <Card>
-              <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Composição</h2>
-              <p className="text-neutral-600 text-sm leading-relaxed font-mono bg-neutral-50 rounded-xl p-4 border border-neutral-100">
-                {produto.composicao}
-              </p>
-            </Card>
-
-            <Card>
-              <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Apresentação e armazenamento</h2>
-              <p className="text-neutral-600 text-sm leading-relaxed">{produto.apresentacao}</p>
-            </Card>
-          </div>
-
-          <div className="space-y-5">
-            <Card>
-              <h2 className="font-display text-base font-semibold text-neutral-900 mb-4">Indicações clínicas</h2>
-              <ul className="space-y-2">
-                {produto.indicacoes.map((ind) => (
-                  <li key={ind} className="flex items-center gap-2 text-sm text-neutral-700">
-                    <CheckCircle2 className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                    {ind}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
-              <h3 className="font-display text-base font-semibold mb-2">Tem interesse?</h3>
-              <p className="text-sm text-primary-100 mb-4">
-                Entre em contato ou faça seu pedido diretamente pela plataforma.
-              </p>
-              <ProdutoAcao
-                produto={{
-                  id: produto.id,
-                  nome: produto.nome,
-                  categoria: produto.categoria,
-                }}
-              />
-            </Card>
-
-            <div className="text-xs text-neutral-500 leading-relaxed px-1">
-              Este produto é fabricado mediante prescrição médica e regulamentação Anvisa (RDC 327/2019). Não é dispensado sem receituário.
-            </div>
-          </div>
-        </div>
-
-        {outros.length > 0 && (
-          <div className="mt-16">
-            <h2 className="font-display text-xl font-semibold text-neutral-900 mb-6">Outros produtos</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {outros.map((p) => (
-                <Link key={p.id} href={`/produtos/${p.slug}`}>
-                  <Card hoverable className="flex items-start gap-3 p-4">
-                    <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <FlaskConical className="w-5 h-5 text-primary-600" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-neutral-900 text-sm">{p.nome}</p>
-                      <p className="text-xs text-neutral-500 mt-0.5 line-clamp-2">{p.descricao_curta}</p>
-                    </div>
-                  </Card>
-                </Link>
+      <Card>
+        <h2 className="font-semibold text-neutral-900 mb-5">Informações básicas</h2>
+        <div className="space-y-4">
+          <Input
+            label="Nome do produto"
+            value={form.nome}
+            onChange={(e) => handleNome(e.target.value)}
+            placeholder="Ex: Neuro-C10"
+            required
+          />
+          <Input
+            label="Slug (URL)"
+            value={form.slug}
+            onChange={(e) => set('slug', e.target.value)}
+            placeholder="Ex: neuro-c10"
+            required
+          />
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Categoria</label>
+            <select
+              value={form.categoria}
+              onChange={(e) => set('categoria', e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white text-sm"
+            >
+              {CATEGORIAS_PRODUTO.map((c) => (
+                <option key={c} value={c}>{c}</option>
               ))}
-            </div>
+            </select>
           </div>
-        )}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Descrição curta</label>
+            <textarea
+              value={form.descricaoCurta}
+              onChange={(e) => set('descricaoCurta', e.target.value)}
+              rows={2}
+              placeholder="Resumo exibido no dropdown e cards"
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
+            />
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <h2 className="font-semibold text-neutral-900 mb-5">Conteúdo da página</h2>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Descrição completa</label>
+            <textarea
+              value={form.descricao}
+              onChange={(e) => set('descricao', e.target.value)}
+              rows={5}
+              placeholder="Descrição detalhada do produto..."
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Composição</label>
+            <textarea
+              value={form.composicao}
+              onChange={(e) => set('composicao', e.target.value)}
+              rows={3}
+              placeholder="Lista de componentes e concentrações..."
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">
+              Indicações <span className="text-neutral-400 font-normal">(uma por linha)</span>
+            </label>
+            <textarea
+              value={form.indicacoes}
+              onChange={(e) => set('indicacoes', e.target.value)}
+              rows={4}
+              placeholder={"Epilepsia refratária\nDor crônica\nAnsiedade"}
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Apresentação</label>
+            <textarea
+              value={form.apresentacao}
+              onChange={(e) => set('apresentacao', e.target.value)}
+              rows={2}
+              placeholder="Como o produto é embalado / armazenado..."
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
+            />
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <h2 className="font-semibold text-neutral-900 mb-5">Configurações</h2>
+        <div className="space-y-4">
+          <Input
+            label="Ordem de exibição"
+            type="number"
+            value={form.ordem.toString()}
+            onChange={(e) => set('ordem', Number(e.target.value))}
+            placeholder="0"
+          />
+          {/* Galeria de imagens */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1.5">
+              Fotos do produto <span className="text-neutral-400 font-normal">(URLs, uma por linha)</span>
+            </label>
+            <textarea
+              value={imagens.join('\n')}
+              onChange={(e) => setImagens(e.target.value === '' ? [] : e.target.value.split('\n'))}
+              rows={4}
+              placeholder={"https://exemplo.com/foto1.jpg\nhttps://exemplo.com/foto2.jpg"}
+              className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
+            />
+            {/* Preview das imagens */}
+            {imagens.filter(Boolean).length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {imagens.filter(Boolean).map((url, i) => (
+                  <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                    <img
+                      src={url}
+                      alt={`foto ${i + 1}`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).parentElement!.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <label className="flex items-center gap-3 cursor-pointer">
+            <div
+              onClick={() => set('ativo', !form.ativo)}
+              className={`relative w-11 h-6 rounded-full transition-colors ${form.ativo ? 'bg-primary-500' : 'bg-neutral-300'}`}
+            >
+              <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.ativo ? 'translate-x-5' : 'translate-x-0'}`} />
+            </div>
+            <span className="text-sm font-medium text-neutral-700">
+              {form.ativo ? 'Produto ativo (visível no site)' : 'Produto inativo (oculto)'}
+            </span>
+          </label>
+        </div>
+      </Card>
+
+      <div className="flex items-center gap-4">
+        <Button type="submit" size="lg" disabled={status === 'loading' || status === 'success'}>
+          {status === 'loading' ? (
+            'Salvando...'
+          ) : status === 'success' ? (
+            <><CheckCircle2 className="w-4 h-4 mr-2" /> Salvo!</>
+          ) : (
+            isEdit ? 'Salvar alterações' : 'Criar produto'
+          )}
+        </Button>
+        <Button type="button" variant="ghost" onClick={() => router.back()}>
+          Cancelar
+        </Button>
       </div>
-    </div>
+    </form>
   );
 }
