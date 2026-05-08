@@ -12,24 +12,11 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Página home e todas as páginas públicas dinâmicas
-        source: '/(|produtos|produtos/:path*)',
+        // Cobre TODAS as rotas — impede cache da CDN da Vercel
+        source: '/:path*',
         headers: [
           { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
           { key: 'Pragma', value: 'no-cache' },
-        ],
-      },
-      {
-        source: '/admin/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
-          { key: 'Pragma', value: 'no-cache' },
-        ],
-      },
-      {
-        source: '/api/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
         ],
       },
     ];
