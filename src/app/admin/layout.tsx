@@ -3,6 +3,9 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { AdminSidebar } from '@/components/layout/AdminSidebar';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
 
