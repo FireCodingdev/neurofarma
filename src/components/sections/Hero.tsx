@@ -1,4 +1,3 @@
-'use client';
 
 import Link from 'next/link';
 import { ArrowRight, FlaskConical, ShieldCheck, Microscope } from 'lucide-react';
