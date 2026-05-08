@@ -6,6 +6,7 @@ import { supabaseAdmin } from '@/lib/supabase-server';
 
 export const metadata: Metadata = { title: 'Admin Dashboard · Neurofarma' };
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getDashboardData() {
   try {

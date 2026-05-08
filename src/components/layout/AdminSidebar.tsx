@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { AdminLink } from './AdminLink';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -90,7 +91,7 @@ export function AdminSidebar() {
                 const exact = 'exact' in rest ? rest.exact : false;
                 const active = exact ? pathname === href : pathname.startsWith(href);
                 return (
-                  <Link
+                  <AdminLink
                     key={href}
                     href={href}
                     className={cn(
@@ -105,7 +106,7 @@ export function AdminSidebar() {
                     {active && (
                       <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white/60" />
                     )}
-                  </Link>
+                  </AdminLink>
                 );
               })}
             </div>
@@ -115,14 +116,14 @@ export function AdminSidebar() {
 
       {/* Bottom actions */}
       <div className="px-3 py-4 border-t border-white/10 space-y-1">
-        <Link
+        <AdminLink
           href="/"
           target="_blank"
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-neutral-400 hover:bg-white/5 hover:text-white transition-colors"
         >
           <Globe className="w-4 h-4 text-neutral-500" />
           Ver site
-        </Link>
+        </AdminLink>
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-neutral-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"

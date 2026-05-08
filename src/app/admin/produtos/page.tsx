@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { AdminLink } from '@/components/layout/AdminLink';
 import { Plus, Pencil, FlaskConical } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -8,6 +9,7 @@ import type { ProdutoDB } from '@/types';
 
 export const metadata: Metadata = { title: 'Produtos · Admin Neurofarma' };
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getProdutos(): Promise<ProdutoDB[]> {
   try {
@@ -86,12 +88,12 @@ export default async function AdminProdutosPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link href={`/admin/produtos/${produto.id}`}>
+                    <AdminLink href={`/admin/produtos/${produto.id}`}>
                       <Button variant="ghost" size="sm" className="text-neutral-500 hover:text-primary-600">
                         <Pencil className="w-4 h-4 mr-1.5" />
                         Editar
                       </Button>
-                    </Link>
+                    </AdminLink>
                   </td>
                 </tr>
               ))}

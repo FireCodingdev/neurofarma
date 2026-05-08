@@ -6,6 +6,7 @@ import type { ProdutoDB } from '@/types';
 
 export const metadata: Metadata = { title: 'Editar Produto · Admin Neurofarma' };
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getProduto(id: string): Promise<ProdutoDB | null> {
   try {

@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 // O conteúdo precisa ser fresco a cada carregamento da página de admin
 // para refletir o que está realmente no banco no momento.
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ConteudoHomePage() {
   const content = await getHomeContent();
