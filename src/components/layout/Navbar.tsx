@@ -5,16 +5,20 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import {
   Menu, X, ChevronDown, FlaskConical, LogOut,
-  LayoutDashboard, User, Settings, PackageSearch,
+  LayoutDashboard, Settings, PackageSearch,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
-import { PRODUTOS_MOCK } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
+import type { ProdutoDB } from '@/types';
 
-export function Navbar() {
+interface NavbarProps {
+  produtos: ProdutoDB[];
+}
+
+export function Navbar({ produtos }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [produtosOpen, setProdutosOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -54,9 +58,6 @@ export function Navbar() {
   };
 
   const isAdmin = user?.app_metadata?.role === 'admin';
-  const produtosAtivos = PRODUTOS_MOCK.filter((p) => p.ativo);
-
-  // Iniciais do usuário para o avatar
   const initials = user?.email?.slice(0, 2).toUpperCase() ?? 'U';
 
   return (
@@ -64,7 +65,6 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
 
-          {/* Logo — canto esquerdo */}
           <Link href="/" className="flex items-center flex-shrink-0 mr-20">
             <Image
               src="/imagens/logo.png"
@@ -76,7 +76,6 @@ export function Navbar() {
             />
           </Link>
 
-          {/* Desktop: nav links + auth agrupados à direita */}
           <div className="hidden lg:flex items-center gap-6">
             <Link href="/"
               className="text-neutral-700 hover:text-primary-600 font-medium transition-colors">
@@ -100,7 +99,7 @@ export function Navbar() {
                   <div className="px-4 py-2 border-b border-neutral-100 mb-1">
                     <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest">Formulações</p>
                   </div>
-                  {produtosAtivos.map((produto) => (
+                  {produtos.map((produto) => (
                     <Link key={produto.slug} href={`/produtos/${produto.slug}`}
                       onClick={() => setProdutosOpen(false)}
                       className="flex items-start gap-3 px-4 py-3 hover:bg-primary-50 transition-colors">
@@ -109,7 +108,7 @@ export function Navbar() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-neutral-900">{produto.nome}</p>
-                        <p className="text-xs text-neutral-500 line-clamp-1">{produto.descricaoCurta}</p>
+                        <p className="text-xs text-neutral-500 line-clamp-1">{produto.descricao_curta}</p>
                       </div>
                     </Link>
                   ))}
@@ -123,10 +122,8 @@ export function Navbar() {
               )}
             </div>
 
-            {/* Divisória entre nav e auth */}
             <span className="text-neutral-300 select-none text-lg font-light">|</span>
 
-            {/* Auth / user section */}
             {user ? (
               <>
                 {isAdmin && (
@@ -166,7 +163,6 @@ export function Navbar() {
                           <p className="text-xs text-neutral-500">Logado como</p>
                           <p className="text-sm font-semibold text-neutral-900 truncate">{user.email}</p>
                         </div>
-
                         <div className="py-1">
                           <Link href="/conta/configuracoes"
                             onClick={() => setUserMenuOpen(false)}
@@ -181,7 +177,6 @@ export function Navbar() {
                             Meus pedidos
                           </Link>
                         </div>
-
                         <div className="border-t border-neutral-100 pt-1">
                           <button onClick={handleLogout}
                             className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
@@ -214,7 +209,6 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <button onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 text-neutral-700 hover:text-primary-600 transition-colors"
             aria-label="Abrir menu">
@@ -232,7 +226,7 @@ export function Navbar() {
 
             <div className="px-4 pt-3 pb-1">
               <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest mb-2">Produtos</p>
-              {produtosAtivos.map((produto) => (
+              {produtos.map((produto) => (
                 <Link key={produto.slug} href={`/produtos/${produto.slug}`}
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-3 py-2.5 text-neutral-700 hover:text-primary-700 transition-colors">
@@ -244,7 +238,6 @@ export function Navbar() {
                 className="text-xs font-semibold text-primary-600 mt-1 block">Ver todos →</Link>
             </div>
 
-            {/* Mobile user section */}
             {user && (
               <div className="px-4 pt-3 pb-1 border-t border-neutral-100 mt-2">
                 <div className="flex items-center gap-3 mb-3">
