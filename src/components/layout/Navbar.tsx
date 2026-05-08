@@ -122,6 +122,16 @@ export function Navbar({ produtos }: NavbarProps) {
               )}
             </div>
 
+            <Link href="/quem-somos"
+              className="text-neutral-700 hover:text-primary-600 font-medium transition-colors">
+              Quem Somos
+            </Link>
+
+            <Link href="/fale-conosco"
+              className="text-neutral-700 hover:text-primary-600 font-medium transition-colors">
+              Fale Conosco
+            </Link>
+
             <span className="text-neutral-300 select-none text-lg font-light">|</span>
 
             {user ? (
@@ -237,6 +247,16 @@ export function Navbar({ produtos }: NavbarProps) {
               <Link href="/produtos" onClick={() => setIsOpen(false)}
                 className="text-xs font-semibold text-primary-600 mt-1 block">Ver todos →</Link>
             </div>
+
+            <Link href="/quem-somos" onClick={() => setIsOpen(false)}
+              className="px-4 py-3 text-neutral-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition-colors">
+              Quem Somos
+            </Link>
+
+            <Link href="/fale-conosco" onClick={() => setIsOpen(false)}
+              className="px-4 py-3 text-neutral-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition-colors">
+              Fale Conosco
+            </Link>
 
             {user && (
               <div className="px-4 pt-3 pb-1 border-t border-neutral-100 mt-2">
