@@ -85,7 +85,7 @@ export async function GET() {
 }
 
 // PUT — só admin.
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const auth = await ensureAdmin();
   if (!auth.ok) {
     return NextResponse.json({ error: auth.msg }, { status: auth.status });

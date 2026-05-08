@@ -159,7 +159,7 @@ export function ConteudoHomeForm({ initialContent }: ConteudoHomeFormProps) {
 
     try {
       const res = await fetch('/api/admin/home-content', {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(content),
       });
