@@ -47,11 +47,22 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
   const set = (field: string, value: string | boolean | number) =>
     setForm((prev) => ({ ...prev, [field]: value }));
 
+  const slugify = (v: string) =>
+    v.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
   const handleNome = (v: string) => {
-    set('nome', v);
-    if (!isEdit) {
-      set('slug', v.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
-    }
+    setForm((prev) => {
+      // Em criação: slug sempre acompanha o nome.
+      // Em edição: slug acompanha apenas se ainda corresponder ao nome anterior
+      // (ou seja, o admin nunca customizou o slug manualmente).
+      // Isso preserva URLs públicas que já foram compartilhadas/indexadas.
+      const slugAindaSegueNome = !isEdit || prev.slug === slugify(prev.nome);
+      return {
+        ...prev,
+        nome: v,
+        slug: slugAindaSegueNome ? slugify(v) : prev.slug,
+      };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

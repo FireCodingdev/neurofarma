@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FlaskConical, CheckCircle2, ArrowLeft, ShoppingCart } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { FlaskConical, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
+import { ProdutoAcao } from '@/components/sections/ProdutoAcao';
 import { supabaseAdmin } from '@/lib/supabase-server';
 import type { ProdutoDB } from '@/types';
 
@@ -146,20 +146,13 @@ export default async function ProdutoPage({ params }: Props) {
               <p className="text-sm text-primary-100 mb-4">
                 Entre em contato ou crie sua conta para solicitar este produto.
               </p>
-              <div className="space-y-2">
-                <a href={`https://wa.me/5574981064385?text=Olá! Tenho interesse no produto ${produto.nome}.`}
-                  target="_blank" rel="noopener noreferrer">
-                  <Button className="w-full bg-white text-primary-700 hover:bg-primary-50 border-0" size="sm">
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Solicitar via WhatsApp
-                  </Button>
-                </a>
-                <Link href="/cadastro">
-                  <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10" size="sm">
-                    Criar conta
-                  </Button>
-                </Link>
-              </div>
+              <ProdutoAcao
+                produto={{
+                  id: produto.id,
+                  nome: produto.nome,
+                  categoria: produto.categoria,
+                }}
+              />
             </Card>
 
             <div className="text-xs text-neutral-500 leading-relaxed px-1">
