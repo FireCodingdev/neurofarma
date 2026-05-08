@@ -117,6 +117,17 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
       )}
 
       <Card>
+        <h2 className="font-semibold text-neutral-900 mb-5">Ordem de exibição</h2>
+        <Input
+          type="number"
+          value={form.ordem.toString()}
+          onChange={(e) => set('ordem', Number(e.target.value))}
+          placeholder="0"
+        />
+        <p className="mt-2 text-xs text-neutral-400">Define a posição deste produto na listagem do catálogo. Números menores aparecem primeiro.</p>
+      </Card>
+
+      <Card>
         <h2 className="font-semibold text-neutral-900 mb-5">Informações básicas</h2>
         <div className="space-y-4">
           <Input
@@ -207,19 +218,21 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
       </Card>
 
       <Card>
-        <h2 className="font-semibold text-neutral-900 mb-5">Configurações</h2>
+        <h2 className="font-semibold text-neutral-900 mb-4">Adicionar imagens</h2>
         <div className="space-y-4">
-          <Input
-            label="Ordem de exibição"
-            type="number"
-            value={form.ordem.toString()}
-            onChange={(e) => set('ordem', Number(e.target.value))}
-            placeholder="0"
-          />
-          {/* Galeria de imagens */}
+          {/* Caixa explicativa */}
+          <div className="flex gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800">
+            <span className="text-lg leading-none mt-0.5">💡</span>
+            <div className="space-y-1">
+              <p className="font-medium">Como funciona</p>
+              <p>Cole abaixo os links das imagens do produto, <strong>um por linha</strong>. As imagens serão exibidas na ordem em que forem inseridas — a primeira será usada como ícone do produto no site.</p>
+              <p className="text-blue-600">Dica: use serviços como <strong>Imgur</strong> ou <strong>Google Drive</strong> para hospedar as imagens e copiar o link direto.</p>
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-neutral-700 mb-1.5">
-              Fotos do produto <span className="text-neutral-400 font-normal">(URLs, uma por linha)</span>
+              Links das imagens <span className="text-neutral-400 font-normal">(um por linha)</span>
             </label>
             <textarea
               value={imagens.join('\n')}
@@ -228,11 +241,15 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
               placeholder={"https://exemplo.com/foto1.jpg\nhttps://exemplo.com/foto2.jpg"}
               className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
             />
-            {/* Preview das imagens */}
             {imagens.filter(Boolean).length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
                 {imagens.filter(Boolean).map((url, i) => (
                   <div key={i} className="relative w-20 h-20 rounded-xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                    {i === 0 && (
+                      <span className="absolute top-1 left-1 z-10 bg-primary-600 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded-md leading-none">
+                        ícone
+                      </span>
+                    )}
                     <img
                       src={url}
                       alt={`foto ${i + 1}`}
