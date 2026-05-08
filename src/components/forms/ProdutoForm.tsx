@@ -2,14 +2,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { type Produto, CATEGORIAS_PRODUTO } from '@/lib/constants';
+import { CATEGORIAS_PRODUTO } from '@/lib/constants';
+import type { ProdutoDB } from '@/types';
 
 interface ProdutoFormProps {
-  produto?: Produto;
+  produto?: ProdutoDB;
 }
 
 export function ProdutoForm({ produto }: ProdutoFormProps) {
@@ -20,7 +21,7 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
     nome: produto?.nome ?? '',
     slug: produto?.slug ?? '',
     categoria: produto?.categoria ?? CATEGORIAS_PRODUTO[0],
-    descricaoCurta: produto?.descricaoCurta ?? '',
+    descricaoCurta: produto?.descricao_curta ?? '',
     descricao: produto?.descricao ?? '',
     composicao: produto?.composicao ?? '',
     indicacoes: produto?.indicacoes?.join('\n') ?? '',
@@ -29,7 +30,8 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
     ordem: produto?.ordem ?? 0,
   });
 
-  const [saved, setSaved] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [erro, setErro] = useState('');
 
   const set = (field: string, value: string | boolean | number) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -43,19 +45,54 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: integrar com Supabase
-    // const payload = { ...form, indicacoes: form.indicacoes.split('\n').filter(Boolean) };
-    // if (isEdit) { await supabaseAdmin.from('produtos').update(payload).eq('id', produto.id); }
-    // else { await supabaseAdmin.from('produtos').insert(payload); }
-    setSaved(true);
-    setTimeout(() => {
-      setSaved(false);
-      router.push('/admin/produtos');
-    }, 1500);
+    setStatus('loading');
+    setErro('');
+
+    const payload = {
+      ...form,
+      indicacoes: form.indicacoes.split('\n').filter(Boolean),
+    };
+
+    try {
+      const url = isEdit
+        ? `/api/admin/produtos/${produto!.id}`
+        : '/api/admin/produtos';
+      const method = isEdit ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setErro(json.error ?? 'Erro desconhecido.');
+        setStatus('error');
+        return;
+      }
+
+      setStatus('success');
+      setTimeout(() => {
+        router.push('/admin/produtos');
+        router.refresh();
+      }, 1200);
+    } catch {
+      setErro('Falha de rede. Verifique sua conexão.');
+      setStatus('error');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {status === 'error' && (
+        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-800">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-red-500" />
+          <span>{erro}</span>
+        </div>
+      )}
+
       <Card>
         <h2 className="font-semibold text-neutral-900 mb-5">Informações básicas</h2>
         <div className="space-y-4">
@@ -129,7 +166,7 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
               value={form.indicacoes}
               onChange={(e) => set('indicacoes', e.target.value)}
               rows={4}
-              placeholder="Epilepsia refratária&#10;Dor crônica&#10;Ansiedade"
+              placeholder={"Epilepsia refratária\nDor crônica\nAnsiedade"}
               className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
             />
           </div>
@@ -171,8 +208,10 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
       </Card>
 
       <div className="flex items-center gap-4">
-        <Button type="submit" size="lg" disabled={saved}>
-          {saved ? (
+        <Button type="submit" size="lg" disabled={status === 'loading' || status === 'success'}>
+          {status === 'loading' ? (
+            'Salvando...'
+          ) : status === 'success' ? (
             <><CheckCircle2 className="w-4 h-4 mr-2" /> Salvo!</>
           ) : (
             isEdit ? 'Salvar alterações' : 'Criar produto'

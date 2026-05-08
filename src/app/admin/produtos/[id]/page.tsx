@@ -1,13 +1,28 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ProdutoForm } from '@/components/forms/ProdutoForm';
-import { PRODUTOS_MOCK } from '@/lib/constants';
+import { supabaseAdmin } from '@/lib/supabase-server';
+import type { ProdutoDB } from '@/types';
 
 export const metadata: Metadata = { title: 'Editar Produto · Admin Neurofarma' };
+export const dynamic = 'force-dynamic';
 
-export default function EditarProdutoPage({ params }: { params: { id: string } }) {
-  // TODO: substituir por query Supabase quando a tabela `produtos` estiver criada
-  const produto = PRODUTOS_MOCK.find((p) => p.id === params.id);
+async function getProduto(id: string): Promise<ProdutoDB | null> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('produtos')
+      .select('*')
+      .eq('id', id)
+      .single();
+    if (error) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+export default async function EditarProdutoPage({ params }: { params: { id: string } }) {
+  const produto = await getProduto(params.id);
   if (!produto) notFound();
 
   return (

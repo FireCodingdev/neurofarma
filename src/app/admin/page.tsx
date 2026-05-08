@@ -2,29 +2,53 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { FlaskConical, Users, ShoppingCart, TrendingUp, ArrowUpRight, CheckCircle2, Clock } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
-import { PRODUTOS_MOCK } from '@/lib/constants';
+import { supabaseAdmin } from '@/lib/supabase-server';
 
 export const metadata: Metadata = { title: 'Admin Dashboard · Neurofarma' };
+export const dynamic = 'force-dynamic';
 
-export default function AdminDashboard() {
+async function getDashboardData() {
+  try {
+    const [produtosRes, clientesRes, pedidosRes] = await Promise.all([
+      supabaseAdmin.from('produtos').select('id, ativo', { count: 'exact' }),
+      supabaseAdmin.from('clientes').select('id', { count: 'exact' }),
+      supabaseAdmin.from('pedidos').select('id, status, produto_nome, numero, created_at', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .limit(5),
+    ]);
+
+    const totalProdutosAtivos = (produtosRes.data ?? []).filter((p) => p.ativo).length;
+    const totalClientes = clientesRes.count ?? 0;
+    const pedidos = pedidosRes.data ?? [];
+    const pedidosAbertos = pedidos.filter((p) => p.status !== 'Entregue' && p.status !== 'Cancelado').length;
+    const pedidosEntregues = pedidos.filter((p) => p.status === 'Entregue').length;
+
+    return { totalProdutosAtivos, totalClientes, pedidosAbertos, pedidosEntregues, pedidosRecentes: pedidos };
+  } catch {
+    return { totalProdutosAtivos: 0, totalClientes: 0, pedidosAbertos: 0, pedidosEntregues: 0, pedidosRecentes: [] };
+  }
+}
+
+const STATUS_ICON: Record<string, React.ReactNode> = {
+  'Entregue': <CheckCircle2 className="w-4 h-4 text-green-500" />,
+  'Enviado': <TrendingUp className="w-4 h-4 text-blue-500" />,
+  'Em preparo': <Clock className="w-4 h-4 text-yellow-500" />,
+};
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('pt-BR');
+}
+
+export default async function AdminDashboard() {
+  const { totalProdutosAtivos, totalClientes, pedidosAbertos, pedidosEntregues, pedidosRecentes } =
+    await getDashboardData();
+
   const stats = [
-    { label: 'Produtos ativos', value: PRODUTOS_MOCK.filter((p) => p.ativo).length.toString(), Icon: FlaskConical, href: '/admin/produtos' },
-    { label: 'Usuários cadastrados', value: '—', Icon: Users, href: '/admin/usuarios' },
-    { label: 'Pedidos abertos', value: '—', Icon: ShoppingCart, href: '/admin/pedidos' },
-    { label: 'Pedidos entregues', value: '—', Icon: TrendingUp, href: '/admin/pedidos' },
+    { label: 'Produtos ativos', value: totalProdutosAtivos.toString(), Icon: FlaskConical, href: '/admin/produtos' },
+    { label: 'Usuários cadastrados', value: totalClientes > 0 ? totalClientes.toString() : '—', Icon: Users, href: '/admin/usuarios' },
+    { label: 'Pedidos abertos', value: pedidosAbertos > 0 ? pedidosAbertos.toString() : '—', Icon: ShoppingCart, href: '/admin/pedidos' },
+    { label: 'Pedidos entregues', value: pedidosEntregues > 0 ? pedidosEntregues.toString() : '—', Icon: TrendingUp, href: '/admin/pedidos' },
   ];
-
-  const pedidosRecentes = [
-    { id: 'NF-001', cliente: 'João Silva', produto: 'Neuro-C10', status: 'Em preparo', data: '02/05/2026' },
-    { id: 'NF-002', cliente: 'Maria Souza', produto: 'Neuro-Caps', status: 'Enviado', data: '01/05/2026' },
-    { id: 'NF-003', cliente: 'Carlos Lima', produto: 'Neuro-Balance', status: 'Entregue', data: '28/04/2026' },
-  ];
-
-  const STATUS_ICON: Record<string, React.ReactNode> = {
-    'Entregue': <CheckCircle2 className="w-4 h-4 text-green-500" />,
-    'Enviado': <TrendingUp className="w-4 h-4 text-blue-500" />,
-    'Em preparo': <Clock className="w-4 h-4 text-yellow-500" />,
-  };
 
   return (
     <div className="p-6 lg:p-8">
@@ -61,55 +85,57 @@ export default function AdminDashboard() {
                 Ver todos <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-neutral-50 bg-neutral-50/50">
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase">Pedido</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase hidden sm:table-cell">Cliente</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase">Produto</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pedidosRecentes.map((p, i) => (
-                  <tr key={p.id} className={i !== pedidosRecentes.length - 1 ? 'border-b border-neutral-100' : ''}>
-                    <td className="px-6 py-3.5 font-mono text-xs text-neutral-500">{p.id}</td>
-                    <td className="px-6 py-3.5 text-neutral-700 hidden sm:table-cell">{p.cliente}</td>
-                    <td className="px-6 py-3.5 font-medium text-neutral-900">{p.produto}</td>
-                    <td className="px-6 py-3.5">
-                      <span className="flex items-center gap-1.5">
-                        {STATUS_ICON[p.status]}
-                        <span className="text-xs font-medium text-neutral-700">{p.status}</span>
-                      </span>
-                    </td>
+            {pedidosRecentes.length === 0 ? (
+              <div className="px-6 py-10 text-center text-sm text-neutral-400">
+                Nenhum pedido ainda.
+              </div>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-neutral-50 bg-neutral-50/50">
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase">Pedido</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase">Produto</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase hidden sm:table-cell">Data</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-400 uppercase">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {pedidosRecentes.map((p: any, i: number) => (
+                    <tr key={p.id} className={i !== pedidosRecentes.length - 1 ? 'border-b border-neutral-100' : ''}>
+                      <td className="px-6 py-3.5 font-mono text-xs text-neutral-500">{p.numero}</td>
+                      <td className="px-6 py-3.5 font-medium text-neutral-900">{p.produto_nome}</td>
+                      <td className="px-6 py-3.5 text-neutral-500 hidden sm:table-cell text-xs">{formatDate(p.created_at)}</td>
+                      <td className="px-6 py-3.5">
+                        <span className="flex items-center gap-1.5">
+                          {STATUS_ICON[p.status] ?? <Clock className="w-4 h-4 text-neutral-400" />}
+                          <span className="text-xs font-medium text-neutral-700">{p.status}</span>
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </Card>
         </div>
 
-        {/* Products quick access */}
+        {/* Quick links */}
         <div>
           <Card>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-display font-semibold text-neutral-900">Produtos</h2>
-              <Link href="/admin/produtos" className="text-sm text-primary-600 hover:underline">
-                Gerenciar
-              </Link>
+              <h2 className="font-display font-semibold text-neutral-900">Atalhos</h2>
             </div>
-            <div className="space-y-3">
-              {PRODUTOS_MOCK.map((p) => (
-                <div key={p.id} className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FlaskConical className="w-4 h-4 text-primary-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-neutral-900 truncate">{p.nome}</p>
-                    <p className="text-xs text-neutral-500">{p.categoria}</p>
-                  </div>
-                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${p.ativo ? 'bg-green-400' : 'bg-neutral-300'}`} />
-                </div>
+            <div className="space-y-2">
+              {[
+                { label: 'Gerenciar produtos', href: '/admin/produtos' },
+                { label: 'Editar conteúdo da home', href: '/admin/conteudo' },
+                { label: 'Novo produto', href: '/admin/produtos/novo' },
+              ].map(({ label, href }) => (
+                <Link key={href} href={href}
+                  className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-neutral-50 transition-colors group">
+                  <span className="text-sm text-neutral-700 font-medium group-hover:text-primary-600">{label}</span>
+                  <ArrowUpRight className="w-4 h-4 text-neutral-300 group-hover:text-primary-500" />
+                </Link>
               ))}
             </div>
           </Card>

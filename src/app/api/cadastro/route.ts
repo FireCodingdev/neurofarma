@@ -33,14 +33,21 @@ export async function POST(req: NextRequest) {
       throw authError;
     }
 
-    // Salvar dados do cliente
-    // TODO: criar tabela `clientes` no Supabase (ver CLAUDE.md)
-    // await supabaseAdmin.from('clientes').insert({
-    //   user_id: authData.user.id,
-    //   nome,
-    //   email,
-    //   telefone,
-    // });
+    // Salvar dados do cliente na tabela clientes
+    const { error: clienteError } = await supabaseAdmin
+      .from('clientes')
+      .insert({
+        user_id: authData.user.id,
+        nome,
+        email,
+        telefone: telefone ?? null,
+      });
+
+    if (clienteError) {
+      // Não falha o cadastro se a inserção do cliente falhar,
+      // mas loga o erro para debug
+      console.error('[/api/cadastro] erro ao criar cliente:', clienteError);
+    }
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (err) {

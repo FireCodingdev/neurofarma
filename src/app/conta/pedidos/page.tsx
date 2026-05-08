@@ -1,17 +1,11 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { PackageSearch } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-
-export const metadata: Metadata = { title: 'Meus Pedidos · Neurofarma' };
-
-// TODO: substituir por query Supabase — buscar pedidos do usuário autenticado
-const PEDIDOS_MOCK = [
-  { id: 'NF-001', produto: 'Neuro-C10', quantidade: 2, status: 'Em preparo', data: '02/05/2026' },
-  { id: 'NF-002', produto: 'Neuro-Caps', quantidade: 1, status: 'Enviado', data: '15/04/2026' },
-  { id: 'NF-003', produto: 'Neuro-Balance', quantidade: 1, status: 'Entregue', data: '01/04/2026' },
-];
+import type { Pedido } from '@/types';
 
 const STATUS_STYLE: Record<string, string> = {
   'Em preparo': 'bg-yellow-100 text-yellow-700',
@@ -20,7 +14,22 @@ const STATUS_STYLE: Record<string, string> = {
   'Cancelado': 'bg-red-100 text-red-700',
 };
 
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('pt-BR');
+}
+
 export default function MeusPedidosPage() {
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/conta/pedidos')
+      .then((r) => r.json())
+      .then((json) => setPedidos(json.pedidos ?? []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="min-h-screen bg-neutral-50 py-10">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
@@ -39,7 +48,11 @@ export default function MeusPedidosPage() {
           </Link>
         </div>
 
-        {PEDIDOS_MOCK.length === 0 ? (
+        {loading ? (
+          <Card className="flex items-center justify-center py-20">
+            <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+          </Card>
+        ) : pedidos.length === 0 ? (
           <Card className="flex flex-col items-center justify-center py-20 text-center">
             <PackageSearch className="w-14 h-14 text-neutral-300 mb-4" />
             <p className="font-semibold text-neutral-700 text-lg">Nenhum pedido ainda</p>
@@ -56,20 +69,19 @@ export default function MeusPedidosPage() {
               <thead>
                 <tr className="border-b border-neutral-100 bg-neutral-50">
                   {['Pedido', 'Produto', 'Qtd.', 'Data', 'Status'].map((h) => (
-                    <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider
-                      last:table-cell [&:nth-child(3)]:hidden sm:[&:nth-child(3)]:table-cell [&:nth-child(4)]:hidden md:[&:nth-child(4)]:table-cell">
+                    <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {PEDIDOS_MOCK.map((pedido, i) => (
-                  <tr key={pedido.id} className={i !== PEDIDOS_MOCK.length - 1 ? 'border-b border-neutral-100' : ''}>
-                    <td className="px-5 py-4 font-mono text-xs text-neutral-500">{pedido.id}</td>
-                    <td className="px-5 py-4 font-medium text-neutral-900">{pedido.produto}</td>
+                {pedidos.map((pedido, i) => (
+                  <tr key={pedido.id} className={i !== pedidos.length - 1 ? 'border-b border-neutral-100' : ''}>
+                    <td className="px-5 py-4 font-mono text-xs text-neutral-500">{pedido.numero}</td>
+                    <td className="px-5 py-4 font-medium text-neutral-900">{pedido.produto_nome}</td>
                     <td className="px-5 py-4 text-neutral-600 hidden sm:table-cell">{pedido.quantidade}</td>
-                    <td className="px-5 py-4 text-neutral-500 hidden md:table-cell">{pedido.data}</td>
+                    <td className="px-5 py-4 text-neutral-500 hidden md:table-cell">{formatDate(pedido.created_at)}</td>
                     <td className="px-5 py-4">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_STYLE[pedido.status] ?? 'bg-neutral-100 text-neutral-600'}`}>
                         {pedido.status}
