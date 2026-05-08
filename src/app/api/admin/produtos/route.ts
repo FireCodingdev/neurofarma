@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'JSON inválido.' }, { status: 400 });
   }
 
-  const { nome, slug, categoria, descricaoCurta, descricao, composicao, indicacoes, apresentacao, ativo, ordem } = body;
+  const { nome, slug, categoria, descricaoCurta, descricao, composicao, indicacoes, apresentacao, ativo, ordem, imagens } = body;
 
   if (!nome || !slug) {
     return NextResponse.json({ error: 'nome e slug são obrigatórios.' }, { status: 400 });
@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
         apresentacao: apresentacao ?? '',
         ativo: ativo ?? true,
         ordem: ordem ?? 0,
+        imagens: Array.isArray(imagens) ? imagens : [],
       })
       .select()
       .single();

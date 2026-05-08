@@ -35,7 +35,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json({ error: 'JSON inválido.' }, { status: 400 });
   }
 
-  const { nome, slug, categoria, descricaoCurta, descricao, composicao, indicacoes, apresentacao, ativo, ordem } = body;
+  const { nome, slug, categoria, descricaoCurta, descricao, composicao, indicacoes, apresentacao, ativo, ordem, imagens } = body;
 
   const patch: Record<string, any> = {};
   if (nome !== undefined) patch.nome = nome;
@@ -52,6 +52,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (apresentacao !== undefined) patch.apresentacao = apresentacao;
   if (ativo !== undefined) patch.ativo = ativo;
   if (ordem !== undefined) patch.ordem = ordem;
+  if (imagens !== undefined) patch.imagens = Array.isArray(imagens) ? imagens : [];
 
   try {
     const { data, error } = await supabaseAdmin
