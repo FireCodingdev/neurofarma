@@ -4,35 +4,64 @@ import { notFound } from 'next/navigation';
 import { FlaskConical, CheckCircle2, ArrowLeft, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { PRODUTOS_MOCK } from '@/lib/constants';
+import { supabaseAdmin } from '@/lib/supabase-server';
+import type { ProdutoDB } from '@/types';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface Props {
   params: { slug: string };
 }
 
-export async function generateStaticParams() {
-  return PRODUTOS_MOCK.filter((p) => p.ativo).map((p) => ({ slug: p.slug }));
+async function getProduto(slug: string): Promise<ProdutoDB | null> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('produtos')
+      .select('*')
+      .eq('slug', slug)
+      .eq('ativo', true)
+      .single();
+    if (error) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+async function getOutrosProdutos(excludeSlug: string): Promise<ProdutoDB[]> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('produtos')
+      .select('*')
+      .eq('ativo', true)
+      .neq('slug', excludeSlug)
+      .order('ordem', { ascending: true })
+      .limit(3);
+    if (error) return [];
+    return data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const produto = PRODUTOS_MOCK.find((p) => p.slug === params.slug);
+  const produto = await getProduto(params.slug);
   if (!produto) return { title: 'Produto não encontrado' };
   return {
     title: `${produto.nome} · Neurofarma`,
-    description: produto.descricaoCurta,
+    description: produto.descricao_curta,
   };
 }
 
-export default function ProdutoPage({ params }: Props) {
-  // TODO: substituir por query Supabase quando a tabela `produtos` estiver criada
-  const produto = PRODUTOS_MOCK.find((p) => p.slug === params.slug && p.ativo);
+export default async function ProdutoPage({ params }: Props) {
+  const produto = await getProduto(params.slug);
   if (!produto) notFound();
 
-  const outros = PRODUTOS_MOCK.filter((p) => p.ativo && p.id !== produto.id).slice(0, 3);
+  const outros = await getOutrosProdutos(params.slug);
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Back link */}
       <div className="bg-white border-b border-neutral-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <Link href="/produtos" className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-primary-600 transition-colors">
@@ -43,9 +72,7 @@ export default function ProdutoPage({ params }: Props) {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-3 gap-10">
-          {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Header */}
             <div className="flex items-start gap-5">
               <div className="w-20 h-20 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
                 <FlaskConical className="w-10 h-10 text-primary-600" />
@@ -53,17 +80,15 @@ export default function ProdutoPage({ params }: Props) {
               <div>
                 <span className="text-sm font-semibold text-primary-600 uppercase tracking-wider">{produto.categoria}</span>
                 <h1 className="font-display text-3xl lg:text-4xl font-bold text-neutral-900">{produto.nome}</h1>
-                <p className="text-neutral-600 mt-1">{produto.descricaoCurta}</p>
+                <p className="text-neutral-600 mt-1">{produto.descricao_curta}</p>
               </div>
             </div>
 
-            {/* Description */}
             <Card>
               <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Sobre o produto</h2>
               <p className="text-neutral-600 leading-relaxed">{produto.descricao}</p>
             </Card>
 
-            {/* Composition */}
             <Card>
               <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Composição</h2>
               <p className="text-neutral-600 text-sm leading-relaxed font-mono bg-neutral-50 rounded-xl p-4 border border-neutral-100">
@@ -71,16 +96,13 @@ export default function ProdutoPage({ params }: Props) {
               </p>
             </Card>
 
-            {/* Presentation */}
             <Card>
               <h2 className="font-display text-lg font-semibold text-neutral-900 mb-3">Apresentação e armazenamento</h2>
               <p className="text-neutral-600 text-sm leading-relaxed">{produto.apresentacao}</p>
             </Card>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-5">
-            {/* Indications */}
             <Card>
               <h2 className="font-display text-base font-semibold text-neutral-900 mb-4">Indicações clínicas</h2>
               <ul className="space-y-2">
@@ -93,7 +115,6 @@ export default function ProdutoPage({ params }: Props) {
               </ul>
             </Card>
 
-            {/* CTA */}
             <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
               <h3 className="font-display text-base font-semibold mb-2">Tem interesse?</h3>
               <p className="text-sm text-primary-100 mb-4">
@@ -115,14 +136,12 @@ export default function ProdutoPage({ params }: Props) {
               </div>
             </Card>
 
-            {/* Legal notice */}
             <div className="text-xs text-neutral-500 leading-relaxed px-1">
               Este produto é fabricado mediante prescrição médica e regulamentação Anvisa (RDC 327/2019). Não é dispensado sem receituário.
             </div>
           </div>
         </div>
 
-        {/* Other products */}
         {outros.length > 0 && (
           <div className="mt-16">
             <h2 className="font-display text-xl font-semibold text-neutral-900 mb-6">Outros produtos</h2>
@@ -135,7 +154,7 @@ export default function ProdutoPage({ params }: Props) {
                     </div>
                     <div>
                       <p className="font-semibold text-neutral-900 text-sm">{p.nome}</p>
-                      <p className="text-xs text-neutral-500 mt-0.5 line-clamp-2">{p.descricaoCurta}</p>
+                      <p className="text-xs text-neutral-500 mt-0.5 line-clamp-2">{p.descricao_curta}</p>
                     </div>
                   </Card>
                 </Link>
