@@ -122,6 +122,11 @@ export function Navbar({ produtos }: NavbarProps) {
               )}
             </div>
 
+            <Link href="/apoiadores"
+              className="text-neutral-700 hover:text-primary-600 font-medium transition-colors">
+              Apoiadores
+            </Link>
+
             <Link href="/quem-somos"
               className="text-neutral-700 hover:text-primary-600 font-medium transition-colors">
               Quem Somos
@@ -247,6 +252,11 @@ export function Navbar({ produtos }: NavbarProps) {
               <Link href="/produtos" onClick={() => setIsOpen(false)}
                 className="text-xs font-semibold text-primary-600 mt-1 block">Ver todos →</Link>
             </div>
+
+            <Link href="/apoiadores" onClick={() => setIsOpen(false)}
+              className="px-4 py-3 text-neutral-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition-colors">
+              Apoiadores
+            </Link>
 
             <Link href="/quem-somos" onClick={() => setIsOpen(false)}
               className="px-4 py-3 text-neutral-700 hover:bg-primary-50 hover:text-primary-700 rounded-lg font-medium transition-colors">
