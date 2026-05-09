@@ -114,11 +114,11 @@ export default function QuemSomosPage() {
         {/* Tagline final */}
         <div className="bg-gradient-to-br from-primary-700 to-primary-900 rounded-3xl p-10 text-center">
           <p className="font-display text-2xl sm:text-3xl font-bold text-white leading-snug">
-            Neuro Farma.
+            Neuro Farma
           </p>
           <p className="text-primary-200 text-lg mt-2 leading-relaxed">
-            Pesquisa farmacotécnica em cannabis.<br />
-            Do laboratório para o futuro da terapia canabinoide no Brasil.
+            Pesquisa farmacotécnica em cannabis<br />
+            Do laboratório para o futuro da terapia canabinoide no Brasil
           </p>
         </div>
 

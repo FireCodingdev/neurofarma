@@ -48,7 +48,7 @@ export function ApoiadoresSidebar() {
             className="flex items-center justify-center gap-2 w-full bg-white text-primary-700 hover:bg-primary-50 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
           >
             <MessageCircle className="w-4 h-4" />
-            Solicitar via WhatsApp
+            Contato via WhatsApp
           </a>
 
           {checando ? (

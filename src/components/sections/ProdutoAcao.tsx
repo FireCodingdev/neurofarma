@@ -40,7 +40,7 @@ export function ProdutoAcao({ produto }: ProdutoAcaoProps) {
             size="sm"
           >
             <MessageCircle className="w-4 h-4 mr-2" />
-            Solicitar via WhatsApp
+            Contato via WhatsApp
           </Button>
         </a>
 
