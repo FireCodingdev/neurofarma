@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
-import { CheckCircle2, Mail, MessageCircle, ArrowRight, Heart, FlaskConical, Users } from 'lucide-react';
+import { CheckCircle2, Heart, FlaskConical, Users } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
+import { ApoiadoresSidebar } from '@/components/sections/ApoiadoresSidebar';
 
 export const metadata: Metadata = {
   title: 'Seja um Apoiador · Neurofarma',
@@ -139,42 +139,7 @@ export default function ApoiadoresPage() {
 
           {/* Sidebar sticky */}
           <div className="lg:col-span-1">
-            <div className="sticky top-28">
-              <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
-                <h3 className="font-display text-base font-semibold mb-2">
-                  Tem interesse em se tornar apoiador?
-                </h3>
-                <p className="text-sm text-primary-100 mb-4">
-                  Junte-se a quem fortalece a pesquisa farmacotécnica em cannabis medicinal no Brasil.
-                </p>
-                <Link
-                  href="#"
-                  className="inline-flex items-center gap-1 text-sm text-white font-medium hover:text-primary-100 transition-colors mb-4"
-                >
-                  Conhecer programa de apoiadores
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-                <p className="text-xs text-primary-200 font-medium mb-2">Falar conosco:</p>
-                <div className="space-y-2">
-                  <a
-                    href="https://wa.me/5574981064385?text=Olá! Tenho interesse em me tornar apoiador da Neurofarma."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full bg-white text-primary-700 hover:bg-primary-50 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    Solicitar via WhatsApp
-                  </a>
-                  <a
-                    href="mailto:neurofarma1@hotmail.com"
-                    className="flex items-center justify-center gap-2 w-full border border-white/30 text-white hover:bg-white/10 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
-                  >
-                    <Mail className="w-4 h-4" />
-                    Enviar e-mail
-                  </a>
-                </div>
-              </Card>
-            </div>
+            <ApoiadoresSidebar />
           </div>
 
         </div>

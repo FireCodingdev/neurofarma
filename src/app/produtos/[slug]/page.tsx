@@ -157,10 +157,10 @@ export default async function ProdutoPage({ params }: Props) {
                 Junte-se a quem fortalece a pesquisa farmacotécnica em cannabis medicinal no Brasil.
               </p>
               <Link
-                href="/apoiadores"
+                href="/quem-somos"
                 className="inline-flex items-center gap-1 text-sm text-white font-medium hover:text-primary-100 transition-colors mb-4"
               >
-                Conhecer programa de apoiadores
+                Conheça nossa missão científica
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <p className="text-xs text-primary-200 font-medium mb-2">Falar conosco:</p>
