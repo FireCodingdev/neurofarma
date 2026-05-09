@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { FlaskConical, Microscope, BookOpen, Leaf } from 'lucide-react';
+import { FlaskConical, Microscope, BookOpen, Leaf, Mail, MessageCircle, Clock, Users } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Quem Somos · Neurofarma',
@@ -120,6 +120,98 @@ export default function QuemSomosPage() {
             Pesquisa farmacotécnica em cannabis<br />
             Do laboratório para o futuro da terapia canabinoide no Brasil
           </p>
+        </div>
+
+        {/* ── Fale Conosco ── */}
+        <div className="border-t border-neutral-200 pt-4">
+          <div className="text-center mb-12">
+            <span className="text-sm font-semibold text-primary-600 uppercase tracking-widest">
+              Contato
+            </span>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-neutral-900 mt-3 mb-4">
+              Fale Conosco
+            </h2>
+            <p className="text-neutral-500 text-lg max-w-2xl mx-auto leading-relaxed">
+              Seja bem-vindo ao nosso canal de comunicação. Nossa equipe está pronta para
+              responder cada mensagem com seriedade e dedicação.
+            </p>
+          </div>
+
+          {/* Texto principal */}
+          <section className="bg-white rounded-3xl p-8 sm:p-10 border border-neutral-200 shadow-sm mb-8">
+            <p className="text-neutral-700 text-base leading-relaxed mb-5">
+              Na Neuro Farma, acreditamos que o avanço da cannabis medicinal no Brasil se constrói
+              com diálogo aberto, troca de conhecimento e suporte próximo. Por isso, colocamos nossa
+              equipe à disposição para esclarecer qualquer dúvida que você possa ter.
+            </p>
+            <p className="text-neutral-700 text-base leading-relaxed">
+              Nosso compromisso é responder cada mensagem com a mesma seriedade e dedicação que
+              aplicamos no laboratório. Analisamos cada questionamento individualmente e retornamos
+              com informações claras, embasadas e direcionadas à sua necessidade — seja você um
+              profissional de saúde, pesquisador, parceiro da indústria ou paciente em busca de
+              orientação inicial.
+            </p>
+          </section>
+
+          {/* Posso ajudar com */}
+          <section className="mb-8">
+            <h3 className="font-display text-xl font-bold text-neutral-900 mb-5">
+              Posso ajudar com…
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                { icon: Users,         text: 'Projetos de pesquisa e parcerias científicas' },
+                { icon: MessageCircle, text: 'Formulações: cápsulas, óleos, emulsões e mais' },
+                { icon: Mail,          text: 'Orientação técnica sobre veículos e excipientes' },
+                { icon: Clock,         text: 'Cenário regulatório e científico da cannabis no Brasil' },
+              ].map(({ icon: Icon, text }) => (
+                <div
+                  key={text}
+                  className="flex items-start gap-4 bg-white rounded-2xl px-5 py-4 border border-neutral-200 shadow-sm"
+                >
+                  <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Icon className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <p className="text-sm text-neutral-700 font-medium leading-snug pt-2">{text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Botões de contato */}
+          <section className="bg-white rounded-3xl p-8 sm:p-10 border border-neutral-200 shadow-sm">
+            <h3 className="font-display text-xl font-bold text-neutral-900 mb-2">
+              Entre em contato
+            </h3>
+            <p className="text-neutral-500 text-sm mb-8">
+              É por aqui que começam boas ideias, colaborações e soluções. A Neuro Farma está
+              pronta para ouvir você.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="mailto:neurofarma1@hotmail.com"
+                className="flex items-center justify-center gap-3 flex-1 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-2xl transition-colors"
+              >
+                <Mail className="w-5 h-5 flex-shrink-0" />
+                <span>Enviar e-mail</span>
+              </a>
+              <a
+                href="https://wa.me/5574981064385"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 flex-1 px-6 py-4 bg-[#25D366] hover:bg-[#1ebe5b] text-white font-semibold rounded-2xl transition-colors"
+              >
+                <MessageCircle className="w-5 h-5 flex-shrink-0" />
+                <span>WhatsApp</span>
+              </a>
+            </div>
+            <p className="text-neutral-400 text-xs mt-5 text-center">
+              Ou escreva diretamente para{' '}
+              <a href="mailto:neurofarma1@hotmail.com" className="text-primary-600 hover:underline font-medium">
+                neurofarma1@hotmail.com
+              </a>
+            </p>
+          </section>
         </div>
 
       </div>
