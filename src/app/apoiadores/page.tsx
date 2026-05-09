@@ -60,7 +60,7 @@ export default function ApoiadoresPage() {
       </section>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-3 gap-10 items-start">
+        <div className="grid lg:grid-cols-3 gap-10">
 
           {/* Coluna principal */}
           <div className="lg:col-span-2 space-y-12">
