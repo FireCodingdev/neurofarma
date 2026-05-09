@@ -50,7 +50,7 @@ export function Hero({ content = DEFAULT_HOME_CONTENT.hero }: HeroProps) {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <Link href="/cadastro">
+              <Link href="/apoiadores">
                 <Button size="lg" className="group w-full sm:w-auto bg-primary-500 hover:bg-primary-400 text-white border-0">
                   {content.cta_primario}
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
