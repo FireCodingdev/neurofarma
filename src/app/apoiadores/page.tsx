@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { CheckCircle2, Mail, MessageCircle, ArrowRight, Heart, FlaskConical, Users } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 
 export const metadata: Metadata = {
   title: 'Seja um Apoiador · Neurofarma',
@@ -32,7 +31,7 @@ const etapas = [
   {
     numero: '03',
     titulo: 'Confirma sua participação',
-    descricao: 'E recebe todas as orientações sobre prazos, formas de envio e acompanhamento.',
+    descricao: 'E recebe todas as orientações sobre prazos e acompanhamento.',
   },
 ];
 
@@ -130,42 +129,6 @@ export default function ApoiadoresPage() {
                 ))}
               </div>
             </div>
-
-            {/* CTA */}
-            <Card className="bg-gradient-to-br from-primary-700 to-primary-800 text-white border-0">
-              <div className="text-center mb-8">
-                <h2 className="font-display text-2xl font-bold mb-3">Pronto para fazer parte?</h2>
-                <p className="text-primary-100 leading-relaxed max-w-2xl mx-auto">
-                  Sua contribuição fortalece uma causa que vai além do laboratório: ajuda a construir um
-                  mercado de cannabis medicinal mais sério, mais científico e mais acessível. Entre em
-                  contato conosco e escolha como quer participar.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <a
-                  href="mailto:neurofarma1@hotmail.com"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-primary-700 font-semibold px-6 py-3 rounded-xl hover:bg-primary-50 transition-colors"
-                >
-                  <Mail className="w-5 h-5" />
-                  Enviar e-mail
-                </a>
-                <a
-                  href="https://wa.me/557498106438"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  WhatsApp
-                </a>
-              </div>
-
-              <div className="border-t border-white/20 pt-6 text-center space-y-1 text-sm text-primary-200">
-                <p><span className="font-medium text-white">E-mail:</span> neurofarma1@hotmail.com</p>
-                <p><span className="font-medium text-white">WhatsApp:</span> (74) 9810-6438</p>
-              </div>
-            </Card>
 
             {/* Assinatura */}
             <p className="text-center text-neutral-500 italic text-sm pb-4">
