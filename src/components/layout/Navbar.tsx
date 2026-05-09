@@ -90,7 +90,7 @@ export function Navbar({ produtos }: NavbarProps) {
                 aria-haspopup="true"
                 aria-expanded={produtosOpen}
               >
-                Produtos
+                Formulações
                 <ChevronDown className={cn('w-4 h-4 transition-transform duration-200', produtosOpen && 'rotate-180')} />
               </button>
 
@@ -240,7 +240,7 @@ export function Navbar({ produtos }: NavbarProps) {
             </Link>
 
             <div className="px-4 pt-3 pb-1">
-              <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest mb-2">Produtos</p>
+              <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest mb-2">Formulações</p>
               {produtos.map((produto) => (
                 <Link key={produto.slug} href={`/produtos/${produto.slug}`}
                   onClick={() => setIsOpen(false)}
