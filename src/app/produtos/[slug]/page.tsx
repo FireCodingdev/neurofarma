@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FlaskConical, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { FlaskConical, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { ProdutoAcao } from '@/components/sections/ProdutoAcao';
 import { supabaseAdmin } from '@/lib/supabase-server';
@@ -150,10 +150,20 @@ export default async function ProdutoPage({ params }: Props) {
             </Card>
 
             <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
-              <h3 className="font-display text-base font-semibold mb-2">Tem interesse?</h3>
+              <h3 className="font-display text-base font-semibold mb-2">
+                Tem interesse em se tornar apoiador?
+              </h3>
               <p className="text-sm text-primary-100 mb-4">
-                Entre em contato ou crie sua conta para solicitar este produto.
+                Junte-se a quem fortalece a pesquisa farmacotécnica em cannabis medicinal no Brasil.
               </p>
+              <Link
+                href="/apoiadores"
+                className="inline-flex items-center gap-1 text-sm text-white font-medium hover:text-primary-100 transition-colors mb-4"
+              >
+                Conhecer programa de apoiadores
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <p className="text-xs text-primary-200 font-medium mb-2">Falar conosco:</p>
               <ProdutoAcao
                 produto={{
                   id: produto.id,
