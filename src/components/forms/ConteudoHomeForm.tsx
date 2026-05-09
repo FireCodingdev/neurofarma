@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, AlertCircle, RotateCcw, Save } from 'lucide-react';
+import { CheckCircle2, AlertCircle, RotateCcw, Save, Plus, Trash2 } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import {
   DEFAULT_HOME_CONTENT,
   type HomeContent,
+  type NoticiaItem,
 } from '@/lib/home-content';
 
 interface ConteudoHomeFormProps {
@@ -138,6 +139,41 @@ export function ConteudoHomeForm({ initialContent }: ConteudoHomeFormProps) {
         features: c.joinCta.features.map((f, i) =>
           i === idx ? { ...f, ...patch } : f
         ),
+      },
+    }));
+
+  const updateNoticias = (patch: Partial<HomeContent['noticias']>) =>
+    setContent((c) => ({ ...c, noticias: { ...c.noticias, ...patch } }));
+
+  const updateNoticiaItem = (idx: number, patch: Partial<NoticiaItem>) =>
+    setContent((c) => ({
+      ...c,
+      noticias: {
+        ...c.noticias,
+        noticias: c.noticias.noticias.map((n, i) =>
+          i === idx ? { ...n, ...patch } : n
+        ),
+      },
+    }));
+
+  const addNoticia = () =>
+    setContent((c) => ({
+      ...c,
+      noticias: {
+        ...c.noticias,
+        noticias: [
+          ...c.noticias.noticias,
+          { titulo: '', descricao_curta: '', imagem_url: '', badge: '', link: '' },
+        ],
+      },
+    }));
+
+  const removeNoticia = (idx: number) =>
+    setContent((c) => ({
+      ...c,
+      noticias: {
+        ...c.noticias,
+        noticias: c.noticias.noticias.filter((_, i) => i !== idx),
       },
     }));
 
@@ -479,10 +515,115 @@ export function ConteudoHomeForm({ initialContent }: ConteudoHomeFormProps) {
         </div>
       </Card>
 
+      {/* NOTICIAS ================================================== */}
+      <Card>
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="font-display text-lg font-bold text-neutral-900">5. Notícias (carrossel)</h2>
+          <span className="text-xs text-neutral-500">Seção entre o processo e a chamada final</span>
+        </div>
+        <p className="text-sm text-neutral-500 mb-5">
+          Adicione notícias para exibir no carrossel. A seção fica oculta enquanto não houver nenhuma notícia cadastrada.
+        </p>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Input
+              label="Eyebrow (texto verde acima do título)"
+              value={content.noticias.eyebrow}
+              onChange={(e) => updateNoticias({ eyebrow: e.target.value })}
+            />
+            <Input
+              label="Título da seção"
+              value={content.noticias.titulo}
+              onChange={(e) => updateNoticias({ titulo: e.target.value })}
+            />
+          </div>
+
+          {/* Lista de notícias */}
+          <div className="space-y-4">
+            {content.noticias.noticias.length === 0 && (
+              <p className="text-sm text-neutral-400 italic text-center py-4 border border-dashed border-neutral-200 rounded-xl">
+                Nenhuma notícia cadastrada. Clique em "Adicionar notícia" para começar.
+              </p>
+            )}
+
+            {content.noticias.noticias.map((noticia, idx) => (
+              <div key={idx} className="border border-neutral-200 rounded-xl p-4 bg-neutral-50/50">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold text-sm text-neutral-800">
+                    Notícia {idx + 1}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => removeNoticia(idx)}
+                    className="flex items-center gap-1.5 text-xs text-red-600 hover:text-red-700 font-medium transition-colors"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Remover
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  {noticia.imagem_url && (
+                    <div className="flex items-center gap-3 p-2 bg-neutral-100 rounded-xl">
+                      <img
+                        src={noticia.imagem_url}
+                        alt="preview"
+                        className="w-20 h-14 rounded-lg object-cover flex-shrink-0 border border-neutral-200"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      />
+                      <span className="text-xs text-neutral-500 break-all">{noticia.imagem_url}</span>
+                    </div>
+                  )}
+                  <Input
+                    label="URL da imagem"
+                    value={noticia.imagem_url}
+                    onChange={(e) => updateNoticiaItem(idx, { imagem_url: e.target.value })}
+                    placeholder="https://exemplo.com/imagem.jpg"
+                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Input
+                      label="Badge (ex: TEMPO REAL)"
+                      value={noticia.badge}
+                      onChange={(e) => updateNoticiaItem(idx, { badge: e.target.value })}
+                      placeholder="TEMPO REAL"
+                    />
+                    <Input
+                      label="Link externo (opcional)"
+                      value={noticia.link}
+                      onChange={(e) => updateNoticiaItem(idx, { link: e.target.value })}
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <Input
+                    label="Título"
+                    value={noticia.titulo}
+                    onChange={(e) => updateNoticiaItem(idx, { titulo: e.target.value })}
+                  />
+                  <Textarea
+                    label="Descrição curta"
+                    value={noticia.descricao_curta}
+                    onChange={(v) => updateNoticiaItem(idx, { descricao_curta: v })}
+                    rows={2}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={addNoticia}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-primary-300 text-primary-600 hover:border-primary-500 hover:bg-primary-50 text-sm font-medium transition-colors w-full justify-center"
+          >
+            <Plus className="w-4 h-4" />
+            Adicionar notícia
+          </button>
+        </div>
+      </Card>
+
       {/* JOIN CTA ================================================== */}
       <Card>
         <div className="flex items-center justify-between mb-1">
-          <h2 className="font-display text-lg font-bold text-neutral-900">5. Chamada final + features</h2>
+          <h2 className="font-display text-lg font-bold text-neutral-900">6. Chamada final + features</h2>
           <span className="text-xs text-neutral-500">Última seção antes do rodapé</span>
         </div>
         <p className="text-sm text-neutral-500 mb-5">

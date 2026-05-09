@@ -32,6 +32,31 @@
   }
 }
 
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.45s ease-out both;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out both;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes newsProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
 @layer components {
   .container-default {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;

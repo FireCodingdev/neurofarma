@@ -47,7 +47,7 @@ function isPlainObject(v: unknown): v is Record<string, unknown> {
 function validatePayload(body: unknown): body is Partial<HomeContent> {
   if (!isPlainObject(body)) return false;
   // Cada seção, se presente, precisa ser um objeto.
-  for (const k of ['hero', 'benefits', 'science', 'steps', 'joinCta']) {
+  for (const k of ['hero', 'benefits', 'science', 'steps', 'noticias', 'joinCta']) {
     if (k in body && !isPlainObject((body as Record<string, unknown>)[k])) {
       return false;
     }

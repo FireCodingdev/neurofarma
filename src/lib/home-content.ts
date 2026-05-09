@@ -68,6 +68,21 @@ export type StepsContent = {
   cta: string;
 };
 
+// ---------- NOTICIAS ----------
+export type NoticiaItem = {
+  titulo: string;
+  descricao_curta: string;
+  imagem_url: string;
+  badge: string;
+  link: string;
+};
+
+export type NoticiasContent = {
+  eyebrow: string;
+  titulo: string;
+  noticias: NoticiaItem[];
+};
+
 // ---------- JOIN CTA ----------
 export type JoinCtaFeature = {
   label: string;
@@ -90,6 +105,7 @@ export type HomeContent = {
   benefits: BenefitsContent;
   science: ScienceContent;
   steps: StepsContent;
+  noticias: NoticiasContent;
   joinCta: JoinCtaContent;
 };
 
@@ -193,6 +209,11 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
     ],
     cta: 'Quero ter acesso',
   },
+  noticias: {
+    eyebrow: 'Notícias',
+    titulo: 'Fique por dentro',
+    noticias: [],
+  },
   joinCta: {
     eyebrow: 'Faça parte',
     titulo_parte1: 'Seja parte dessa ',
@@ -245,6 +266,13 @@ export function mergeWithDefaults(partial: unknown): HomeContent {
         Array.isArray(p.steps?.etapas) && p.steps!.etapas.length === 4
           ? p.steps!.etapas
           : DEFAULT_HOME_CONTENT.steps.etapas,
+    },
+    noticias: {
+      ...DEFAULT_HOME_CONTENT.noticias,
+      ...(p.noticias ?? {}),
+      noticias: Array.isArray(p.noticias?.noticias)
+        ? p.noticias!.noticias
+        : DEFAULT_HOME_CONTENT.noticias.noticias,
     },
     joinCta: {
       ...DEFAULT_HOME_CONTENT.joinCta,

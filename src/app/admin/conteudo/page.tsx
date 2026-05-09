@@ -23,7 +23,7 @@ export default async function ConteudoHomePage() {
           Conteúdo da página inicial
         </h1>
         <p className="text-neutral-500 mt-1">
-          Edite todos os textos das 5 seções da home. As alterações aparecem no
+          Edite todos os textos das 6 seções da home, incluindo o carrossel de notícias. As alterações aparecem no
           site assim que você salvar.
         </p>
       </div>

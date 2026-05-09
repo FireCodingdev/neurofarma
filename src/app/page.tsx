@@ -2,6 +2,7 @@ import { Hero } from '@/components/sections/Hero';
 import { Benefits } from '@/components/sections/Benefits';
 import { Science } from '@/components/sections/Science';
 import { Steps } from '@/components/sections/Steps';
+import { Noticias } from '@/components/sections/Noticias';
 import { JoinCta } from '@/components/sections/JoinCta';
 import { getHomeContent } from '@/lib/home-content-server';
 
@@ -20,6 +21,7 @@ export default async function HomePage() {
       <Benefits content={content.benefits} />
       <Science content={content.science} />
       <Steps content={content.steps} />
+      <Noticias content={content.noticias} />
       <JoinCta content={content.joinCta} />
     </>
   );
