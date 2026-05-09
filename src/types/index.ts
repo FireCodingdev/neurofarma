@@ -76,3 +76,19 @@ export interface Cliente {
   cidade?: string;
   estado?: string;
 }
+
+export type StatusRelatorio = 'rascunho' | 'publicado';
+
+export interface RelatorioTecnico {
+  id: string;
+  slug: string;
+  titulo: string;
+  subtitulo?: string;
+  imagem_capa?: string;
+  corpo?: string;
+  categorias: string[];
+  status: StatusRelatorio;
+  data_publicacao?: string;
+  criado_em: string;
+  atualizado_em: string;
+}

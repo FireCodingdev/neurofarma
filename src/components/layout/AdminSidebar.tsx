@@ -34,6 +34,7 @@ const tabs = [
     group: 'Conteúdo do site',
     items: [
       { href: '/admin/conteudo', label: 'Conteúdo da Home', Icon: FileText },
+      { href: '/admin/relatorios-tecnicos', label: 'Relatórios P&D', Icon: FileText },
     ],
   },
   {
