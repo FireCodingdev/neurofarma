@@ -88,39 +88,57 @@ export function Noticias({ content = DEFAULT_HOME_CONTENT.noticias }: NoticiasPr
                 : 'grid-cols-1 sm:grid-cols-3'
             }`}
           >
-            {smallItems.map(({ item, idx }) => (
-              <button
-                key={idx}
-                onClick={() => setActiveIndex(idx)}
-                className="text-left w-full group"
-              >
-                <div className="relative rounded-xl overflow-hidden aspect-video mb-3">
-                  {item.imagem_url ? (
-                    <img
-                      src={item.imagem_url}
-                      alt={item.titulo}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-neutral-100" />
+            {smallItems.map(({ item, idx }) => {
+              const inner = (
+                <>
+                  <div className="relative rounded-xl overflow-hidden aspect-video mb-3">
+                    {item.imagem_url ? (
+                      <img
+                        src={item.imagem_url}
+                        alt={item.titulo}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-100" />
+                    )}
+                    {item.badge && (
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-primary-500 text-white text-[10px] font-bold uppercase tracking-wide">
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="font-bold text-neutral-900 text-sm leading-snug mb-1.5 group-hover:text-primary-600 transition-colors line-clamp-2">
+                    {item.titulo}
+                  </h4>
+                  {item.descricao_curta && (
+                    <p className="text-neutral-500 text-xs flex items-start gap-1.5 line-clamp-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0 mt-1" />
+                      {item.descricao_curta}
+                    </p>
                   )}
-                  {item.badge && (
-                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-primary-500 text-white text-[10px] font-bold uppercase tracking-wide">
-                      {item.badge}
-                    </span>
-                  )}
-                </div>
-                <h4 className="font-bold text-neutral-900 text-sm leading-snug mb-1.5 group-hover:text-primary-600 transition-colors line-clamp-2">
-                  {item.titulo}
-                </h4>
-                {item.descricao_curta && (
-                  <p className="text-neutral-500 text-xs flex items-start gap-1.5 line-clamp-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0 mt-1" />
-                    {item.descricao_curta}
-                  </p>
-                )}
-              </button>
-            ))}
+                </>
+              );
+
+              return item.link ? (
+                <Link
+                  key={idx}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-left w-full group block"
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <button
+                  key={idx}
+                  onClick={() => setActiveIndex(idx)}
+                  className="text-left w-full group"
+                >
+                  {inner}
+                </button>
+              );
+            })}
           </div>
         )}
 

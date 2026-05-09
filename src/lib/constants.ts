@@ -4,7 +4,7 @@
  */
 
 export const SITE_CONFIG = {
-  name: 'NEUROFARMA',
+  name: 'Neurofarma',
   description: 'Pesquisa farmacêutica à base de Cannabis medicinal. 100% legal, regulamentado pela Anvisa.',
   url: 'https://neurofarma.vercel.app',
   email: 'neurofarma1@hotmail.com',
