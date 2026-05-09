@@ -60,150 +60,161 @@ export default function ApoiadoresPage() {
         </div>
       </section>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid lg:grid-cols-3 gap-10 items-start">
 
-        {/* O que significa ser um apoiador */}
-        <Card>
-          <div className="flex items-start gap-4 mb-5">
-            <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Users className="w-6 h-6 text-primary-600" />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl font-bold text-neutral-900">O que significa ser um apoiador?</h2>
-            </div>
-          </div>
-          <div className="space-y-4 text-neutral-600 leading-relaxed">
-            <p>
-              Ser apoiador da Neuro Farma é fazer parte ativa da nossa missão. É contribuir para que
-              novas formulações sejam testadas, para que amostras sejam produzidas com rigor técnico
-              e para que o conhecimento sobre CBD e THC avance com bases sólidas no país. Em
-              resumo: o apoiador ajuda a viabilizar a pesquisa, a produção laboratorial e a
-              disponibilização das nossas formulações, e recebe contrapartidas reais por isso.
-            </p>
-            <p className="font-medium text-neutral-800 bg-primary-50 border border-primary-100 rounded-xl p-4">
-              Não se trata de uma simples doação — é uma troca. Você impulsiona a ciência da cannabis
-              e nós retribuímos com acesso ao que produzimos de melhor.
-            </p>
-          </div>
-        </Card>
+          {/* Coluna principal */}
+          <div className="lg:col-span-2 space-y-12">
 
-        {/* O que você ganha */}
-        <Card>
-          <div className="flex items-start gap-4 mb-6">
-            <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <FlaskConical className="w-6 h-6 text-primary-600" />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl font-bold text-neutral-900">O que você ganha ao apoiar</h2>
-              <p className="text-neutral-500 mt-1">
-                Ao se tornar um apoiador, você escolhe os benefícios que mais se encaixam no seu
-                interesse, conforme a disponibilidade do nosso laboratório.
-              </p>
-            </div>
-          </div>
-          <ul className="space-y-3">
-            {beneficios.map((b, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
-                <span className="text-neutral-700 text-sm leading-relaxed">{b}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-
-        {/* Como funciona */}
-        <div>
-          <h2 className="font-display text-2xl font-bold text-neutral-900 mb-6">Como funciona</h2>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {etapas.map((etapa) => (
-              <Card key={etapa.numero} className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <span className="text-white font-bold text-sm">{etapa.numero}</span>
+            {/* O que significa ser um apoiador */}
+            <Card>
+              <div className="flex items-start gap-4 mb-5">
+                <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <Users className="w-6 h-6 text-primary-600" />
                 </div>
-                <h3 className="font-semibold text-neutral-900 mb-2">{etapa.titulo}</h3>
-                <p className="text-sm text-neutral-500 leading-relaxed">{etapa.descricao}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
+                <div>
+                  <h2 className="font-display text-2xl font-bold text-neutral-900">O que significa ser um apoiador?</h2>
+                </div>
+              </div>
+              <div className="space-y-4 text-neutral-600 leading-relaxed">
+                <p>
+                  Ser apoiador da Neuro Farma é fazer parte ativa da nossa missão. É contribuir para que
+                  novas formulações sejam testadas, para que amostras sejam produzidas com rigor técnico
+                  e para que o conhecimento sobre CBD e THC avance com bases sólidas no país. Em
+                  resumo: o apoiador ajuda a viabilizar a pesquisa, a produção laboratorial e a
+                  disponibilização das nossas formulações, e recebe contrapartidas reais por isso.
+                </p>
+                <p className="font-medium text-neutral-800 bg-primary-50 border border-primary-100 rounded-xl p-4">
+                  Não se trata de uma simples doação — é uma troca. Você impulsiona a ciência da cannabis
+                  e nós retribuímos com acesso ao que produzimos de melhor.
+                </p>
+              </div>
+            </Card>
 
-        {/* CTA */}
-        <Card className="bg-gradient-to-br from-primary-700 to-primary-800 text-white border-0">
-          <div className="text-center mb-8">
-            <h2 className="font-display text-2xl font-bold mb-3">Pronto para fazer parte?</h2>
-            <p className="text-primary-100 leading-relaxed max-w-2xl mx-auto">
-              Sua contribuição fortalece uma causa que vai além do laboratório: ajuda a construir um
-              mercado de cannabis medicinal mais sério, mais científico e mais acessível. Entre em
-              contato conosco e escolha como quer participar.
+            {/* O que você ganha */}
+            <Card>
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <FlaskConical className="w-6 h-6 text-primary-600" />
+                </div>
+                <div>
+                  <h2 className="font-display text-2xl font-bold text-neutral-900">O que você ganha ao apoiar</h2>
+                  <p className="text-neutral-500 mt-1">
+                    Ao se tornar um apoiador, você escolhe os benefícios que mais se encaixam no seu
+                    interesse, conforme a disponibilidade do nosso laboratório.
+                  </p>
+                </div>
+              </div>
+              <ul className="space-y-3">
+                {beneficios.map((b, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-neutral-700 text-sm leading-relaxed">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+
+            {/* Como funciona */}
+            <div>
+              <h2 className="font-display text-2xl font-bold text-neutral-900 mb-6">Como funciona</h2>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {etapas.map((etapa) => (
+                  <Card key={etapa.numero} className="text-center">
+                    <div className="w-12 h-12 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <span className="text-white font-bold text-sm">{etapa.numero}</span>
+                    </div>
+                    <h3 className="font-semibold text-neutral-900 mb-2">{etapa.titulo}</h3>
+                    <p className="text-sm text-neutral-500 leading-relaxed">{etapa.descricao}</p>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <Card className="bg-gradient-to-br from-primary-700 to-primary-800 text-white border-0">
+              <div className="text-center mb-8">
+                <h2 className="font-display text-2xl font-bold mb-3">Pronto para fazer parte?</h2>
+                <p className="text-primary-100 leading-relaxed max-w-2xl mx-auto">
+                  Sua contribuição fortalece uma causa que vai além do laboratório: ajuda a construir um
+                  mercado de cannabis medicinal mais sério, mais científico e mais acessível. Entre em
+                  contato conosco e escolha como quer participar.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <a
+                  href="mailto:neurofarma1@hotmail.com"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-primary-700 font-semibold px-6 py-3 rounded-xl hover:bg-primary-50 transition-colors"
+                >
+                  <Mail className="w-5 h-5" />
+                  Enviar e-mail
+                </a>
+                <a
+                  href="https://wa.me/557498106438"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  WhatsApp
+                </a>
+              </div>
+
+              <div className="border-t border-white/20 pt-6 text-center space-y-1 text-sm text-primary-200">
+                <p><span className="font-medium text-white">E-mail:</span> neurofarma1@hotmail.com</p>
+                <p><span className="font-medium text-white">WhatsApp:</span> (74) 9810-6438</p>
+              </div>
+            </Card>
+
+            {/* Assinatura */}
+            <p className="text-center text-neutral-500 italic text-sm pb-4">
+              Neuro Farma. A pesquisa avança. Com você, avança mais rápido.
             </p>
+
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <a
-              href="mailto:neurofarma1@hotmail.com"
-              className="inline-flex items-center justify-center gap-2 bg-white text-primary-700 font-semibold px-6 py-3 rounded-xl hover:bg-primary-50 transition-colors"
-            >
-              <Mail className="w-5 h-5" />
-              Enviar e-mail
-            </a>
-            <a
-              href="https://wa.me/557498106438"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-            >
-              <MessageCircle className="w-5 h-5" />
-              WhatsApp
-            </a>
+          {/* Sidebar sticky */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-28">
+              <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
+                <h3 className="font-display text-base font-semibold mb-2">
+                  Tem interesse em se tornar apoiador?
+                </h3>
+                <p className="text-sm text-primary-100 mb-4">
+                  Junte-se a quem fortalece a pesquisa farmacotécnica em cannabis medicinal no Brasil.
+                </p>
+                <Link
+                  href="#"
+                  className="inline-flex items-center gap-1 text-sm text-white font-medium hover:text-primary-100 transition-colors mb-4"
+                >
+                  Conhecer programa de apoiadores
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <p className="text-xs text-primary-200 font-medium mb-2">Falar conosco:</p>
+                <div className="space-y-2">
+                  <a
+                    href="https://wa.me/5574981064385?text=Olá! Tenho interesse em me tornar apoiador da Neurofarma."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full bg-white text-primary-700 hover:bg-primary-50 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Solicitar via WhatsApp
+                  </a>
+                  <a
+                    href="mailto:neurofarma1@hotmail.com"
+                    className="flex items-center justify-center gap-2 w-full border border-white/30 text-white hover:bg-white/10 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
+                  >
+                    <Mail className="w-4 h-4" />
+                    Enviar e-mail
+                  </a>
+                </div>
+              </Card>
+            </div>
           </div>
 
-          <div className="border-t border-white/20 pt-6 text-center space-y-1 text-sm text-primary-200">
-            <p><span className="font-medium text-white">E-mail:</span> neurofarma1@hotmail.com</p>
-            <p><span className="font-medium text-white">WhatsApp:</span> (74) 9810-6438</p>
-          </div>
-        </Card>
-
-        {/* Card "Tem interesse?" — igual ao dos produtos */}
-        <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
-          <h3 className="font-display text-base font-semibold mb-2">
-            Tem interesse em se tornar apoiador?
-          </h3>
-          <p className="text-sm text-primary-100 mb-4">
-            Junte-se a quem fortalece a pesquisa farmacotécnica em cannabis medicinal no Brasil.
-          </p>
-          <Link
-            href="/apoiadores"
-            className="inline-flex items-center gap-1 text-sm text-white font-medium hover:text-primary-100 transition-colors mb-4"
-          >
-            Conhecer programa de apoiadores
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-          <p className="text-xs text-primary-200 font-medium mb-2">Falar conosco:</p>
-          <div className="space-y-2">
-            <a
-              href="https://wa.me/5574981064385?text=Olá! Tenho interesse em me tornar apoiador da Neurofarma."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full bg-white text-primary-700 hover:bg-primary-50 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
-            >
-              <MessageCircle className="w-4 h-4" />
-              Solicitar via WhatsApp
-            </a>
-            <a
-              href="mailto:neurofarma1@hotmail.com"
-              className="flex items-center justify-center gap-2 w-full border border-white/30 text-white hover:bg-white/10 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-              Enviar e-mail
-            </a>
-          </div>
-        </Card>
-
-        {/* Assinatura */}
-        <p className="text-center text-neutral-500 italic text-sm pb-4">
-          Neuro Farma. A pesquisa avança. Com você, avança mais rápido.
-        </p>
-
+        </div>
       </div>
     </div>
   );
