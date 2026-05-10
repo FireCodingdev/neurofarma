@@ -104,10 +104,10 @@ export default async function AdminRelatoriosPage({ searchParams }: PageProps) {
                         <div className="flex items-center gap-2">
                           <p className="font-semibold text-neutral-900 leading-snug">{rel.titulo}</p>
                           {rel.exclusivo_apoiador && (
-                            <Lock className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" title="Exclusivo para apoiadores" />
+                            <span title="Exclusivo para apoiadores"><Lock className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" aria-label="Exclusivo para apoiadores" /></span>
                           )}
                           {rel.pdf_url && (
-                            <Download className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" title="PDF anexado" />
+                            <span title="PDF anexado"><Download className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" aria-label="PDF anexado" /></span>
                           )}
                         </div>
                         <p className="text-xs text-neutral-500 line-clamp-1 max-w-xs">{rel.subtitulo}</p>

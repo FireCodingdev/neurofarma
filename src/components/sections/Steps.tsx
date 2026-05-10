@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Pill, Pipette, Cookie, FlaskConical } from 'lucide-react';
+import { Pill, Pipette, Cookie, FlaskConical, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { DEFAULT_HOME_CONTENT, type StepsContent } from '@/lib/home-content';
 
