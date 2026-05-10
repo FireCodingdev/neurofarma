@@ -183,7 +183,7 @@ export function ModalApoiador({ produto, onClose }: ModalApoiadorProps) {
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <MapPin className="w-4 h-4 text-primary-600" />
-                    <h3 className="text-sm font-semibold text-neutral-800">Endereço de entrega</h3>
+                    <h3 className="text-sm font-semibold text-neutral-800">Endereço</h3>
                   </div>
                   <div className="space-y-3">
                     <Input
