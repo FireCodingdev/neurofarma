@@ -1,12 +1,18 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
 import { supabaseAdmin } from '@/lib/supabase-server';
-import { ArrowLeft, Calendar, Tag } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, Download } from 'lucide-react';
+import { PaywallRelatorio } from '@/components/sections/PaywallRelatorio';
+import { RelatorioViewCounter } from '@/components/sections/RelatorioViewCounter';
 import type { RelatorioTecnico } from '@/types';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+// ── helpers ──────────────────────────────────────────────────────────────────
 
 async function getRelatorio(slug: string): Promise<RelatorioTecnico | null> {
   try {
@@ -23,13 +29,25 @@ async function getRelatorio(slug: string): Promise<RelatorioTecnico | null> {
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const rel = await getRelatorio(params.slug);
-  if (!rel) return { title: 'Relatório não encontrado · Neurofarma' };
-  return {
-    title: `${rel.titulo} · Neurofarma`,
-    description: rel.subtitulo ?? 'Relatório técnico de pesquisa e desenvolvimento da Neurofarma.',
-  };
+async function getAuthStatus(): Promise<{ logado: boolean; apoiador: boolean }> {
+  try {
+    const cookieStore = cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+    );
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return { logado: false, apoiador: false };
+    const { data } = await supabaseAdmin
+      .from('clientes')
+      .select('apoiador')
+      .eq('user_id', session.user.id)
+      .single();
+    return { logado: true, apoiador: data?.apoiador === true };
+  } catch {
+    return { logado: false, apoiador: false };
+  }
 }
 
 function formatDate(dateStr?: string | null) {
@@ -41,13 +59,32 @@ function formatDate(dateStr?: string | null) {
   });
 }
 
-export default async function RelatorioDetalhe({ params }: { params: { slug: string } }) {
+// ── metadata ─────────────────────────────────────────────────────────────────
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const rel = await getRelatorio(params.slug);
+  if (!rel) return { title: 'Relatório não encontrado · Neurofarma' };
+  return {
+    title: `${rel.titulo} · Neurofarma`,
+    description: rel.subtitulo ?? 'Relatório técnico de pesquisa e desenvolvimento da Neurofarma.',
+  };
+}
+
+// ── page ─────────────────────────────────────────────────────────────────────
+
+export default async function RelatorioDetalhe({ params }: { params: { slug: string } }) {
+  const [rel, { logado, apoiador }] = await Promise.all([
+    getRelatorio(params.slug),
+    getAuthStatus(),
+  ]);
+
   if (!rel) notFound();
+
+  const bloqueado = rel.exclusivo_apoiador && !apoiador;
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Cover */}
+      {/* Capa */}
       {rel.imagem_capa && (
         <div className="relative w-full h-64 sm:h-80 lg:h-96 bg-neutral-900 overflow-hidden">
           <img
@@ -60,7 +97,7 @@ export default async function RelatorioDetalhe({ params }: { params: { slug: str
       )}
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Back */}
+        {/* Voltar */}
         <Link
           href="/relatorios-tecnicos"
           className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-primary-600 transition-colors mb-8"
@@ -69,8 +106,8 @@ export default async function RelatorioDetalhe({ params }: { params: { slug: str
           Todos os relatórios
         </Link>
 
-        {/* Header */}
-        <div className="mb-10">
+        {/* Cabeçalho */}
+        <div className="mb-8">
           {rel.categorias?.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
               {rel.categorias.map((cat) => (
@@ -82,6 +119,12 @@ export default async function RelatorioDetalhe({ params }: { params: { slug: str
                   {cat}
                 </span>
               ))}
+
+              {rel.exclusivo_apoiador && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                  Exclusivo para Apoiadores
+                </span>
+              )}
             </div>
           )}
 
@@ -93,23 +136,50 @@ export default async function RelatorioDetalhe({ params }: { params: { slug: str
             <p className="text-lg text-neutral-600 leading-relaxed mb-4">{rel.subtitulo}</p>
           )}
 
-          {rel.data_publicacao && (
-            <div className="flex items-center gap-2 text-sm text-neutral-400">
-              <Calendar className="w-4 h-4" />
-              Publicado em {formatDate(rel.data_publicacao)}
-            </div>
-          )}
+          <div className="flex items-center flex-wrap gap-4">
+            {rel.data_publicacao && (
+              <div className="flex items-center gap-2 text-sm text-neutral-400">
+                <Calendar className="w-4 h-4" />
+                Publicado em {formatDate(rel.data_publicacao)}
+              </div>
+            )}
+
+            {typeof rel.visualizacoes === 'number' && rel.visualizacoes > 0 && (
+              <span className="text-sm text-neutral-400">
+                {rel.visualizacoes} {rel.visualizacoes === 1 ? 'leitura' : 'leituras'}
+              </span>
+            )}
+          </div>
         </div>
 
-        {/* Body */}
-        {rel.corpo && (
-          <article
-            className="relatorio-corpo text-neutral-700 text-base leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: rel.corpo }}
-          />
+        {/* Botão de download (só quando autorizado e PDF existe) */}
+        {!bloqueado && rel.pdf_url && (
+          <a
+            href={`/api/relatorios/${rel.slug}/download`}
+            className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm"
+          >
+            <Download className="w-4 h-4" />
+            Baixar PDF
+          </a>
         )}
 
-        {/* Back bottom */}
+        {/* Corpo ou Paywall */}
+        {bloqueado ? (
+          <PaywallRelatorio logado={logado} />
+        ) : (
+          <>
+            {rel.corpo && (
+              <article
+                className="relatorio-corpo text-neutral-700 text-base leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: rel.corpo }}
+              />
+            )}
+            {/* Incrementa visualizações client-side (evita double-count em SSR) */}
+            <RelatorioViewCounter slug={rel.slug} />
+          </>
+        )}
+
+        {/* Rodapé */}
         <div className="mt-12 pt-8 border-t border-neutral-200">
           <Link
             href="/relatorios-tecnicos"

@@ -1,22 +1,33 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { AdminLink } from '@/components/layout/AdminLink';
-import { Plus, Pencil, FileText } from 'lucide-react';
+import { Plus, Pencil, FileText, Lock, Download } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { supabaseAdmin } from '@/lib/supabase-server';
+import { AdminRelatoriosSort } from '@/components/admin/AdminRelatoriosSort';
 import type { RelatorioTecnico } from '@/types';
 
 export const metadata: Metadata = { title: 'Relatórios Técnicos · Admin Neurofarma' };
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-async function getRelatorios(): Promise<RelatorioTecnico[]> {
+async function getRelatorios(ordem: string): Promise<RelatorioTecnico[]> {
   try {
-    const { data, error } = await supabaseAdmin
+    let q = supabaseAdmin
       .from('relatorios_tecnicos')
-      .select('id, slug, titulo, subtitulo, status, data_publicacao, criado_em, categorias, imagem_capa, corpo, atualizado_em')
-      .order('criado_em', { ascending: false });
+      .select('id, slug, titulo, subtitulo, status, data_publicacao, criado_em, categorias, imagem_capa, corpo, atualizado_em, exclusivo_apoiador, pdf_url, visualizacoes');
+
+    if (ordem === 'antigos') {
+      q = q.order('data_publicacao', { ascending: true });
+    } else if (ordem === 'mais-lidos') {
+      q = q.order('visualizacoes', { ascending: false });
+    } else {
+      q = q.order('criado_em', { ascending: false });
+    }
+
+    const { data, error } = await q;
     if (error) throw error;
     return data ?? [];
   } catch {
@@ -29,22 +40,32 @@ function formatDate(dateStr?: string | null) {
   return new Date(dateStr).toLocaleDateString('pt-BR');
 }
 
-export default async function AdminRelatoriosPage() {
-  const relatorios = await getRelatorios();
+interface PageProps {
+  searchParams: { ordem?: string };
+}
+
+export default async function AdminRelatoriosPage({ searchParams }: PageProps) {
+  const ordem      = searchParams.ordem ?? 'recentes';
+  const relatorios = await getRelatorios(ordem);
 
   return (
     <div className="p-6 lg:p-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-neutral-900">Relatórios Técnicos</h1>
           <p className="text-neutral-500 mt-1">Gerencie os relatórios de pesquisa e desenvolvimento.</p>
         </div>
-        <Link href="/admin/relatorios-tecnicos/novo">
-          <Button size="sm">
-            <Plus className="w-4 h-4 mr-2" />
-            Novo relatório
-          </Button>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Suspense>
+            <AdminRelatoriosSort ordemAtual={ordem} />
+          </Suspense>
+          <Link href="/admin/relatorios-tecnicos/novo">
+            <Button size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              Novo relatório
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {relatorios.length === 0 ? (
@@ -66,6 +87,7 @@ export default async function AdminRelatoriosPage() {
                 <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">Título</th>
                 <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider hidden md:table-cell">Categorias</th>
                 <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider hidden lg:table-cell">Data</th>
+                <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider hidden xl:table-cell">Leituras</th>
                 <th className="text-left px-6 py-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3" />
               </tr>
@@ -79,7 +101,15 @@ export default async function AdminRelatoriosPage() {
                         <FileText className="w-4 h-4 text-primary-600" />
                       </div>
                       <div>
-                        <p className="font-semibold text-neutral-900">{rel.titulo}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-neutral-900 leading-snug">{rel.titulo}</p>
+                          {rel.exclusivo_apoiador && (
+                            <Lock className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" title="Exclusivo para apoiadores" />
+                          )}
+                          {rel.pdf_url && (
+                            <Download className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" title="PDF anexado" />
+                          )}
+                        </div>
                         <p className="text-xs text-neutral-500 line-clamp-1 max-w-xs">{rel.subtitulo}</p>
                       </div>
                     </div>
@@ -95,6 +125,9 @@ export default async function AdminRelatoriosPage() {
                   </td>
                   <td className="px-6 py-4 text-neutral-500 hidden lg:table-cell">
                     {formatDate(rel.data_publicacao)}
+                  </td>
+                  <td className="px-6 py-4 text-neutral-500 hidden xl:table-cell">
+                    {rel.visualizacoes ?? 0}
                   </td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${rel.status === 'publicado' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>

@@ -75,6 +75,7 @@ export interface Cliente {
   complemento?: string;
   cidade?: string;
   estado?: string;
+  apoiador?: boolean;
 }
 
 export type StatusRelatorio = 'rascunho' | 'publicado';
@@ -89,6 +90,9 @@ export interface RelatorioTecnico {
   categorias: string[];
   status: StatusRelatorio;
   data_publicacao?: string;
+  exclusivo_apoiador: boolean;
+  pdf_url?: string;
+  visualizacoes?: number;
   criado_em: string;
   atualizado_em: string;
 }

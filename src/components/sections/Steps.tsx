@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Leaf, FlaskConical, BadgeCheck, Truck } from 'lucide-react';
+import { Pill, Pipette, Cookie, FlaskConical } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { DEFAULT_HOME_CONTENT, type StepsContent } from '@/lib/home-content';
 
@@ -8,7 +8,7 @@ interface StepsProps {
 }
 
 // Ícones e numeração fixos por posição.
-const ETAPA_ICONS = [Leaf, FlaskConical, BadgeCheck, Truck];
+const ETAPA_ICONS = [Pill, Pipette, Cookie, FlaskConical];
 
 export function Steps({ content = DEFAULT_HOME_CONTENT.steps }: StepsProps) {
   return (

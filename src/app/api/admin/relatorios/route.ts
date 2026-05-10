@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'JSON inválido.' }, { status: 400 });
   }
 
-  const { titulo, slug, subtitulo, imagem_capa, corpo, categorias, status, data_publicacao } = body;
+  const { titulo, slug, subtitulo, imagem_capa, corpo, categorias, status, data_publicacao, exclusivo_apoiador, pdf_url } = body;
 
   if (!titulo || !slug) {
     return NextResponse.json({ error: 'titulo e slug são obrigatórios.' }, { status: 400 });
@@ -66,12 +66,14 @@ export async function POST(req: NextRequest) {
       .insert({
         titulo,
         slug,
-        subtitulo: subtitulo ?? '',
-        imagem_capa: imagem_capa ?? '',
-        corpo: corpo ?? '',
-        categorias: Array.isArray(categorias) ? categorias : (categorias ?? '').split(',').map((c: string) => c.trim()).filter(Boolean),
-        status: status ?? 'rascunho',
-        data_publicacao: data_publicacao || null,
+        subtitulo:           subtitulo            ?? '',
+        imagem_capa:         imagem_capa          ?? '',
+        corpo:               corpo                ?? '',
+        categorias:          Array.isArray(categorias) ? categorias : (categorias ?? '').split(',').map((c: string) => c.trim()).filter(Boolean),
+        status:              status               ?? 'rascunho',
+        data_publicacao:     data_publicacao      || null,
+        exclusivo_apoiador:  exclusivo_apoiador   ?? false,
+        pdf_url:             pdf_url              ?? '',
       })
       .select()
       .single();

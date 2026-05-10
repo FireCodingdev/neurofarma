@@ -6,32 +6,32 @@ import { Search, X } from 'lucide-react';
 
 interface RelatoriosFiltrosProps {
   categorias: string[];
-  total: number;
-  filtrado: number;
 }
 
-export function RelatoriosFiltros({ categorias, total, filtrado }: RelatoriosFiltrosProps) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
+const ORDENS = [
+  { value: 'recentes',   label: 'Mais recentes' },
+  { value: 'antigos',    label: 'Mais antigos'  },
+  { value: 'mais-lidos', label: 'Mais lidos'    },
+] as const;
 
-  const q = searchParams.get('q') ?? '';
+export function RelatoriosFiltros({ categorias }: RelatoriosFiltrosProps) {
+  const searchParams   = useSearchParams();
+  const router         = useRouter();
+  const pathname       = usePathname();
+
+  const q              = searchParams.get('q')        ?? '';
   const categoriaAtiva = searchParams.get('categoria') ?? '';
+  const ordemAtiva     = searchParams.get('ordem')    ?? 'recentes';
 
   const [inputValue, setInputValue] = useState(q);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    setInputValue(q);
-  }, [q]);
+  useEffect(() => { setInputValue(q); }, [q]);
 
   function setParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
+    if (value) params.set(key, value);
+    else        params.delete(key);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
@@ -50,11 +50,11 @@ export function RelatoriosFiltros({ categorias, total, filtrado }: RelatoriosFil
     router.replace(pathname, { scroll: false });
   }
 
-  const hasFilters = !!q || !!categoriaAtiva;
+  const hasFilters = !!q || !!categoriaAtiva || ordemAtiva !== 'recentes';
 
   return (
-    <div className="mb-10 space-y-4">
-      {/* Search input */}
+    <div className="mb-8 space-y-4">
+      {/* Busca */}
       <div className="relative">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
         <input
@@ -74,47 +74,66 @@ export function RelatoriosFiltros({ categorias, total, filtrado }: RelatoriosFil
         )}
       </div>
 
-      {/* Category pills */}
-      {categorias.length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mr-1">Filtrar:</span>
-          <button
-            onClick={() => setParam('categoria', '')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 ${
-              !categoriaAtiva
-                ? 'bg-primary-600 text-white shadow-sm'
-                : 'bg-white border border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700'
-            }`}
-          >
-            Todos
-          </button>
-          {categorias.map((cat) => (
+      {/* Categorias + Ordenação */}
+      <div className="flex flex-wrap items-center gap-2">
+        {/* Pills de categoria */}
+        {categorias.length > 0 && (
+          <>
+            <span className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mr-1 shrink-0">
+              Filtrar:
+            </span>
             <button
-              key={cat}
-              onClick={() => handleCategoria(cat)}
+              onClick={() => setParam('categoria', '')}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 ${
-                categoriaAtiva === cat
+                !categoriaAtiva
                   ? 'bg-primary-600 text-white shadow-sm'
                   : 'bg-white border border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700'
               }`}
             >
-              {cat}
+              Todos
             </button>
-          ))}
-        </div>
-      )}
+            {categorias.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => handleCategoria(cat)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 ${
+                  categoriaAtiva === cat
+                    ? 'bg-primary-600 text-white shadow-sm'
+                    : 'bg-white border border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
 
-      {/* Results count + clear */}
-      {hasFilters && (
-        <div className="flex items-center justify-between text-sm text-neutral-500">
-          <span>
-            {filtrado === total
-              ? `${total} resultado${total !== 1 ? 's' : ''}`
-              : `${filtrado} de ${total} resultado${total !== 1 ? 's' : ''}`}
+            {/* Separador visual */}
+            <span className="hidden sm:inline-block w-px h-5 bg-neutral-200 mx-1" />
+          </>
+        )}
+
+        {/* Dropdown de ordenação */}
+        <div className="flex items-center gap-2 ml-auto">
+          <span className="text-xs font-semibold text-neutral-400 uppercase tracking-widest shrink-0 hidden sm:inline">
+            Ordenar por:
           </span>
+          <select
+            value={ordemAtiva}
+            onChange={(e) => setParam('ordem', e.target.value)}
+            className="px-3 py-1.5 rounded-xl border border-neutral-200 bg-white text-xs font-semibold text-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer shadow-sm"
+          >
+            {ORDENS.map(({ value, label }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Limpar filtros */}
+      {hasFilters && (
+        <div className="flex justify-end">
           <button
             onClick={clearAll}
-            className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
+            className="text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
           >
             Limpar filtros
           </button>

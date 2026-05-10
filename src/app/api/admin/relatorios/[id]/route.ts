@@ -35,21 +35,23 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json({ error: 'JSON inválido.' }, { status: 400 });
   }
 
-  const { titulo, slug, subtitulo, imagem_capa, corpo, categorias, status, data_publicacao } = body;
+  const { titulo, slug, subtitulo, imagem_capa, corpo, categorias, status, data_publicacao, exclusivo_apoiador, pdf_url } = body;
 
   const patch: Record<string, any> = { atualizado_em: new Date().toISOString() };
-  if (titulo !== undefined) patch.titulo = titulo;
-  if (slug !== undefined) patch.slug = slug;
-  if (subtitulo !== undefined) patch.subtitulo = subtitulo;
-  if (imagem_capa !== undefined) patch.imagem_capa = imagem_capa;
-  if (corpo !== undefined) patch.corpo = corpo;
-  if (categorias !== undefined) {
+  if (titulo              !== undefined) patch.titulo              = titulo;
+  if (slug                !== undefined) patch.slug                = slug;
+  if (subtitulo           !== undefined) patch.subtitulo           = subtitulo;
+  if (imagem_capa         !== undefined) patch.imagem_capa         = imagem_capa;
+  if (corpo               !== undefined) patch.corpo               = corpo;
+  if (categorias          !== undefined) {
     patch.categorias = Array.isArray(categorias)
       ? categorias
       : categorias.split(',').map((c: string) => c.trim()).filter(Boolean);
   }
-  if (status !== undefined) patch.status = status;
-  if (data_publicacao !== undefined) patch.data_publicacao = data_publicacao || null;
+  if (status              !== undefined) patch.status              = status;
+  if (data_publicacao     !== undefined) patch.data_publicacao     = data_publicacao || null;
+  if (exclusivo_apoiador  !== undefined) patch.exclusivo_apoiador  = exclusivo_apoiador;
+  if (pdf_url             !== undefined) patch.pdf_url             = pdf_url;
 
   try {
     const { data, error } = await supabaseAdmin
