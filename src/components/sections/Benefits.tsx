@@ -18,6 +18,7 @@ export function Benefits({ content = DEFAULT_HOME_CONTENT.benefits }: BenefitsPr
           <span className="text-sm font-semibold text-primary-600 uppercase tracking-widest">{content.eyebrow}</span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 mt-3 mb-4">
             {content.titulo_parte1}
+            <br />
             <span className="text-primary-600">{content.titulo_destaque}</span>
           </h2>
           <p className="text-lg text-neutral-600">
