@@ -42,7 +42,7 @@ export default async function RelatoriosTecnicosPage() {
             Relatórios Técnicos
           </h1>
           <p className="text-neutral-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Publicações científicas e técnicas da Neurofarma sobre formulações à base de cannabis medicinal.
+            Disponibilizamos aqui notas técnicas em desenvolvimento e relatórios produzidos pela Neurofarma sobre formulações à base de cannabis medicinal. São documentos que registram metodologias, resultados parciais e observações de bancada, seguindo o rigor dos nossos processos internos, mas sem passar por revisão formal por pares. A divulgação faz parte do nosso compromisso com a transparência científica. Os arquivos são atualizados conforme a pesquisa avança e cada nota traz a data de emissão. 
           </p>
         </div>
       </div>
