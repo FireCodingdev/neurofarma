@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { supabaseAdmin } from '@/lib/supabase-server';
 import { FileText, Calendar, Tag } from 'lucide-react';
+import { RelatoriosFiltros } from '@/components/sections/RelatoriosFiltros';
 
 export const metadata: Metadata = {
   title: 'Relatórios Técnicos de P&D · Neurofarma',
@@ -34,8 +36,30 @@ function formatDate(dateStr?: string | null) {
   });
 }
 
-export default async function RelatoriosTecnicosPage() {
+interface PageProps {
+  searchParams: { q?: string; categoria?: string };
+}
+
+export default async function RelatoriosTecnicosPage({ searchParams }: PageProps) {
   const relatorios = await getRelatorios();
+
+  const q = (searchParams.q ?? '').toLowerCase().trim();
+  const categoriaFiltro = searchParams.categoria ?? '';
+
+  const filtrados = relatorios.filter((rel) => {
+    const matchQ =
+      !q ||
+      rel.titulo.toLowerCase().includes(q) ||
+      (rel.subtitulo ?? '').toLowerCase().includes(q);
+    const matchCat =
+      !categoriaFiltro ||
+      (rel.categorias ?? []).includes(categoriaFiltro);
+    return matchQ && matchCat;
+  });
+
+  const todasCategorias = Array.from(
+    new Set(relatorios.flatMap((r) => r.categorias ?? []))
+  ).sort();
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -54,20 +78,40 @@ export default async function RelatoriosTecnicosPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {relatorios.length === 0 ? (
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Search + filters */}
+        <Suspense>
+          <RelatoriosFiltros
+            categorias={todasCategorias}
+            total={relatorios.length}
+            filtrado={filtrados.length}
+          />
+        </Suspense>
+
+        {filtrados.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="w-16 h-16 bg-neutral-100 rounded-2xl flex items-center justify-center mb-4">
               <FileText className="w-8 h-8 text-neutral-400" />
             </div>
-            <p className="font-semibold text-neutral-700 text-lg">Nenhum relatório publicado ainda</p>
-            <p className="text-sm text-neutral-500 mt-1">
-              Em breve novos relatórios técnicos serão disponibilizados.
-            </p>
+            {relatorios.length === 0 ? (
+              <>
+                <p className="font-semibold text-neutral-700 text-lg">Nenhum relatório publicado ainda</p>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Em breve novos relatórios técnicos serão disponibilizados.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="font-semibold text-neutral-700 text-lg">Nenhum resultado encontrado</p>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Tente outros termos ou remova os filtros aplicados.
+                </p>
+              </>
+            )}
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relatorios.map((rel) => (
+            {filtrados.map((rel) => (
               <Link
                 key={rel.id}
                 href={`/relatorios-tecnicos/${rel.slug}`}
