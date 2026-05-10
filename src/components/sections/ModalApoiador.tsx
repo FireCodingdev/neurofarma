@@ -256,14 +256,12 @@ export function ModalApoiador({ produto, onClose }: ModalApoiadorProps) {
                   ) : (
                     <>
                       <Heart className="w-4 h-4 mr-2" />
-                      Concluir cadastro e enviar pedido
+                      Concluir cadastro
                     </>
                   )}
                 </Button>
 
-                <p className="text-xs text-center text-neutral-400 pb-1">
-                  Mediante prescrição médica · RDC 327/2019
-                </p>
+            
               </>
             )}
           </div>
@@ -275,11 +273,10 @@ export function ModalApoiador({ produto, onClose }: ModalApoiadorProps) {
             </div>
             <div>
               <h3 className="font-display text-xl font-bold text-neutral-900">
-                Pedido para tornar-se apoiador enviado!
+                Cadastro Finalizado!
               </h3>
               <p className="text-neutral-500 text-sm mt-2 leading-relaxed">
-                Seu cadastro foi salvo com sucesso. Nossa equipe entrará em contato em breve.
-                Se preferir, fale diretamente conosco pelo WhatsApp.
+               Continue diretamente conosco pelo WhatsApp.
               </p>
             </div>
 
