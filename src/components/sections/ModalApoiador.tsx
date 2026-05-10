@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import {
   X, Heart, CheckCircle2, Loader2, MessageCircle,
-  ArrowRight, User, MapPin,
+  ArrowRight, User, MapPin, Handshake
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -107,7 +107,7 @@ export function ModalApoiador({ produto, onClose }: ModalApoiadorProps) {
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
+                <Handshake className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h2 className="font-display text-lg font-bold text-white">
@@ -255,7 +255,7 @@ export function ModalApoiador({ produto, onClose }: ModalApoiadorProps) {
                     </>
                   ) : (
                     <>
-                      <Heart className="w-4 h-4 mr-2" />
+                      <Handshake className="w-4 h-4 mr-2" />
                       Concluir cadastro
                     </>
                   )}
