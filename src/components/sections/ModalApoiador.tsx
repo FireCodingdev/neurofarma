@@ -113,7 +113,7 @@ export function ModalApoiador({ produto, onClose }: ModalApoiadorProps) {
                 <h2 className="font-display text-lg font-bold text-white">
                   {etapa === 'formulario' ? 'Tornar-se Apoiador' : 'Pedido enviado!'}
                 </h2>
-                <p className="text-primary-100 text-sm mt-0.5">Neurofarma · Cannabis Medicinal</p>
+                <p className="text-primary-100 text-sm mt-0.5">Neurofarma</p>
               </div>
             </div>
             <button
