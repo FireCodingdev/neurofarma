@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: 'Produtos · Neurofarma',
+  title: 'Formulações · Neurofarma',
   description: 'Formulações farmacêuticas à base de Cannabis medicinal desenvolvidas pela Neurofarma.',
 };
 
@@ -28,7 +28,7 @@ async function getProdutos(): Promise<ProdutoDB[]> {
   }
 }
 
-export default async function ProdutosPage() {
+export default async function FormulacoesPage() {
   const produtos = await getProdutos();
 
   return (
@@ -37,11 +37,12 @@ export default async function ProdutosPage() {
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-sm font-semibold text-primary-400 uppercase tracking-widest">Formulações</span>
           <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mt-3 mb-4">
-            Nossos Produtos
+            Nossas Pesquisas
           </h1>
           <p className="text-neutral-400 text-lg max-w-xl mx-auto">
-            Formulações farmacêuticas de Cannabis medicinal desenvolvidas com rigor científico
-            e fabricadas em laboratório certificado.
+            O que você encontra aqui é resultado direto dos nossos estudos em laboratório: formulações
+            de Cannabis medicinal desenvolvidas com método, testadas em escala de bancada e validadas
+            internamente antes de chegarem a esta página.
           </p>
         </div>
       </div>

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import {
   Menu, X, ChevronDown, FlaskConical, LogOut,
-  LayoutDashboard, Settings, PackageSearch,
+  LayoutDashboard, Settings,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
@@ -113,9 +113,9 @@ export function Navbar({ produtos }: NavbarProps) {
                     </Link>
                   ))}
                   <div className="px-4 pt-2 mt-1 border-t border-neutral-100">
-                    <Link href="/produtos" onClick={() => setProdutosOpen(false)}
+                    <Link href="/formulacoes" onClick={() => setProdutosOpen(false)}
                       className="text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors">
-                      Ver todos os produtos →
+                      Todas as Formulações →
                     </Link>
                   </div>
                 </div>
@@ -185,12 +185,6 @@ export function Navbar({ produtos }: NavbarProps) {
                             <Settings className="w-4 h-4 text-neutral-400" />
                             Configurações do perfil
                           </Link>
-                          <Link href="/conta/pedidos"
-                            onClick={() => setUserMenuOpen(false)}
-                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-primary-50 hover:text-primary-700 transition-colors">
-                            <PackageSearch className="w-4 h-4 text-neutral-400" />
-                            Meus pedidos
-                          </Link>
                         </div>
                         <div className="border-t border-neutral-100 pt-1">
                           <button onClick={handleLogout}
@@ -249,8 +243,8 @@ export function Navbar({ produtos }: NavbarProps) {
                   <span className="text-sm font-medium">{produto.nome}</span>
                 </Link>
               ))}
-              <Link href="/produtos" onClick={() => setIsOpen(false)}
-                className="text-xs font-semibold text-primary-600 mt-1 block">Ver todos →</Link>
+              <Link href="/formulacoes" onClick={() => setIsOpen(false)}
+                className="text-xs font-semibold text-primary-600 mt-1 block">Todas as Formulações →</Link>
             </div>
 
             <Link href="/apoiadores" onClick={() => setIsOpen(false)}
@@ -286,11 +280,6 @@ export function Navbar({ produtos }: NavbarProps) {
                       className="flex items-center gap-3 py-2.5 text-sm text-neutral-700 hover:text-primary-700 transition-colors">
                       <Settings className="w-4 h-4 text-neutral-400" />
                       Configurações do perfil
-                    </Link>
-                    <Link href="/conta/pedidos" onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 py-2.5 text-sm text-neutral-700 hover:text-primary-700 transition-colors">
-                      <PackageSearch className="w-4 h-4 text-neutral-400" />
-                      Meus pedidos
                     </Link>
                   </>
                 )}

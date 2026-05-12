@@ -64,8 +64,8 @@ export default async function ProdutoPage({ params }: Props) {
     <div className="min-h-screen bg-neutral-50">
       <div className="bg-white border-b border-neutral-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <Link href="/produtos" className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-primary-600 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Todos os produtos
+          <Link href="/formulacoes" className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-primary-600 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Todas as Formulações
           </Link>
         </div>
       </div>

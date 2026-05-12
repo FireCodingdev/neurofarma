@@ -10,7 +10,7 @@ export function Footer() {
     {
       title: 'Produtos',
       links: [
-        { href: '/produtos', label: 'Ver todos os produtos' },
+        { href: '/formulacoes', label: 'Todas as Formulações' },
         { href: '/produtos/neuro-c10', label: 'Neuro-C10' },
         { href: '/produtos/neuro-c25', label: 'Neuro-C25' },
         { href: '/produtos/neuro-balance', label: 'Neuro-Balance' },
@@ -23,7 +23,7 @@ export function Footer() {
         { href: '/cadastro', label: 'Criar conta' },
         { href: '/login', label: 'Entrar' },
         { href: '/conta/configuracoes', label: 'Minha área' },
-        { href: '/conta/pedidos', label: 'Meus pedidos' },
+        { href: '/conta/pedidos', label: 'Página do Apoiador' },
       ],
     },
     {

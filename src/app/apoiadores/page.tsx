@@ -9,12 +9,11 @@ export const metadata: Metadata = {
 };
 
 const beneficios = [
-  'Acesso às nossas formulações farmacotécnicas (cápsulas, óleos e soluções orais, emulsões e outras formas), produzidas com controle de qualidade e padronização.',
-  'Participação em testes de novos produtos antes do lançamento.',
-  'Informações técnicas exclusivas sobre os processos de desenvolvimento.',
-  'Descontos especiais em amostras e produtos disponibilizados.',
-  'Citação como colaborador nos materiais de pesquisa que você ajudou a viabilizar.',
-  'Acompanhamento próximo da nossa rotina de laboratório e das novidades do setor.',
+  'Acesso ao conteúdo sobre os processos farmacotécnicos desenvolvidos pela NeuroFarma.',
+  'Acompanhamento próximo da rotina do laboratório, com atualizações periódicas exclusivas para apoiadores.',
+  'Participação em enquetes para definição de novas formulações a serem estudadas.',
+  'Materiais educativos exclusivos (e-books, infográficos, vídeos sobre farmacotécnica da cannabis).',
+  'Suporte para dúvidas 24 horas.',
 ];
 
 const etapas = [

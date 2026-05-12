@@ -57,7 +57,7 @@ export function Steps({ content = DEFAULT_HOME_CONTENT.steps }: StepsProps) {
         </div>
 
         <div className="text-center mt-16">
-          <Link href="/cadastro">
+          <Link href="/formulacoes">
             <Button size="lg" className="bg-primary-500 hover:bg-primary-400 text-white border-0">
               {content.cta}
             </Button>

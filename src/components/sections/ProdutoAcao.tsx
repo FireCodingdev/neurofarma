@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { MessageCircle, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { ModalApoiador } from '@/components/sections/ModalApoiador';
 import { supabase } from '@/lib/supabase';
 
 interface ProdutoAcaoProps {
@@ -18,7 +17,6 @@ interface ProdutoAcaoProps {
 export function ProdutoAcao({ produto }: ProdutoAcaoProps) {
   const [logado, setLogado] = useState(false);
   const [checando, setChecando] = useState(true);
-  const [modalAberto, setModalAberto] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -48,15 +46,16 @@ export function ProdutoAcao({ produto }: ProdutoAcaoProps) {
         {checando ? (
           <div className="w-full h-9 bg-white/10 rounded-lg animate-pulse" />
         ) : logado ? (
-          <Button
-            variant="outline"
-            className="w-full border-white/30 text-white hover:bg-white/10"
-            size="sm"
-            onClick={() => setModalAberto(true)}
-          >
-            <Heart className="w-4 h-4 mr-2" />
-            Tornar-se apoiador
-          </Button>
+          <Link href="/conta/configuracoes">
+            <Button
+              variant="outline"
+              className="w-full border-white/30 text-white hover:bg-white/10"
+              size="sm"
+            >
+              <Heart className="w-4 h-4 mr-2" />
+              Concluir cadastro
+            </Button>
+          </Link>
         ) : (
           <Link href="/cadastro">
             <Button
@@ -65,19 +64,13 @@ export function ProdutoAcao({ produto }: ProdutoAcaoProps) {
               size="sm"
             >
               <Heart className="w-4 h-4 mr-2" />
-              Tornar-se apoiador
+              Criar conta
             </Button>
           </Link>
         )}
 
       </div>
 
-      {modalAberto && (
-        <ModalApoiador
-          produto={produto}
-          onClose={() => setModalAberto(false)}
-        />
-      )}
     </>
   );
 }

@@ -207,7 +207,7 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
           'Com cadastro ativo na plataforma, o paciente tem acesso direto aos produtos disponíveis e ao acompanhamento de seu pedido em tempo real.',
       },
     ],
-    cta: 'Quero ter acesso',
+    cta: 'Ver Formulações',
   },
   noticias: {
     eyebrow: 'Notícias',
