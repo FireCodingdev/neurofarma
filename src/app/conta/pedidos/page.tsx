@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, BookOpen, FlaskConical, MessageCircle, Users, AlertTriangle, Settings } from 'lucide-react';
+import { Heart, BookOpen, FlaskConical, MessageCircle, Users, AlertTriangle, Settings, Mail } from 'lucide-react';
 
 export default function PaginaApoiadorPage() {
   return (
@@ -112,13 +112,24 @@ export default function PaginaApoiadorPage() {
             algum conteúdo técnico específico — entre em contato diretamente conosco. A ciência se faz com
             diálogo — e nossa equipe está pronta para conversar com você.
           </p>
-          <Link
-            href="/fale-conosco"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors"
-          >
-            <MessageCircle className="w-4 h-4" />
-            Entrar em contato
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="mailto:neurofarmalab@hotmail.com"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              Enviar e-mail
+            </a>
+            <a
+              href="https://wa.me/5574981064385?text=Olá! Sou apoiador da Neurofarma e gostaria de solicitar conteúdo exclusivo."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#25D366] hover:bg-[#1ebe5b] text-white text-sm font-semibold rounded-xl transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+              WhatsApp
+            </a>
+          </div>
         </div>
 
       </div>

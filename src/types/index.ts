@@ -43,6 +43,7 @@ export interface ProdutoDB {
   ativo: boolean;
   ordem: number;
   imagens?: string[];           // URLs das fotos do produto
+  icone?: string;               // Nome do ícone Lucide (ex: "Pill", "FlaskConical")
   created_at?: string;
   updated_at?: string;
 }

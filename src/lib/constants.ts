@@ -5,9 +5,9 @@
 
 export const SITE_CONFIG = {
   name: 'Neurofarma',
-  description: 'Pesquisa farmacêutica à base de Cannabis medicinal. 100% legal, regulamentado pela Anvisa.',
+  description: 'Farmacotécnica aplicada ao desenvolvimento de formulações a base cannabis medicinal',
   url: 'https://neurofarma.vercel.app',
-  email: 'neurofarma1@hotmail.com',
+  email: 'neurofarmalab@hotmail.com',
   telefone: '(74) 98106-4385',
   endereco: 'Bahia, BA - Brasil',
   redesSociais: {

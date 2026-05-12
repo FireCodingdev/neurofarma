@@ -53,8 +53,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-xs text-neutral-400">
-              Pesquisa farmacêutica à base de Cannabis medicinal. 100% legal,
-              regulamentado pela Anvisa (RDC 327/2019).
+              {SITE_CONFIG.description}
             </p>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">

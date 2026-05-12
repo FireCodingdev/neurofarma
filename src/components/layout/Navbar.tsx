@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import {
-  Menu, X, ChevronDown, FlaskConical, LogOut,
+  Menu, X, ChevronDown, LogOut,
   LayoutDashboard, Settings, Heart,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -13,6 +13,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import type { ProdutoDB } from '@/types';
+import { getIconComponent } from '@/lib/produto-icons';
 
 interface NavbarProps {
   produtos: ProdutoDB[];
@@ -99,19 +100,22 @@ export function Navbar({ produtos }: NavbarProps) {
                   <div className="px-4 py-2 border-b border-neutral-100 mb-1">
                     <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest">Formulações</p>
                   </div>
-                  {produtos.map((produto) => (
-                    <Link key={produto.slug} href={`/produtos/${produto.slug}`}
-                      onClick={() => setProdutosOpen(false)}
-                      className="flex items-start gap-3 px-4 py-3 hover:bg-primary-50 transition-colors">
-                      <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <FlaskConical className="w-4 h-4 text-primary-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-neutral-900">{produto.nome}</p>
-                        <p className="text-xs text-neutral-500 line-clamp-1">{produto.descricao_curta}</p>
-                      </div>
-                    </Link>
-                  ))}
+                  {produtos.map((produto) => {
+                    const IconeProduto = getIconComponent(produto.icone);
+                    return (
+                      <Link key={produto.slug} href={`/produtos/${produto.slug}`}
+                        onClick={() => setProdutosOpen(false)}
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-primary-50 transition-colors">
+                        <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <IconeProduto className="w-4 h-4 text-primary-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-neutral-900">{produto.nome}</p>
+                          <p className="text-xs text-neutral-500 line-clamp-1">{produto.descricao_curta}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
                   <div className="px-4 pt-2 mt-1 border-t border-neutral-100">
                     <Link href="/formulacoes" onClick={() => setProdutosOpen(false)}
                       className="text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors">
@@ -241,14 +245,17 @@ export function Navbar({ produtos }: NavbarProps) {
 
             <div className="px-4 pt-3 pb-1">
               <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest mb-2">Formulações</p>
-              {produtos.map((produto) => (
-                <Link key={produto.slug} href={`/produtos/${produto.slug}`}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 py-2.5 text-neutral-700 hover:text-primary-700 transition-colors">
-                  <FlaskConical className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                  <span className="text-sm font-medium">{produto.nome}</span>
-                </Link>
-              ))}
+              {produtos.map((produto) => {
+                const IconeProduto = getIconComponent(produto.icone);
+                return (
+                  <Link key={produto.slug} href={`/produtos/${produto.slug}`}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 py-2.5 text-neutral-700 hover:text-primary-700 transition-colors">
+                    <IconeProduto className="w-4 h-4 text-primary-500 flex-shrink-0" />
+                    <span className="text-sm font-medium">{produto.nome}</span>
+                  </Link>
+                );
+              })}
               <Link href="/formulacoes" onClick={() => setIsOpen(false)}
                 className="text-xs font-semibold text-primary-600 mt-1 block">Todas as Formulações →</Link>
             </div>

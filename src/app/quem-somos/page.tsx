@@ -189,7 +189,7 @@ export default function QuemSomosPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="mailto:neurofarma1@hotmail.com"
+                href="mailto:neurofarmalab@hotmail.com"
                 className="flex items-center justify-center gap-3 flex-1 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-2xl transition-colors"
               >
                 <Mail className="w-5 h-5 flex-shrink-0" />
@@ -207,8 +207,8 @@ export default function QuemSomosPage() {
             </div>
             <p className="text-neutral-400 text-xs mt-5 text-center">
               Ou escreva diretamente para{' '}
-              <a href="mailto:neurofarma1@hotmail.com" className="text-primary-600 hover:underline font-medium">
-                neurofarma1@hotmail.com
+              <a href="mailto:neurofarmalab@hotmail.com" className="text-primary-600 hover:underline font-medium">
+                neurofarmalab@hotmail.com
               </a>
             </p>
           </section>

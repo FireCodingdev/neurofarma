@@ -46,7 +46,7 @@ export function Noticias({ content = DEFAULT_HOME_CONTENT.noticias }: NoticiasPr
           <p className="font-display text-4xl sm:text-5xl font-bold text-primary-600 uppercase tracking-widest">
             {content.eyebrow}
           </p>
-          <p className="text-sm text-neutral-500 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
+          <p className="text-base font-bold text-neutral-600 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
             {content.titulo}
           </p>
         </div>

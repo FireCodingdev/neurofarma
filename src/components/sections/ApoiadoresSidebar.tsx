@@ -55,7 +55,7 @@ export function ApoiadoresSidebar() {
             <div className="w-full h-9 bg-white/10 rounded-lg animate-pulse" />
           ) : logado ? (
             <a
-              href="mailto:neurofarma1@hotmail.com"
+              href="mailto:neurofarmalab@hotmail.com"
               className="flex items-center justify-center gap-2 w-full border border-white/30 text-white hover:bg-white/10 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
             >
               <Mail className="w-4 h-4" />

@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { CATEGORIAS_PRODUTO } from '@/lib/constants';
+import { PRODUTO_ICONES } from '@/lib/produto-icons';
 import type { ProdutoDB } from '@/types';
 
 interface ProdutoFormProps {
@@ -28,6 +29,7 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
     apresentacao: p?.apresentacao ?? '',
     ativo: p?.ativo ?? true,
     ordem: p?.ordem ?? 0,
+    icone: p?.icone ?? 'FlaskConical',
   });
 
   const [form, setForm] = useState(() => buildForm(produto));
@@ -74,6 +76,7 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
       ...form,
       indicacoes: form.indicacoes.split('\n').filter(Boolean),
       imagens: imagens.filter(Boolean),
+      icone: form.icone,
     };
 
     try {
@@ -214,6 +217,30 @@ export function ProdutoForm({ produto }: ProdutoFormProps) {
               className="w-full px-4 py-3 rounded-xl border border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none text-sm"
             />
           </div>
+        </div>
+      </Card>
+
+      <Card>
+        <h2 className="font-semibold text-neutral-900 mb-4">Ícone no menu de Formulações</h2>
+        <p className="text-xs text-neutral-500 mb-4">
+          Escolha o ícone que representa este produto no dropdown do cabeçalho (menu "Formulações").
+        </p>
+        <div className="grid grid-cols-4 gap-2">
+          {PRODUTO_ICONES.map(({ nome, label, Icon }) => (
+            <button
+              key={nome}
+              type="button"
+              onClick={() => set('icone', nome)}
+              className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${
+                form.icone === nome
+                  ? 'border-primary-500 bg-primary-50 text-primary-700'
+                  : 'border-neutral-200 hover:border-primary-300 text-neutral-500 hover:bg-neutral-50'
+              }`}
+            >
+              <Icon className="w-6 h-6" />
+              <span className="text-xs font-medium leading-none">{label}</span>
+            </button>
+          ))}
         </div>
       </Card>
 

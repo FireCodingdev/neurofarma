@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     'Entre em contato com a equipe da Neuro Farma. Tire dúvidas sobre pesquisas, formulações e o cenário regulatório da cannabis medicinal.',
 };
 
-const EMAIL = 'neurofarma1@hotmail.com';
+const EMAIL = 'neurofarmalab@hotmail.com';
 const WHATSAPP = '5574981064385';
 
 export default function FaleConoscoPage() {
