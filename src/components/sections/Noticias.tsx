@@ -42,13 +42,13 @@ export function Noticias({ content = DEFAULT_HOME_CONTENT.noticias }: NoticiasPr
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header */}
-        <div className="mb-10">
-          <span className="text-sm font-semibold text-primary-600 uppercase tracking-widest">
+        <div className="mb-10 text-center">
+          <p className="font-display text-4xl sm:text-5xl font-bold text-primary-600 uppercase tracking-widest">
             {content.eyebrow}
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-neutral-900 mt-2">
+          </p>
+          <p className="text-sm text-neutral-500 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
             {content.titulo}
-          </h2>
+          </p>
         </div>
 
         {/* Featured card */}
