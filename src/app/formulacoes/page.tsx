@@ -55,8 +55,16 @@ export default async function FormulacoesPage() {
             {produtos.map((produto) => (
               <Card key={produto.id} hoverable className="flex flex-col">
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                    <FlaskConical className="w-7 h-7 text-primary-600" />
+                  <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {produto.imagens && produto.imagens.filter(Boolean).length > 0 ? (
+                      <img
+                        src={produto.imagens.filter(Boolean)[0]}
+                        alt={produto.nome}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <FlaskConical className="w-7 h-7 text-primary-600" />
+                    )}
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-primary-600 uppercase tracking-wider">{produto.categoria}</span>

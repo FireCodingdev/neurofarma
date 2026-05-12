@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { FlaskConical, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { ProdutoAcao } from '@/components/sections/ProdutoAcao';
+import { GaleriaLightbox } from '@/components/sections/GaleriaLightbox';
 import { supabaseAdmin } from '@/lib/supabase-server';
 import type { ProdutoDB } from '@/types';
 
@@ -99,28 +100,10 @@ export default async function ProdutoPage({ params }: Props) {
 
             {/* Galeria de imagens do produto */}
             {produto.imagens && produto.imagens.filter(Boolean).length > 0 && (
-              <Card className="p-0 overflow-hidden">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-0.5">
-                  {produto.imagens.filter(Boolean).map((url, i) => (
-                    <a
-                      key={i}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`block overflow-hidden bg-neutral-100 ${
-                        i === 0 && produto.imagens!.length >= 3 ? 'col-span-2 row-span-2' : ''
-                      }`}
-                      style={{ aspectRatio: i === 0 && produto.imagens!.length >= 3 ? '16/9' : '1/1' }}
-                    >
-                      <img
-                        src={url}
-                        alt={`${produto.nome} - foto ${i + 1}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </a>
-                  ))}
-                </div>
-              </Card>
+              <GaleriaLightbox
+                imagens={produto.imagens.filter(Boolean)}
+                nomeProduto={produto.nome}
+              />
             )}
 
             <Card>
