@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import {
   Menu, X, ChevronDown, FlaskConical, LogOut,
-  LayoutDashboard, Settings,
+  LayoutDashboard, Settings, Heart,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
@@ -185,6 +185,12 @@ export function Navbar({ produtos }: NavbarProps) {
                             <Settings className="w-4 h-4 text-neutral-400" />
                             Configurações do perfil
                           </Link>
+                          <Link href="/conta/pedidos"
+                            onClick={() => setUserMenuOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-primary-50 hover:text-primary-700 transition-colors">
+                            <Heart className="w-4 h-4 text-neutral-400" />
+                            Página do Apoiador
+                          </Link>
                         </div>
                         <div className="border-t border-neutral-100 pt-1">
                           <button onClick={handleLogout}
@@ -280,6 +286,11 @@ export function Navbar({ produtos }: NavbarProps) {
                       className="flex items-center gap-3 py-2.5 text-sm text-neutral-700 hover:text-primary-700 transition-colors">
                       <Settings className="w-4 h-4 text-neutral-400" />
                       Configurações do perfil
+                    </Link>
+                    <Link href="/conta/pedidos" onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-3 py-2.5 text-sm text-neutral-700 hover:text-primary-700 transition-colors">
+                      <Heart className="w-4 h-4 text-neutral-400" />
+                      Página do Apoiador
                     </Link>
                   </>
                 )}
