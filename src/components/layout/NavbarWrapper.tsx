@@ -6,7 +6,7 @@ async function getProdutosNav(): Promise<ProdutoDB[]> {
   try {
     const { data, error } = await supabaseAdmin
       .from('produtos')
-      .select('id, slug, nome, categoria, descricao_curta, ativo, ordem')
+      .select('id, slug, nome, categoria, descricao_curta, ativo, ordem, icone')
       .eq('ativo', true)
       .order('ordem', { ascending: true });
     if (error) throw error;
