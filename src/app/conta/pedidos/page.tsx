@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, BookOpen, FlaskConical, MessageCircle, Users, AlertTriangle, Settings, Mail } from 'lucide-react';
+import { BookOpen, FlaskConical, MessageCircle, Users, AlertTriangle, Settings, Mail } from 'lucide-react';
 
 export default function PaginaApoiadorPage() {
   return (
@@ -10,9 +10,6 @@ export default function PaginaApoiadorPage() {
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center">
-            <Heart className="w-5 h-5 text-primary-700" />
-          </div>
           <div>
             <h1 className="font-display text-2xl font-bold text-neutral-900">Página do Apoiador</h1>
             <p className="text-sm text-neutral-500">Bem-vindo ao seu espaço exclusivo</p>

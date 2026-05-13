@@ -229,12 +229,6 @@ export function ConteudoHomeForm({ initialContent }: ConteudoHomeFormProps) {
           Primeira coisa que o visitante vê: badge legal, título grande, subtítulo e botões.
         </p>
         <div className="space-y-4">
-          <Input
-            label="Badge superior (selo legal)"
-            value={content.hero.badge}
-            onChange={(e) => updateHero({ badge: e.target.value })}
-          />
-
           <TituloAjudaBox exemplo='"A ciência da " + "cannabis" + " a serviço da vida."' />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

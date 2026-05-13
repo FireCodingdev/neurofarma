@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { CheckCircle2, Heart, FlaskConical, Users } from 'lucide-react';
+import { CheckCircle2, FlaskConical, Users } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { ApoiadoresSidebar } from '@/components/sections/ApoiadoresSidebar';
 
@@ -42,8 +42,7 @@ export default function ApoiadoresPage() {
       <section className="bg-gradient-to-br from-primary-800 via-primary-700 to-primary-600 text-white py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
-            <Heart className="w-4 h-4 text-green-300" />
-            Programa de Apoiadores
+Programa de Apoiadores
           </div>
           <h1 className="font-display text-4xl lg:text-5xl font-bold leading-tight mb-6">
             Seja um Apoiador<br />Neuro Farma

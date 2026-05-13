@@ -30,12 +30,6 @@ export function Hero({ content = DEFAULT_HOME_CONTENT.hero }: HeroProps) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left column — all content */}
           <div className="flex flex-col items-start">
-            {/* Legal badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/20 border border-primary-500/30 text-primary-300 text-sm font-medium mb-8 animate-fade-in">
-              <ShieldCheck className="w-4 h-4" />
-              {content.badge}
-            </div>
-
             {/* Title */}
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight animate-slide-up">
               {content.titulo_parte1}

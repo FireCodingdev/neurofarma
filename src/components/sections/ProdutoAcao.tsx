@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MessageCircle, Heart } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { supabase } from '@/lib/supabase';
 
@@ -52,7 +52,7 @@ export function ProdutoAcao({ produto }: ProdutoAcaoProps) {
               className="w-full border-white/30 text-white hover:bg-white/10"
               size="sm"
             >
-              <Heart className="w-4 h-4 mr-2" />
+  
               Concluir cadastro
             </Button>
           </Link>
@@ -63,7 +63,7 @@ export function ProdutoAcao({ produto }: ProdutoAcaoProps) {
               className="w-full border-white/30 text-white hover:bg-white/10"
               size="sm"
             >
-              <Heart className="w-4 h-4 mr-2" />
+  
               Criar conta
             </Button>
           </Link>
