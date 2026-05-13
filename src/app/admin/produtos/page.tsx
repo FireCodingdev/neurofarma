@@ -5,6 +5,7 @@ import { Plus, Pencil, FlaskConical } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { supabaseAdmin } from '@/lib/supabase-server';
+import { getIconComponent } from '@/lib/produto-icons';
 import type { ProdutoDB } from '@/types';
 
 export const metadata: Metadata = { title: 'Produtos · Admin Neurofarma' };
@@ -66,12 +67,14 @@ export default async function AdminProdutosPage() {
               </tr>
             </thead>
             <tbody>
-              {produtos.map((produto, i) => (
+              {produtos.map((produto, i) => {
+                const IconeProduto = getIconComponent(produto.icone);
+                return (
                 <tr key={produto.id} className={i !== produtos.length - 1 ? 'border-b border-neutral-100' : ''}>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <FlaskConical className="w-4 h-4 text-primary-600" />
+                        <IconeProduto className="w-4 h-4 text-primary-600" />
                       </div>
                       <div>
                         <p className="font-semibold text-neutral-900">{produto.nome}</p>
@@ -96,7 +99,8 @@ export default async function AdminProdutosPage() {
                     </AdminLink>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </Card>

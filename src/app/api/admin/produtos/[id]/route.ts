@@ -56,12 +56,26 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (icone !== undefined) patch.icone = icone;
 
   try {
-    const { data, error } = await supabaseAdmin
+    let result = await supabaseAdmin
       .from('produtos')
       .update(patch)
       .eq('id', params.id)
       .select()
       .single();
+
+    // Se falhou e o patch contém 'icone', a coluna pode não existir ainda no banco.
+    // Tenta novamente sem 'icone' para não bloquear o salvamento dos demais campos.
+    if (result.error && patch.icone !== undefined) {
+      const { icone: _removed, ...patchSemIcone } = patch;
+      result = await supabaseAdmin
+        .from('produtos')
+        .update(patchSemIcone)
+        .eq('id', params.id)
+        .select()
+        .single();
+    }
+
+    const { data, error } = result;
 
     if (error) {
       if (error.code === '23505') {

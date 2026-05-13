@@ -57,25 +57,40 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'nome e slug são obrigatórios.' }, { status: 400 });
   }
 
+  const insertPayload: Record<string, any> = {
+    nome,
+    slug,
+    categoria: categoria ?? 'CBD Isolado',
+    descricao_curta: descricaoCurta ?? '',
+    descricao: descricao ?? '',
+    composicao: composicao ?? '',
+    indicacoes: Array.isArray(indicacoes) ? indicacoes : (indicacoes ?? '').split('\n').filter(Boolean),
+    apresentacao: apresentacao ?? '',
+    ativo: ativo ?? true,
+    ordem: ordem ?? 0,
+    imagens: Array.isArray(imagens) ? imagens : [],
+    icone: icone ?? null,
+  };
+
   try {
-    const { data, error } = await supabaseAdmin
+    let result = await supabaseAdmin
       .from('produtos')
-      .insert({
-        nome,
-        slug,
-        categoria: categoria ?? 'CBD Isolado',
-        descricao_curta: descricaoCurta ?? '',
-        descricao: descricao ?? '',
-        composicao: composicao ?? '',
-        indicacoes: Array.isArray(indicacoes) ? indicacoes : (indicacoes ?? '').split('\n').filter(Boolean),
-        apresentacao: apresentacao ?? '',
-        ativo: ativo ?? true,
-        ordem: ordem ?? 0,
-        imagens: Array.isArray(imagens) ? imagens : [],
-        icone: icone ?? null,
-      })
+      .insert(insertPayload)
       .select()
       .single();
+
+    // Se falhou e o payload contém 'icone', a coluna pode não existir ainda.
+    // Tenta novamente sem 'icone' para não bloquear a criação do produto.
+    if (result.error && insertPayload.icone !== undefined) {
+      const { icone: _removed, ...payloadSemIcone } = insertPayload;
+      result = await supabaseAdmin
+        .from('produtos')
+        .insert(payloadSemIcone)
+        .select()
+        .single();
+    }
+
+    const { data, error } = result;
 
     if (error) {
       if (error.code === '23505') {
