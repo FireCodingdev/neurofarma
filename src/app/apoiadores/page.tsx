@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { CheckCircle2, FlaskConical, Users } from 'lucide-react';
+import { CheckCircle2, Handshake, BadgeCheck } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { ApoiadoresSidebar } from '@/components/sections/ApoiadoresSidebar';
 
@@ -67,7 +67,7 @@ Programa de Apoiadores
             <Card>
               <div className="flex items-start gap-4 mb-5">
                 <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <Users className="w-6 h-6 text-primary-600" />
+                  <Handshake className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <h2 className="font-display text-2xl font-bold text-neutral-900">O que significa ser um apoiador?</h2>
@@ -92,7 +92,7 @@ Programa de Apoiadores
             <Card>
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <FlaskConical className="w-6 h-6 text-primary-600" />
+                  <BadgeCheck className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <h2 className="font-display text-2xl font-bold text-neutral-900">O que você ganha ao apoiar</h2>
