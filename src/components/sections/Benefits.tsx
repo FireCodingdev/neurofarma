@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { FlaskConical, Leaf, Microscope } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { DEFAULT_HOME_CONTENT, type BenefitsContent } from '@/lib/home-content';
@@ -31,25 +30,30 @@ export function Benefits({ content = DEFAULT_HOME_CONTENT.benefits }: BenefitsPr
             const Icon = PILAR_ICONS[idx] ?? FlaskConical;
             return (
               <Card key={idx} hoverable className="group">
-                {pilar.imagem_url ? (
-                  <div className="w-14 h-14 rounded-2xl overflow-hidden mb-5 flex-shrink-0">
-                    <img
-                      src={pilar.imagem_url}
-                      alt={pilar.titulo}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary-600 transition-colors">
-                    <Icon className="w-7 h-7 text-primary-700 group-hover:text-white transition-colors" />
-                  </div>
-                )}
-                <h3 className="font-display text-xl font-semibold text-neutral-900 mb-3">
-                  {pilar.titulo}
-                </h3>
+                {/* Header: título à esquerda, ícone à direita */}
+                <div className="flex items-start justify-between gap-3 mb-4 pb-4 border-b border-neutral-100">
+                  <h3 className="font-display text-xl font-semibold text-neutral-900 leading-snug">
+                    {pilar.titulo}
+                  </h3>
+                  {pilar.imagem_url ? (
+                    <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0">
+                      <img
+                        src={pilar.imagem_url}
+                        alt={pilar.titulo}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-5 h-5 text-primary-700" />
+                    </div>
+                  )}
+                </div>
+
                 <p className="text-neutral-600 mb-5 leading-relaxed text-sm">
                   {pilar.descricao}
                 </p>
+
                 <ul className="space-y-2">
                   {pilar.detalhes.map((d, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-neutral-700">
