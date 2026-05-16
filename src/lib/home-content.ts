@@ -57,6 +57,7 @@ export type ScienceContent = {
 export type StepsEtapa = {
   titulo: string;
   descricao: string;
+  icone?: string;       // nome do ícone (ex: 'Pill', 'Pipette') — usa ETAPA_ICONS[idx] como fallback
 };
 
 export type StepsContent = {
@@ -187,21 +188,25 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
       'Cada etapa é documentada, rastreável e auditável — porque transparência não é diferencial, é obrigação.',
     etapas: [
       {
+        icone: 'Pill',
         titulo: 'Cultivo e Extração',
         descricao:
           'A biomassa vegetal é cultivada em ambiente controlado e certificado. A extração dos canabinoides segue protocolos validados para garantir pureza e reprodutibilidade.',
       },
       {
+        icone: 'Pipette',
         titulo: 'Desenvolvimento',
         descricao:
           'Os extratos são formulados por farmacêuticos especialistas, ajustando concentrações, excipientes e forma farmacêutica para cada indicação clínica.',
       },
       {
+        icone: 'Cookie',
         titulo: 'Controle de Qualidade',
         descricao:
           'Cada lote passa por análises cromatográficas, microbiológicas e testes de estabilidade. Laudos são emitidos antes de qualquer liberação.',
       },
       {
+        icone: 'FlaskConical',
         titulo: 'Acesso ao Paciente',
         descricao:
           'Com cadastro ativo na plataforma, o paciente tem acesso direto aos produtos disponíveis e ao acompanhamento de seu pedido em tempo real.',

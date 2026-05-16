@@ -2,13 +2,14 @@ import Link from 'next/link';
 import { Pill, Pipette, Cookie, FlaskConical, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { DEFAULT_HOME_CONTENT, type StepsContent } from '@/lib/home-content';
+import { getIconComponent } from '@/lib/produto-icons';
 
 interface StepsProps {
   content?: StepsContent;
 }
 
-// Ícones e numeração fixos por posição.
-const ETAPA_ICONS = [Pill, Pipette, Cookie, FlaskConical];
+// Ícones padrão por posição — usados apenas quando a etapa não tem `icone` definido.
+const ETAPA_ICONS_FALLBACK = [Pill, Pipette, Cookie, FlaskConical];
 
 export function Steps({ content = DEFAULT_HOME_CONTENT.steps }: StepsProps) {
   return (
@@ -31,7 +32,9 @@ export function Steps({ content = DEFAULT_HOME_CONTENT.steps }: StepsProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
             {content.etapas.slice(0, 4).map((etapa, idx) => {
-              const Icon = ETAPA_ICONS[idx] ?? Leaf;
+              const Icon = etapa.icone
+                ? getIconComponent(etapa.icone)
+                : (ETAPA_ICONS_FALLBACK[idx] ?? Leaf);
               const numero = String(idx + 1).padStart(2, '0');
               return (
                 <div key={idx} className="text-center">

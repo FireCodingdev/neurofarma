@@ -38,11 +38,11 @@ export default function QuemSomosPage() {
             <h2 className="font-display text-2xl font-bold text-neutral-900">Nossa origem</h2>
           </div>
           <p className="text-neutral-700 text-base leading-relaxed">
-            A Neuro Farma nasceu de uma constatação simples: o Brasil precisa produzir
-            conhecimento próprio sobre formulações de cannabis medicinal. Somos um laboratório
-            dedicado à pesquisa e ao desenvolvimento farmacotécnico de produtos à base de CBD e
-            THC, com a missão de transformar ciência em formulações seguras, padronizadas e
-            acessíveis.
+            A Neurofarma é uma iniciativa dedicada ao desenvolvimento científico e à padronização
+            de processos farmacotécnicos para formulações à base de cannabis medicinal. Nascemos
+            com o propósito de contribuir para o avanço da pesquisa no Brasil, gerando
+            conhecimento técnico-científico confiável em um setor que precisa de padronização e
+            segurança.
           </p>
         </section>
 
@@ -55,29 +55,12 @@ export default function QuemSomosPage() {
             <h2 className="font-display text-2xl font-bold text-neutral-900">O que fazemos</h2>
           </div>
           <p className="text-neutral-700 text-base leading-relaxed mb-8">
-            Nosso dia a dia é feito de bancada, teste e pesquisa prática. Produzimos amostras em
-            escala laboratorial das principais formas farmacêuticas da terapia canabinoide. Cada
-            projeto é pensado para unir precisão de dose e estabilidade.
+            Desenvolvemos e validamos Procedimentos Operacionais Padrão (POPs) para as principais
+            formas farmacêuticas magistrais, como cápsulas, emulsões, soluções sublinguais e
+            outras preparações. Nosso trabalho envolve a criação de protocolos práticos,
+            reprodutíveis e alinhados às normas sanitárias, com foco em precisão de dose,
+            estabilidade e qualidade das formulações.
           </p>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {[
-              'Cápsulas',
-              'Óleos e Soluções Orais',
-              'Emulsões',
-              'Gomas',
-              'Chocolates Medicinais',
-              'Formulações sob Medida',
-            ].map((item) => (
-              <div
-                key={item}
-                className="flex items-center gap-2 px-4 py-3 bg-primary-50 rounded-xl border border-primary-100"
-              >
-                <div className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0" />
-                <span className="text-sm font-medium text-primary-800">{item}</span>
-              </div>
-            ))}
-          </div>
         </section>
 
         {/* Missão científica */}
@@ -89,10 +72,14 @@ export default function QuemSomosPage() {
             <h2 className="font-display text-2xl font-bold text-neutral-900">Nossa missão científica</h2>
           </div>
           <p className="text-neutral-700 text-base leading-relaxed">
-            Acreditamos que o avanço da cannabis medicinal passa pela padronização e pelo
-            conhecimento técnico. Por isso, nossa rotina envolve testar veículos, excipientes e
-            processos técnicos — sempre com as RDCs como guia — e gerar dados que fortaleçam a
-            literatura científica nacional e subsidiem as normas do setor.
+            Atuamos inicialmente como Associação com ênfase em pesquisa aplicada e desenvolvimento
+            tecnológico. Nosso objetivo é promover a reprodutibilidade, a segurança e a qualidade
+            das formulações. Por isso, atuamos em consonância com os princípios e diretrizes das
+            Resoluções da Anvisa de 2026 (RDCs 1.012 a 1.015), que regulamentam o cultivo, a
+            pesquisa, a produção por associações e a manipulação de produtos à base de cannabis
+            para fins medicinais. Em uma segunda etapa, buscaremos o enquadramento como Instituição
+            Científica e Tecnológica (ICT), ampliando nossas atividades de pesquisa e validação
+            analítica.
           </p>
         </section>
 
@@ -105,9 +92,12 @@ export default function QuemSomosPage() {
             <h2 className="font-display text-2xl font-bold text-neutral-900">Nosso compromisso</h2>
           </div>
           <p className="text-neutral-700 text-base leading-relaxed">
-            Cada formulação que desenvolvemos nasce de um compromisso com a segurança do paciente
-            e com a evolução da cannabis medicinal no Brasil. Trabalhamos para que ciência e
-            prática caminhem juntas — do laboratório para quem mais precisa.
+            Valorizamos a colaboração com instituições de ensino e pesquisa, especialmente
+            universidades públicas, para fortalecer a ciência nacional e contribuir para a
+            qualificação técnica das farmácias de manipulação e profissionais da saúde que atuam
+            no segmento de cannabis medicinal. No futuro, pretendemos evoluir para uma empresa
+            especializada no licenciamento de protocolos padronizados, consultoria técnica e
+            desenvolvimento de fitofármacos.
           </p>
         </section>
 

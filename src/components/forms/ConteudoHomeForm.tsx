@@ -10,6 +10,7 @@ import {
   type HomeContent,
   type NoticiaItem,
 } from '@/lib/home-content';
+import { PRODUTO_ICONES } from '@/lib/produto-icons';
 
 interface ConteudoHomeFormProps {
   initialContent: HomeContent;
@@ -486,6 +487,28 @@ export function ConteudoHomeForm({ initialContent }: ConteudoHomeFormProps) {
                 Etapa {String(idx + 1).padStart(2, '0')}
               </h3>
               <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Ícone da etapa
+                  </label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {PRODUTO_ICONES.map(({ nome, label, Icon }) => (
+                      <button
+                        key={nome}
+                        type="button"
+                        onClick={() => updateEtapa(idx, { icone: nome })}
+                        className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl border-2 transition-all ${
+                          (etapa.icone ?? '') === nome
+                            ? 'border-primary-500 bg-primary-50 text-primary-700'
+                            : 'border-neutral-200 hover:border-primary-300 text-neutral-500 hover:bg-neutral-50'
+                        }`}
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span className="text-xs font-medium leading-none">{label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <Input
                   label="Título"
                   value={etapa.titulo}
