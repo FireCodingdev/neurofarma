@@ -43,7 +43,7 @@ export function Footer() {
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Formulações
             </h3>
-            <ul className="space-y-2.5 mb-6">
+            <ul className="space-y-2.5">
               <li>
                 <Link href="/formulacoes?tipo=capsulas" className="text-sm hover:text-primary-400 transition-colors">
                   Cápsulas
@@ -65,36 +65,6 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
-            <h4 className="font-semibold text-neutral-400 mb-3 text-xs uppercase tracking-wider">
-              Produtos
-            </h4>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/formulacoes" className="text-sm hover:text-primary-400 transition-colors">
-                  Ver todos os produtos
-                </Link>
-              </li>
-              <li>
-                <Link href="/produtos/neuro-c10" className="text-sm hover:text-primary-400 transition-colors">
-                  Neuro-C10
-                </Link>
-              </li>
-              <li>
-                <Link href="/produtos/neuro-c25" className="text-sm hover:text-primary-400 transition-colors">
-                  Neuro-C25
-                </Link>
-              </li>
-              <li>
-                <Link href="/produtos/neuro-balance" className="text-sm hover:text-primary-400 transition-colors">
-                  Neuro-Balance
-                </Link>
-              </li>
-              <li>
-                <Link href="/produtos/neuro-caps" className="text-sm hover:text-primary-400 transition-colors">
-                  Neuro-Caps
-                </Link>
-              </li>
-            </ul>
           </div>
 
           {/* Apoiadores column */}
@@ -102,7 +72,7 @@ export function Footer() {
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Apoiadores
             </h3>
-            <ul className="space-y-2.5 mb-6">
+            <ul className="space-y-2.5">
               <li>
                 <Link href="/apoiadores/seja-um-apoiador" className="text-sm hover:text-primary-400 transition-colors">
                   Seja um apoiador
@@ -121,31 +91,6 @@ export function Footer() {
               <li>
                 <Link href="/apoiadores/duvidas" className="text-sm hover:text-primary-400 transition-colors">
                   Dúvidas frequentes
-                </Link>
-              </li>
-            </ul>
-            <h4 className="font-semibold text-neutral-400 mb-3 text-xs uppercase tracking-wider">
-              Conta
-            </h4>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/cadastro" className="text-sm hover:text-primary-400 transition-colors">
-                  Criar conta
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" className="text-sm hover:text-primary-400 transition-colors">
-                  Entrar
-                </Link>
-              </li>
-              <li>
-                <Link href="/conta/configuracoes" className="text-sm hover:text-primary-400 transition-colors">
-                  Minha área
-                </Link>
-              </li>
-              <li>
-                <Link href="/conta/pedidos" className="text-sm hover:text-primary-400 transition-colors">
-                  Meus pedidos
                 </Link>
               </li>
             </ul>
