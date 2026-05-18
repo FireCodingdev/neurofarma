@@ -74,22 +74,22 @@ export function Footer() {
             </h3>
             <ul className="space-y-2.5">
               <li>
-                <Link href="/apoiadores/seja-um-apoiador" className="text-sm hover:text-primary-400 transition-colors">
+                <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
                   Seja um apoiador
                 </Link>
               </li>
               <li>
-                <Link href="/apoiadores/programa" className="text-sm hover:text-primary-400 transition-colors">
+                <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
                   Conheça o programa
                 </Link>
               </li>
               <li>
-                <Link href="/apoiadores/beneficios" className="text-sm hover:text-primary-400 transition-colors">
+                <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
                   Benefícios disponíveis
                 </Link>
               </li>
               <li>
-                <Link href="/apoiadores/duvidas" className="text-sm hover:text-primary-400 transition-colors">
+                <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
                   Dúvidas frequentes
                 </Link>
               </li>
