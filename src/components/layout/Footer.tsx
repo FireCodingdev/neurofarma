@@ -1,46 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MapPin, Instagram, Youtube } from 'lucide-react';
+import { Mail, Phone, Instagram, Youtube } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const linkGroups = [
-    {
-      title: 'Produtos',
-      links: [
-        { href: '/formulacoes', label: 'Todas as Formulações' },
-        { href: '/produtos/neuro-c10', label: 'Neuro-C10' },
-        { href: '/produtos/neuro-c25', label: 'Neuro-C25' },
-        { href: '/produtos/neuro-balance', label: 'Neuro-Balance' },
-        { href: '/produtos/neuro-caps', label: 'Neuro-Caps' },
-      ],
-    },
-    {
-      title: 'Conta',
-      links: [
-        { href: '/cadastro', label: 'Criar conta' },
-        { href: '/login', label: 'Entrar' },
-        { href: '/conta/configuracoes', label: 'Minha área' },
-        { href: '/conta/pedidos', label: 'Página do Apoiador' },
-      ],
-    },
-    {
-      title: 'Legal',
-      links: [
-        { href: '#', label: 'Sobre a Neurofarma' },
-        { href: '#', label: 'Termos de uso' },
-        { href: '#', label: 'Política de privacidade' },
-        { href: '#', label: 'Contato' },
-      ],
-    },
-  ];
-
   return (
     <footer className="bg-neutral-900 text-neutral-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand column */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center mb-4">
@@ -53,7 +22,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-xs text-neutral-400">
-              {SITE_CONFIG.description}
+              Desenvolvimento científico com rigor em cada etapa.
             </p>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
@@ -66,30 +35,121 @@ export function Footer() {
                 <Phone className="w-4 h-4 text-primary-400 flex-shrink-0" />
                 <span>{SITE_CONFIG.telefone}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary-400 flex-shrink-0" />
-                <span>{SITE_CONFIG.endereco}</span>
-              </div>
             </div>
           </div>
 
-          {/* Link groups */}
-          {linkGroups.map((group) => (
-            <div key={group.title}>
-              <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
-                {group.title}
-              </h3>
-              <ul className="space-y-2.5">
-                {group.links.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href} className="text-sm hover:text-primary-400 transition-colors">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Formulações column */}
+          <div>
+            <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
+              Formulações
+            </h3>
+            <ul className="space-y-2.5 mb-6">
+              <li>
+                <Link href="/formulacoes?tipo=capsulas" className="text-sm hover:text-primary-400 transition-colors">
+                  Cápsulas
+                </Link>
+              </li>
+              <li>
+                <Link href="/formulacoes?tipo=solucoes-orais" className="text-sm hover:text-primary-400 transition-colors">
+                  Soluções orais
+                </Link>
+              </li>
+              <li>
+                <Link href="/formulacoes?tipo=emulsao" className="text-sm hover:text-primary-400 transition-colors">
+                  Emulsão
+                </Link>
+              </li>
+              <li>
+                <Link href="/formulacoes?tipo=comestiveis" className="text-sm hover:text-primary-400 transition-colors">
+                  Comestíveis (gomas e chocolate)
+                </Link>
+              </li>
+            </ul>
+            <h4 className="font-semibold text-neutral-400 mb-3 text-xs uppercase tracking-wider">
+              Produtos
+            </h4>
+            <ul className="space-y-2.5">
+              <li>
+                <Link href="/formulacoes" className="text-sm hover:text-primary-400 transition-colors">
+                  Ver todos os produtos
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/neuro-c10" className="text-sm hover:text-primary-400 transition-colors">
+                  Neuro-C10
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/neuro-c25" className="text-sm hover:text-primary-400 transition-colors">
+                  Neuro-C25
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/neuro-balance" className="text-sm hover:text-primary-400 transition-colors">
+                  Neuro-Balance
+                </Link>
+              </li>
+              <li>
+                <Link href="/produtos/neuro-caps" className="text-sm hover:text-primary-400 transition-colors">
+                  Neuro-Caps
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Apoiadores column */}
+          <div>
+            <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
+              Apoiadores
+            </h3>
+            <ul className="space-y-2.5 mb-6">
+              <li>
+                <Link href="/apoiadores/seja-um-apoiador" className="text-sm hover:text-primary-400 transition-colors">
+                  Seja um apoiador
+                </Link>
+              </li>
+              <li>
+                <Link href="/apoiadores/programa" className="text-sm hover:text-primary-400 transition-colors">
+                  Conheça o programa
+                </Link>
+              </li>
+              <li>
+                <Link href="/apoiadores/beneficios" className="text-sm hover:text-primary-400 transition-colors">
+                  Benefícios disponíveis
+                </Link>
+              </li>
+              <li>
+                <Link href="/apoiadores/duvidas" className="text-sm hover:text-primary-400 transition-colors">
+                  Dúvidas frequentes
+                </Link>
+              </li>
+            </ul>
+            <h4 className="font-semibold text-neutral-400 mb-3 text-xs uppercase tracking-wider">
+              Conta
+            </h4>
+            <ul className="space-y-2.5">
+              <li>
+                <Link href="/cadastro" className="text-sm hover:text-primary-400 transition-colors">
+                  Criar conta
+                </Link>
+              </li>
+              <li>
+                <Link href="/login" className="text-sm hover:text-primary-400 transition-colors">
+                  Entrar
+                </Link>
+              </li>
+              <li>
+                <Link href="/conta/configuracoes" className="text-sm hover:text-primary-400 transition-colors">
+                  Minha área
+                </Link>
+              </li>
+              <li>
+                <Link href="/conta/pedidos" className="text-sm hover:text-primary-400 transition-colors">
+                  Meus pedidos
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Bottom bar */}
