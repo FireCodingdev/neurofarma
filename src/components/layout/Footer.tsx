@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Phone, Instagram, Youtube } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/constants';
+import { FooterApoiadorLink } from './FooterApoiadorLink';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -74,23 +75,16 @@ export function Footer() {
             </h3>
             <ul className="space-y-2.5">
               <li>
-                <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
-                  Seja um apoiador
-                </Link>
+                <FooterApoiadorLink />
               </li>
               <li>
-                <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
+                <Link href="/quem-somos" className="text-sm hover:text-primary-400 transition-colors">
                   Conheça o programa
                 </Link>
               </li>
               <li>
                 <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
                   Benefícios disponíveis
-                </Link>
-              </li>
-              <li>
-                <Link href="/apoiadores" className="text-sm hover:text-primary-400 transition-colors">
-                  Dúvidas frequentes
                 </Link>
               </li>
             </ul>
