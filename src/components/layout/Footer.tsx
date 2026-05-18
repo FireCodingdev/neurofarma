@@ -19,7 +19,7 @@ export function Footer() {
                 alt="NEUROFARMA"
                 width={240}
                 height={80}
-                className="h-16 w-auto object-contain brightness-0 invert"
+                className="h-24 w-auto object-contain brightness-0 invert"
               />
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-xs text-neutral-400">
