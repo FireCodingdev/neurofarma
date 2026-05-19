@@ -9,23 +9,23 @@ export function Footer() {
 
   return (
     <footer className="bg-neutral-900 text-neutral-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 items-start">
           {/* Brand column */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center mb-4">
+          <div>
+            <Link href="/" className="inline-flex items-center mb-3">
               <Image
                 src="/imagens/logo.png"
                 alt="NEUROFARMA"
-                width={240}
-                height={80}
-                className="h-24 w-auto object-contain brightness-0 invert"
+                width={200}
+                height={64}
+                className="h-20 w-auto object-contain brightness-0 invert"
               />
             </Link>
-            <p className="text-sm leading-relaxed mb-6 max-w-xs text-neutral-400">
+            <p className="text-sm leading-relaxed mb-4 text-neutral-400">
               Desenvolvimento científico com rigor em cada etapa.
             </p>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1.5 text-sm">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary-400 flex-shrink-0" />
                 <a href={`mailto:${SITE_CONFIG.email}`} className="hover:text-white transition-colors">
@@ -92,7 +92,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-8 pt-6 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-neutral-500">
             © {currentYear} {SITE_CONFIG.name}. Todos os direitos reservados.
           </p>
